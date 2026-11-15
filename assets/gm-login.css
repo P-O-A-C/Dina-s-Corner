@@ -277,3 +277,34 @@ html[dir="rtl"] .gm-auth-input-wrap .input { direction: ltr; text-align: left; }
 @media (prefers-reduced-motion: reduce) {
   .gm-auth-input-wrap, .gm-auth-submit { transition: none; }
 }
+
+
+/* Public menu return link — kept separate from the GM login card. */
+.gm-back-menu {
+  position: absolute;
+  z-index: 5;
+  top: 18px;
+  right: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 15px;
+  border: 1px solid #efd1d0;
+  border-radius: 999px;
+  background: rgba(255, 253, 251, .94);
+  color: #8f2946;
+  text-decoration: none;
+  font: 700 13px/1.1 Inter, Arial, sans-serif;
+  box-shadow: 0 4px 12px rgba(111, 31, 55, .08);
+  -webkit-tap-highlight-color: transparent;
+}
+.gm-back-menu svg {
+  width: 18px; height: 18px; flex: 0 0 18px;
+  fill: none; stroke: currentColor; stroke-width: 1.9;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.gm-back-menu:hover { background: #fff0ed; border-color: #d88a9e; }
+.gm-back-menu:focus-visible { outline: 3px solid rgba(198, 95, 120, .24); outline-offset: 3px; }
+@media (max-width: 560px) { .gm-back-menu { top: 12px; right: 12px; min-height: 39px; padding: 7px 12px; font-size: 12px; } }

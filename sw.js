@@ -1,6 +1,6 @@
-const CACHE = "dinas-corner-gm-v5-public-menu";
+const CACHE = "dinas-corner-gm-v6-menu-route-fix";
 const SHELL = [
-  "./", "./index.html", "./manifest.webmanifest",
+  "./", "./index.html", "./login.html", "./menu.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
   "./GM/gm-menu.html", "./GM/gm-categories.html", "./GM/gm-home-products.html",
   "./GM/gm-locations.html",
@@ -10,7 +10,7 @@ const SHELL = [
   "./assets/dina-corner-icon-192.png", "./assets/dina-corner-icon-512.png",
   "./assets/dina-floral-tl.png", "./assets/dina-floral-tr.png",
   "./assets/dina-floral-bl.png", "./assets/dina-floral-br.png",
-  "./menu.html", "./assets/dina-theme.css", "./assets/menu-display.css",
+  "./assets/dina-theme.css", "./assets/menu-display.css",
   "./assets/menu-display.js", "./assets/public-menu-client.js",
   "./assets/public-menu-premium.css", "./assets/public-menu-review-link.js"
 ];
@@ -18,10 +18,27 @@ self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith("dinas-corner-gm-") && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));
+  event.waitUntil(caches.keys()
+    .then(keys => Promise.all(keys.filter(key => key.startsWith("dinas-corner-gm-") && key !== CACHE).map(key => caches.delete(key))))
+    .then(() => self.clients.claim()));
 });
 self.addEventListener("fetch", event => {
-  const request = event.request; if (request.method !== "GET") return;
-  const url = new URL(request.url); if (url.origin !== self.location.origin || !url.pathname.includes("/Dina'sCorner/")) return;
-  event.respondWith((async () => { const cache = await caches.open(CACHE); try { const response = await fetch(request); if (response && response.ok) cache.put(request, response.clone()).catch(() => {}); return response; } catch (_) { const cached = await cache.match(request); if (cached) return cached; if (request.mode === "navigate") return cache.match(new URL("index.html", self.registration.scope)); return Response.error(); } })());
+  const request = event.request;
+  if (request.method !== "GET") return;
+  const url = new URL(request.url);
+  const scope = new URL(self.registration.scope);
+  if (url.origin !== scope.origin || !url.pathname.startsWith(scope.pathname)) return;
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    try {
+      const response = await fetch(request);
+      if (response && response.ok) cache.put(request, response.clone()).catch(() => {});
+      return response;
+    } catch (_) {
+      const cached = await cache.match(request);
+      if (cached) return cached;
+      if (request.mode === "navigate") return cache.match(new URL("index.html", self.registration.scope));
+      return Response.error();
+    }
+  })());
 });

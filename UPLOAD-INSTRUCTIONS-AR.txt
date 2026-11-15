@@ -1,0 +1,20 @@
+إصلاح نهائي لمسارات صفحة المنيو وتسجيل دخول GM
+
+ارفع محتويات هذا الملف إلى جذر Repository: POACustomers/Dina-s-Corner
+واستبدل الملفات التالية فقط مع الحفاظ على نفس المسارات:
+- menu.html
+- login.html
+- sw.js
+- GM/gm-login.html
+- assets/gm-login.css
+
+لا ترفع المجلد Dina'sCorner ولا تنشئ مجلدًا إضافيًا.
+
+المتطلبات التي يعتمد عليها menu.html موجودة بالفعل في assets بالمستودع الحالي:
+style.css, dina-theme.css, menu-display.css, public-menu-premium.css,
+tenant-config.js, config.js, public-menu-client.js, menu-display.js,
+public-menu-review-link.js، بالإضافة إلى الصور المستخدمة في الهوية.
+
+بعد الرفع وانتظار اكتمال نشر GitHub Pages:
+المنيو: https://poacustomers.github.io/Dina-s-Corner/menu.html
+دخول GM: https://poacustomers.github.io/Dina-s-Corner/login.html
