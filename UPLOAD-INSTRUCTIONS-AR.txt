@@ -1,20 +1,20 @@
-إصلاح نهائي لمسارات صفحة المنيو وتسجيل دخول GM
+إصلاح زر Back to Home واستعادة صفحة Home العامة
 
-ارفع محتويات هذا الملف إلى جذر Repository: POACustomers/Dina-s-Corner
-واستبدل الملفات التالية فقط مع الحفاظ على نفس المسارات:
-- menu.html
-- login.html
-- sw.js
-- GM/gm-login.html
-- assets/gm-login.css
+ارفع الملفات إلى مستودع Dina-s-Corner مع الحفاظ على المسارات:
 
-لا ترفع المجلد Dina'sCorner ولا تنشئ مجلدًا إضافيًا.
+1) menu.html                  -> جذر المستودع (استبدال الملف الحالي)
+2) welcome.html               -> جذر المستودع (ملف جديد)
+3) manifest.webmanifest       -> جذر المستودع (استبدال/إضافة)
+4) assets/dina-welcome.css    -> داخل assets
+5) assets/dina-welcome.js     -> داخل assets
+6) assets/dina-welcome-approved-artwork.jpg -> داخل assets
 
-المتطلبات التي يعتمد عليها menu.html موجودة بالفعل في assets بالمستودع الحالي:
-style.css, dina-theme.css, menu-display.css, public-menu-premium.css,
-tenant-config.js, config.js, public-menu-client.js, menu-display.js,
-public-menu-review-link.js، بالإضافة إلى الصور المستخدمة في الهوية.
+لا تستبدل مجلد assets بالكامل ولا تحذف أي ملفات موجودة داخله.
+لا تغيّر ملفات GM أو Supabase أو صور المنيو.
 
-بعد الرفع وانتظار اكتمال نشر GitHub Pages:
-المنيو: https://poacustomers.github.io/Dina-s-Corner/menu.html
-دخول GM: https://poacustomers.github.io/Dina-s-Corner/login.html
+بعد Commit Changes:
+- صفحة Home: https://poacustomers.github.io/Dina-s-Corner/welcome.html
+- صفحة المنيو: https://poacustomers.github.io/Dina-s-Corner/menu.html
+
+زر Back to Home في المنيو يرجع إلى welcome.html.
+وزر View Our Menu في صفحة Home يرجع إلى menu.html.

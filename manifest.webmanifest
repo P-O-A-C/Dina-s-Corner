@@ -1,8 +1,8 @@
 {
-  "id": "./",
-  "name": "Dina's Corner GM",
-  "short_name": "Dina's GM",
-  "start_url": "./GM/gm-login.html",
+  "id": "./welcome.html",
+  "name": "Dina's Corner",
+  "short_name": "Dina's",
+  "start_url": "./welcome.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
