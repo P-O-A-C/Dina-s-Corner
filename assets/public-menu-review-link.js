@@ -13,17 +13,7 @@
         .select('id,name,city,address,maps_url,is_active')
         .eq('id',locationId).eq('is_active',true).maybeSingle();
       if(error||!data)return;
-      const label=[data.name,data.city,data.address].filter(Boolean).join(' ').toLowerCase();
-      let destination='';
-      if(/(القاهرة الجديدة|التجمع|new cairo|tagamoa|el tagamoa)/i.test(label)){
-        destination='https://maps.app.goo.gl/nn2z339uciJDsrgf7';
-      }else if(/(الاستاد|فرع الاستاد|الفرع الثاني|الفرع الثانى|stadium|شارع الحياة|نادي سيتي|نادى سيتي|city club)/i.test(label)){
-        destination='https://maps.app.goo.gl/JcFqssjbdrKW5hKt5';
-      }else if(/(الفرع الرئيسي|الفرع الرئيسى|الرئيسي|الرئيسى|main branch|على مبارك|علي مبارك|مسجد الرضوان|جيم النعماني)/i.test(label)){
-        destination='https://maps.app.goo.gl/sDsHMSHC5w6CRFqM6';
-      }else{
-        destination=String(data.maps_url||'').trim();
-      }
+      let destination=window.DinaBranchMaps?.resolve(data) || String(data.maps_url||'').trim();
       if(!isHttpsUrl(destination)){
         const query=[data.name,data.address,data.city].filter(Boolean).join(' ');
         if(!query)return;

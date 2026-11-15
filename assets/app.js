@@ -1307,26 +1307,11 @@ async function loadCustomerProfile() {
 }
 
 function dinaKnownBranchMapsUrl(location) {
-  const label = [location?.name, location?.city, location?.address].filter(Boolean).join(' ').toLowerCase();
-  if (/(القاهرة الجديدة|التجمع|new cairo|tagamoa|el tagamoa)/i.test(label)) {
-    return 'https://maps.app.goo.gl/nn2z339uciJDsrgf7';
-  }
-  if (/(الاستاد|فرع الاستاد|الفرع الثاني|الفرع الثانى|stadium|شارع الحياة|نادي سيتي|نادى سيتي|city club)/i.test(label)) {
-    return 'https://maps.app.goo.gl/JcFqssjbdrKW5hKt5';
-  }
-  if (/(الفرع الرئيسي|الفرع الرئيسى|الرئيسي|الرئيسى|main branch|على مبارك|علي مبارك|مسجد الرضوان|جيم النعماني)/i.test(label)) {
-    return 'https://maps.app.goo.gl/sDsHMSHC5w6CRFqM6';
-  }
-  return '';
+  return window.DinaBranchMaps?.knownUrl(location) || "";
 }
 
 function dinaResolvedBranchMapsUrl(location) {
-  const known = dinaKnownBranchMapsUrl(location);
-  if (known) return known;
-  const explicit = String(location?.maps_url || '').trim();
-  if (/^https?:\/\//i.test(explicit)) return explicit;
-  const query = [location?.name, location?.address, location?.city].filter(Boolean).join(' ');
-  return query ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}` : '';
+  return window.DinaBranchMaps?.resolve(location) || String(location?.maps_url || "").trim();
 }
 
 async function loadCustomerLocations() {
@@ -2103,7 +2088,30 @@ async function loadGmLocations() {
       return;
     }
     locations = Array.isArray(data) ? data : [];
+
+    // Persist the three owner-confirmed map links so any consumer of locations.maps_url
+    // receives the same destination, not only pages using the front-end resolver.
+    let correctedMapLinks = 0;
+    let failedMapLinkUpdates = 0;
+    for (const location of locations) {
+      const canonicalUrl = dinaKnownBranchMapsUrl(location);
+      if (!canonicalUrl || String(location.maps_url || '').trim() === canonicalUrl) continue;
+      const { error: mapUpdateError } = await sb.from("locations")
+        .update({ maps_url: canonicalUrl, updated_at: new Date().toISOString() })
+        .eq("id", location.id);
+      if (mapUpdateError) {
+        failedMapLinkUpdates += 1;
+      } else {
+        location.maps_url = canonicalUrl;
+        correctedMapLinks += 1;
+      }
+    }
     render();
+    if (correctedMapLinks) {
+      setMessage(`Updated ${correctedMapLinks} owner-confirmed branch map link(s).`);
+    } else if (failedMapLinkUpdates) {
+      setMessage("Some map links could not be saved to the branch table. The customer pages still use the owner-confirmed links.", true);
+    }
   };
 
   saveButton.onclick = async () => {

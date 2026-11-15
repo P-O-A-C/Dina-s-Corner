@@ -1,10 +1,10 @@
-const CACHE = "dinas-corner-gm-v16-best-sellers-autoplay-2s";
+const CACHE = "dinas-corner-gm-v17-branch-map-canonical";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
   "./GM/gm-menu.html", "./GM/gm-categories.html", "./GM/gm-home-products.html",
   "./GM/gm-locations.html",
-  "./assets/style.css", "./assets/gm-login.css", "./assets/app.js", "./assets/config.js",
+  "./assets/style.css", "./assets/gm-login.css", "./assets/app.js", "./assets/config.js", "./assets/dina-branch-maps.js",
   "./assets/tenant-config.js", "./assets/tenant-branding.js",
   "./assets/dina-corner-logo.png", "./assets/dina-corner-logo-transparent.png", "./assets/dina-corner-icon.png",
   "./assets/dina-corner-icon-192.png", "./assets/dina-corner-icon-512.png",

@@ -23,24 +23,7 @@
   }[char]));
 
   function safeMapsUrl(location) {
-    const branchLabel = [location.name, location.city, location.address].filter(Boolean).join(' ').toLowerCase();
-    // Use the exact branch pins supplied by the owner across every customer-facing branch picker.
-    if (/(القاهرة الجديدة|التجمع|new cairo|tagamoa|el tagamoa)/i.test(branchLabel)) {
-      return 'https://maps.app.goo.gl/nn2z339uciJDsrgf7';
-    }
-    if (/(الاستاد|فرع الاستاد|الفرع الثاني|الفرع الثانى|stadium|شارع الحياة|نادي سيتي|نادى سيتي|city club)/i.test(branchLabel)) {
-      return 'https://maps.app.goo.gl/JcFqssjbdrKW5hKt5';
-    }
-    if (/(الفرع الرئيسي|الفرع الرئيسى|الرئيسي|الرئيسى|main branch|على مبارك|علي مبارك|مسجد الرضوان|جيم النعماني)/i.test(branchLabel)) {
-      return 'https://maps.app.goo.gl/sDsHMSHC5w6CRFqM6';
-    }
-    const supplied = String(location.maps_url || '').trim();
-    try {
-      const url = new URL(supplied);
-      if (url.protocol === 'https:') return url.href;
-    } catch (_) {}
-    const query = [location.name, location.address, location.city].filter(Boolean).join(' ');
-    return query ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query) : '';
+    return window.DinaBranchMaps?.resolve(location) || '';
   }
 
   async function loadBranches() {
