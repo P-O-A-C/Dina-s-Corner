@@ -335,3 +335,98 @@ body.dc-welcome-page{
 
 /* Keep the latest approved best-sellers image height update from the preceding ZIP. */
 .dc-best-sellers--full-frame{height:80%!important}
+
+
+/* 2026-11-15 mobile refinement: transparent logo, single featured menu card,
+   branch stack aligned exactly to the best-sellers photo, and contact footer. */
+.dc-corner-logo{
+  mix-blend-mode:normal!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+.dc-action-grid--menu-only{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  width:min(100%,640px)!important;
+  max-width:640px!important;
+  margin:5px auto 21px!important;
+}
+.dc-action-card--menu{
+  display:grid!important;
+  grid-template-columns:76px minmax(0,1fr) 44px!important;
+  align-items:center!important;
+  min-height:108px!important;
+  padding:13px 17px!important;
+  border:2px solid #e58eaa!important;
+  border-radius:24px!important;
+  background:linear-gradient(135deg,#fffaf9 0%,#f8e1e9 100%)!important;
+  box-shadow:0 9px 22px rgba(126,18,62,.11),inset 0 0 0 3px rgba(255,255,255,.8)!important;
+  text-decoration:none!important;
+}
+.dc-action-card--menu .dc-action-icon{
+  width:68px!important;height:68px!important;border-radius:19px!important;
+  background:linear-gradient(145deg,#fbe1e9,#fff7f5)!important;
+}
+.dc-action-card--menu .dc-action-icon svg{width:54px!important;height:54px!important}
+.dc-action-card--menu .dc-action-copy-wrap{gap:5px!important}
+.dc-action-card--menu .dc-action-title{font-size:clamp(22px,3.2vw,29px)!important;color:#81103e!important}
+.dc-action-card--menu .dc-action-copy{font-size:14px!important;color:#906b79!important}
+.dc-action-card--menu .dc-action-arrow{width:40px!important;height:40px!important;font-size:31px!important}
+.dc-contact-section{margin:16px 0 4px!important}
+.dc-contact-section .dc-section-heading{margin-bottom:11px!important}
+.dc-contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dc-contact-card{
+  display:flex;align-items:center;justify-content:center;gap:9px;min-width:0;
+  padding:12px 10px;border:1.7px solid #e7a0b4;border-radius:19px;
+  background:linear-gradient(145deg,#fffaf9,#fbe7ec);
+  box-shadow:0 7px 17px rgba(126,18,62,.08);
+  color:#81103e;text-decoration:none;-webkit-tap-highlight-color:transparent;
+}
+.dc-contact-icon{display:grid;place-items:center;flex:0 0 31px;width:31px;height:31px;border-radius:50%;background:linear-gradient(135deg,#c94779,#941342);color:#fff;font-size:16px}
+.dc-contact-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.dc-contact-copy small{color:#987481;font-size:10px;font-weight:700;text-align:center}
+.dc-contact-copy strong{color:#81103e;font-size:clamp(13px,2vw,17px);font-weight:900;white-space:nowrap;letter-spacing:.15px}
+.dc-contact-card:focus-visible,.dc-action-card--menu:focus-visible{outline:3px solid #a20f4b;outline-offset:3px}
+@media(max-width:760px){
+  .dc-corner-logo{width:min(165px,42vw)!important;margin:0 auto 6px!important}
+  .dc-welcome-header{background:transparent!important}
+  .dc-action-grid--menu-only{width:100%!important;max-width:100%!important;margin:3px auto 15px!important}
+  .dc-action-card--menu{grid-template-columns:62px minmax(0,1fr) 38px!important;min-height:91px!important;padding:10px 11px!important;border-radius:21px!important}
+  .dc-action-card--menu .dc-action-icon{width:56px!important;height:56px!important;border-radius:16px!important}
+  .dc-action-card--menu .dc-action-icon svg{width:45px!important;height:45px!important}
+  .dc-action-card--menu .dc-action-title{font-size:clamp(20px,5.7vw,25px)!important}
+  .dc-action-card--menu .dc-action-copy{font-size:12px!important}
+  .dc-action-card--menu .dc-action-arrow{width:34px!important;height:34px!important;font-size:27px!important}
+  /* Set a phone-friendly portrait ratio for the photo and let the branch stack
+     stretch to exactly the same height. Four cards share that height evenly. */
+  .dc-visit-layout{align-items:stretch!important}
+  .dc-best-sellers--full-frame{height:auto!important;min-height:0!important;align-self:stretch!important;aspect-ratio:.47 / 1!important}
+  .dc-branches-panel{height:auto!important;min-height:0!important;align-self:stretch!important}
+  .dc-branch-cards{height:100%!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:5px!important}
+  .dc-branch-card{height:auto!important;min-height:0!important;max-height:none!important;padding:4px 4px!important;grid-template-columns:19px minmax(0,1fr) 18px!important;gap:4px!important;border-radius:12px!important;overflow:hidden!important}
+  .dc-branch-card__icon{width:19px!important;height:19px!important;font-size:13px!important}
+  .dc-branch-card__go{width:18px!important;height:18px!important;font-size:10px!important}
+  .dc-branch-card__body{gap:2px!important}
+  .dc-branch-card__body strong{font-size:clamp(8.6px,2.45vw,10.2px)!important;line-height:1.15!important}
+  .dc-branch-card__body small{font-size:clamp(7.8px,2.1vw,8.8px)!important;line-height:1.17!important}
+  .dc-best-sellers--full-frame .dc-best-sellers__track,
+  .dc-best-sellers--full-frame .dc-best-sellers__card,
+  .dc-best-sellers--full-frame .dc-best-sellers__card img{height:100%!important;min-height:0!important}
+  .dc-contact-section{margin:14px 0 4px!important}
+  .dc-contact-grid{gap:7px!important}
+  .dc-contact-card{gap:6px!important;padding:10px 6px!important;border-radius:15px!important}
+  .dc-contact-icon{flex-basis:26px;width:26px;height:26px;font-size:14px}
+  .dc-contact-copy small{font-size:9px}
+  .dc-contact-copy strong{font-size:clamp(11px,3.1vw,14px)!important}
+}
+@media(max-width:360px){
+  .dc-visit-layout{grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr)!important;gap:5px!important}
+  .dc-best-sellers--full-frame{aspect-ratio:.44 / 1!important}
+  .dc-branch-card{grid-template-columns:17px minmax(0,1fr) 16px!important;gap:3px!important}
+  .dc-branch-card__icon{width:17px!important;height:17px!important;font-size:12px!important}
+  .dc-branch-card__go{width:16px!important;height:16px!important;font-size:9px!important}
+  .dc-branch-card__body strong{font-size:8.2px!important}
+  .dc-branch-card__body small{font-size:7.6px!important}
+  .dc-contact-copy strong{font-size:10.5px!important}
+}
