@@ -279,7 +279,7 @@ body.dc-welcome-page{
 
 /* Best Sellers image panel: slightly shorter while keeping the same width and full-bleed image. */
 .dc-best-sellers--full-frame{
- height:88%!important;
+ height:80%!important;
  min-height:0!important;
  align-self:center!important;
 }
