@@ -23,6 +23,11 @@
   }[char]));
 
   function safeMapsUrl(location) {
+    const branchLabel = [location.name, location.city, location.address].filter(Boolean).join(' ');
+    // The Cairo branch pin was supplied directly by the owner; prefer it in the rating branch picker too.
+    if (/القاهرة الجديدة|التجمع الأول|new cairo/i.test(branchLabel)) {
+      return 'https://maps.app.goo.gl/D6hTKnSj9kkkkW1X7';
+    }
     const supplied = String(location.maps_url || '').trim();
     try {
       const url = new URL(supplied);

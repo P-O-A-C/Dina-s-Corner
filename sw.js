@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v11-welcome-poster-match";
+const CACHE = "dinas-corner-gm-v12-compact-branches-talabat-link";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
