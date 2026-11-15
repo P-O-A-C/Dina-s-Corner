@@ -295,17 +295,3 @@ body[data-menu-standalone] .public-menu-review-link { right: auto !important; le
   }
   body[data-menu-standalone] .public-menu-review-link { left: 9px !important; }
 }
-
-
-/* The customer Home page was retired. Keep the optional branch review link clear at the top. */
-body[data-menu-standalone] .public-menu-brand {
-  padding: 54px 22px 25px !important;
-}
-body[data-menu-standalone] .dc-menu-home {
-  display: none !important;
-}
-@media (max-width: 380px) {
-  body[data-menu-standalone] .public-menu-brand {
-    padding: 50px 18px 22px !important;
-  }
-}

@@ -1,14 +1,12 @@
-/* Branch-specific Google Maps location/review link for the standalone public menu.
-   Optional branch context: menu.html?location_id=<locations.id> */
+/* Optional branch-specific Google Maps review link: ?location_id=<branch-id> */
 (function(){
+  'use strict';
   const link=document.getElementById('publicMenuReviewLink');
-  if(!link)return;
+  if(!link||!window.sb)return;
   const params=new URLSearchParams(window.location.search);
   const locationId=(params.get('location_id')||params.get('branch_id')||'').trim();
-  if(!locationId||!window.sb)return;
-  const isHttpsUrl=value=>{
-    try{const u=new URL(String(value||''));return u.protocol==='https:';}catch(_){return false;}
-  };
+  if(!locationId)return;
+  const isHttpsUrl=value=>{try{return new URL(String(value||'')).protocol==='https:';}catch(_){return false;}};
   (async function(){
     try{
       const {data,error}=await window.sb.from('locations')
@@ -24,9 +22,6 @@
       link.href=destination;
       link.hidden=false;
       link.setAttribute('aria-label','رأيك يهمنا - افتح موقع '+String(data.name||'الفرع')+' على Google Maps');
-      link.title='رأيك يهمنا';
-    }catch(_){
-      link.hidden=true;
-    }
+    }catch(_){link.hidden=true;}
   })();
 })();

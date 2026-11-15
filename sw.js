@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v4";
+const CACHE = "dinas-corner-gm-v5-public-menu";
 const SHELL = [
   "./", "./index.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
@@ -9,7 +9,10 @@ const SHELL = [
   "./assets/dina-corner-logo.png", "./assets/dina-corner-icon.png",
   "./assets/dina-corner-icon-192.png", "./assets/dina-corner-icon-512.png",
   "./assets/dina-floral-tl.png", "./assets/dina-floral-tr.png",
-  "./assets/dina-floral-bl.png", "./assets/dina-floral-br.png"
+  "./assets/dina-floral-bl.png", "./assets/dina-floral-br.png",
+  "./menu.html", "./assets/dina-theme.css", "./assets/menu-display.css",
+  "./assets/menu-display.js", "./assets/public-menu-client.js",
+  "./assets/public-menu-premium.css", "./assets/public-menu-review-link.js"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
