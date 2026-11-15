@@ -257,3 +257,22 @@ body.dc-welcome-page{
  .dc-branch-card__body strong{font-size:8px!important}
  .dc-branch-card__body small{font-size:7.4px!important}
 }
+
+/* Subtle height reduction: keep the approved palette, card proportions and layout unchanged. */
+.dc-welcome-header{padding-bottom:16px!important}
+.dc-corner-logo{width:clamp(158px,20vw,212px)!important;margin-bottom:7px!important}
+.dc-welcome-header h1{font-size:clamp(30px,5vw,48px)!important;line-height:1.08!important;margin-top:2px!important;margin-bottom:0!important}
+.dc-welcome-eyebrow{line-height:1.2!important}
+.dc-welcome-rule{margin-top:4px!important;margin-bottom:0!important;line-height:1!important}
+.dc-section-heading{margin-top:0!important;margin-bottom:9px!important;line-height:1.08!important}
+.dc-section-heading>span{padding:7px 15px!important}
+.dc-branches-title{font-size:clamp(18px,2vw,24px)!important;line-height:1.12!important}
+@media(max-width:760px){
+ .dc-welcome-header{padding-bottom:10px!important}
+ .dc-corner-logo{width:min(150px,39vw)!important;margin-bottom:5px!important}
+ .dc-welcome-header h1{font-size:clamp(26px,6.5vw,34px)!important;line-height:1.06!important}
+ .dc-welcome-rule{font-size:21px!important;margin-top:3px!important}
+ .dc-section-heading{margin-bottom:8px!important}
+ .dc-section-heading>span{padding:6px 13px!important}
+ .dc-branches-title{font-size:clamp(13px,3.5vw,17px)!important;margin:1px 0 7px!important}
+}
