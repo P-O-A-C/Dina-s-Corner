@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v7-best-sellers-carousel";
+const CACHE = "dinas-corner-gm-v8-integrated-welcome-best-sellers";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",

@@ -21,7 +21,12 @@
   }
   function render(){
     const visible=items.filter(item=>item&&item.image_url);
-    if(!visible.length){section.hidden=true;return;}
+    if(!visible.length){
+      section.hidden=false;
+      track.innerHTML='<div class="dc-best-sellers__empty">قريبًا — اختيارات Dina’s Corner المميزة</div>';
+      updateArrows();
+      return;
+    }
     track.innerHTML=visible.map((item,index)=>'<button class="dc-best-sellers__card" type="button" data-best-index="'+index+'" aria-label="View '+esc(item.image_name||('Best seller '+(index+1)))+' photo"><img src="'+esc(item.image_url)+'" alt="'+esc(item.image_name||'Dina’s Corner best seller')+'" loading="'+(index<2?'eager':'lazy')+'" decoding="async"><strong>'+esc(item.image_name||'Customer favourite')+'</strong></button>').join('');
     track.querySelectorAll('[data-best-index]').forEach(button=>button.addEventListener('click',()=>{
       const item=visible[Number(button.dataset.bestIndex)];if(item)openPreview(item);
@@ -42,7 +47,9 @@
       if(error)throw error;
       items=Array.isArray(data)?data:[];render();
     }catch(error){
-      section.hidden=true;
+      section.hidden=false;
+      track.innerHTML='<div class="dc-best-sellers__empty">الصور غير متاحة حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</div>';
+      updateArrows();
       console.warn('Welcome Best Sellers could not be loaded. Check the public read policy for home_featured_products.',error);
     }
   }

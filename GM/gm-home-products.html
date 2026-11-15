@@ -47,10 +47,10 @@
     const id=$('bestSellerMenuItem').value;
     const item=menuItems.find(row=>String(row.id)===String(id));
     if(!item){message('Choose an active menu product with a photo first.',true);return;}
-    if(rows.some(row=>String(row.image_url)===String(item.image_url)&&String(row.image_name||'')===String(item.name))){message('This product photo is already in Best Sellers.');return;}
+    if(rows.some(row=>String(row.image_url||'')===String(item.image_url||''))){message('This product is already in Best Sellers.');return;}
     const button=$('addMenuProductToBestSellers');button.disabled=true;
     try{
-      const {error}=await sb.from(TABLE).insert({image_url:item.image_url,storage_path:'',image_name:item.name,sort_order:rows.length+1,is_active:true,created_by:profile.id,updated_at:new Date().toISOString()});
+      const {error}=await sb.from(TABLE).insert({image_url:item.image_url,storage_path:null,image_name:item.name,sort_order:rows.length+1,is_active:true,created_by:profile.id,updated_at:new Date().toISOString()});
       if(error)throw error;
       await loadRows();$('bestSellerMenuItem').value='';message(item.name+' added to Best Sellers and published on Welcome.');
     }catch(error){message(error?.message||'Could not add this menu product.',true);}
