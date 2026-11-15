@@ -565,3 +565,40 @@ body.dc-welcome-page{
   .dc-contact-card{min-height:76px!important;padding:16px 20px!important;border-radius:22px!important}
   .dc-contact-copy strong{font-size:18px!important}
 }
+
+/* Desktop photo/branch alignment: make the product image frame exactly match
+   the full four-card branch stack. Kept outside the mobile breakpoint. */
+@media (min-width: 761px) {
+  .dc-visit-layout {
+    align-items: start !important;
+  }
+  .dc-branches-panel {
+    height: 325px !important;
+    min-height: 325px !important;
+    max-height: 325px !important;
+    align-self: start !important;
+  }
+  .dc-branch-cards {
+    display: grid !important;
+    height: 325px !important;
+    grid-template-rows: repeat(4, 76px) !important;
+    gap: 7px !important;
+  }
+  .dc-branch-card {
+    height: 76px !important;
+    min-height: 76px !important;
+    max-height: 76px !important;
+  }
+  .dc-best-sellers--full-frame {
+    height: 325px !important;
+    min-height: 325px !important;
+    max-height: 325px !important;
+    align-self: start !important;
+  }
+  .dc-best-sellers--full-frame .dc-best-sellers__track,
+  .dc-best-sellers--full-frame .dc-best-sellers__card,
+  .dc-best-sellers--full-frame .dc-best-sellers__card img {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+}
