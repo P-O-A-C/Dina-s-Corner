@@ -134,3 +134,19 @@
  .dc-talabat-scooter{font-size:38px}
  .dc-payment-number{font-size:9.5px}
 }
+
+
+/* Best Sellers replaces the former shop photo: one uninterrupted photo fills the existing large panel. */
+.dc-best-sellers--full-frame{display:flex!important;min-width:0;min-height:100%;height:100%;padding:0!important;overflow:hidden;border:2px solid #e6a0b4;border-radius:25px;background:linear-gradient(155deg,#fffdfc 0%,#ffeff1 100%);box-shadow:0 8px 22px rgba(130,39,70,.09),inset 0 0 0 3px rgba(255,255,255,.75)}
+.dc-best-sellers--full-frame .dc-best-sellers__track{display:flex;flex:1 1 auto;align-items:stretch;gap:0;width:100%;height:100%;min-height:0;padding:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x pan-y}
+.dc-best-sellers--full-frame .dc-best-sellers__track::-webkit-scrollbar{display:none}
+.dc-best-sellers--full-frame .dc-best-sellers__card{display:block;flex:0 0 100%;width:100%;height:100%;min-height:0;margin:0;padding:0;overflow:hidden;border:0;border-radius:0;background:transparent;box-shadow:none;scroll-snap-align:start;cursor:zoom-in}
+.dc-best-sellers--full-frame .dc-best-sellers__card img{display:block;width:100%;height:100%;min-height:100%;aspect-ratio:auto;object-fit:cover;border:0;border-radius:0;background:transparent}
+.dc-best-sellers--full-frame .dc-best-sellers__empty{display:block;flex:1;min-height:100%;padding:0;border:0;border-radius:0;background:transparent}
+.dc-best-sellers--full-frame .dc-best-sellers__empty:empty{display:none}
+@media(max-width:760px){
+ .dc-best-sellers--full-frame{padding:0!important;border-radius:19px}
+ .dc-best-sellers--full-frame .dc-best-sellers__track{min-height:100%;height:100%;padding:0;gap:0}
+ .dc-best-sellers--full-frame .dc-best-sellers__card{flex:0 0 100%;height:100%;min-height:100%;padding:0;border:0;border-radius:0;box-shadow:none}
+ .dc-best-sellers--full-frame .dc-best-sellers__card img{width:100%;height:100%;min-height:100%;object-fit:cover;border-radius:0}
+}

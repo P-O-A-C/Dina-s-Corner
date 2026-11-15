@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v9-welcome-approved-layout";
+const CACHE = "dinas-corner-gm-v10-best-seller-full-frame";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",

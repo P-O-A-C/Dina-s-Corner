@@ -8,14 +8,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Dina's Corner">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="manifest" href="manifest.webmanifest?v=20261115-welcome-approved-layout-v4">
+<link rel="manifest" href="manifest.webmanifest?v=20261115-best-seller-full-frame-v5">
 <link rel="apple-touch-icon" href="assets/dina-corner-icon-192.png">
 <meta name="color-scheme" content="light">
 <meta name="description" content="Dina's Corner — explore our menu, discover customer favourites and find our branches.">
 <title>Dina's Corner | Welcome</title>
-<link rel="stylesheet" href="assets/dina-welcome.css?v=20261115-welcome-approved-layout-v4">
+<link rel="stylesheet" href="assets/dina-welcome.css?v=20261115-best-seller-full-frame-v5">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
-<script src="assets/tenant-config.js?v=20261115-welcome-approved-layout-v4"></script>
+<script src="assets/tenant-config.js?v=20261115-best-seller-full-frame-v5"></script>
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -46,20 +46,10 @@
   <section class="dc-visit-section" aria-labelledby="visitTitle">
     <h2 class="dc-section-heading" id="visitTitle"><span>زورونا في فروعنا</span></h2>
     <div class="dc-visit-layout">
-      <section class="dc-best-sellers" id="dcBestSellers" aria-labelledby="dcBestSellersTitle">
-        <header class="dc-best-sellers__header">
-          <p class="dc-best-sellers__eyebrow">CUSTOMER FAVOURITES</p>
-          <h2 id="dcBestSellersTitle">Our Best Sellers</h2>
-          <p>اكتشفوا المنتجات الأكثر حبًا</p>
-        </header>
-        <div class="dc-best-sellers__carousel">
-          <button class="dc-best-sellers__arrow" id="dcBestSellersPrev" type="button" aria-label="Previous products">‹</button>
-          <div class="dc-best-sellers__track" id="dcBestSellersTrack" tabindex="0" role="region" aria-label="Best-selling products. Swipe left or right to explore.">
-            <div class="dc-best-sellers__empty">اكتشفوا اختياراتنا المميزة</div>
-          </div>
-          <button class="dc-best-sellers__arrow" id="dcBestSellersNext" type="button" aria-label="Next products">›</button>
+      <section class="dc-best-sellers dc-best-sellers--full-frame" id="dcBestSellers" aria-label="Dina’s Corner best-selling products">
+        <div class="dc-best-sellers__track" id="dcBestSellersTrack" tabindex="0" role="region" aria-label="Best-selling products. Swipe left or right to explore.">
+          <div class="dc-best-sellers__empty" aria-live="polite"></div>
         </div>
-        <p class="dc-best-sellers__hint">اسحب الصور يمينًا ويسارًا لمشاهدة المزيد</p>
       </section>
 
       <section class="dc-branches-panel" aria-labelledby="branchesTitle">
@@ -102,7 +92,7 @@
 <div class="dc-best-lightbox" id="dcBestSellersLightbox" hidden role="dialog" aria-modal="true" aria-label="Product photo preview">
   <button class="dc-best-lightbox__close" id="dcBestSellersLightboxClose" type="button" aria-label="Close product photo">×</button>
   <img id="dcBestSellersLightboxImage" alt="">
-  <p id="dcBestSellersLightboxName"></p>
+
 </div>
 
 <div class="dc-dialog-backdrop" id="branchDialog" hidden>
@@ -124,9 +114,9 @@ async function copyPaymentNumber(number){
   toast.classList.add('show');clearTimeout(window.copyToastTimer);window.copyToastTimer=setTimeout(()=>toast.classList.remove('show'),2200);
 }
 </script>
-<script src="assets/config.js?v=20261115-welcome-approved-layout-v4"></script>
-<script src="assets/app.js?v=20261115-welcome-approved-layout-v4"></script>
-<script src="assets/dina-welcome.js?v=20261115-welcome-approved-layout-v4"></script>
-<script src="assets/dina-best-sellers.js?v=20261115-welcome-approved-layout-v4"></script>
+<script src="assets/config.js?v=20261115-best-seller-full-frame-v5"></script>
+<script src="assets/app.js?v=20261115-best-seller-full-frame-v5"></script>
+<script src="assets/dina-welcome.js?v=20261115-best-seller-full-frame-v5"></script>
+<script src="assets/dina-best-sellers.js?v=20261115-best-seller-full-frame-v5"></script>
 </body>
 </html>
