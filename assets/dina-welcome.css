@@ -430,3 +430,31 @@ body.dc-welcome-page{
   .dc-branch-card__body small{font-size:7.6px!important}
   .dc-contact-copy strong{font-size:10.5px!important}
 }
+
+/* Header refinement: let the logo sit directly on the page background and restore the corner florals. */
+.dc-welcome-shell{
+  background-image:
+    url("dina-floral-tl.png"),
+    url("dina-floral-tr.png"),
+    linear-gradient(180deg,#fff8f7 0%,#ffeff2 100%)!important;
+  background-repeat:no-repeat,no-repeat,no-repeat!important;
+  background-position:left top,right top,center!important;
+  background-size:clamp(100px,19vw,190px) auto,clamp(100px,19vw,190px) auto,100% 100%!important;
+}
+.dc-floral--tl,.dc-floral--tr{display:none!important}
+.dc-corner-logo{
+  display:block!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  mix-blend-mode:normal!important;
+}
+.dc-welcome-header{background:transparent!important}
+@media(max-width:760px){
+  .dc-welcome-shell{
+    background-size:clamp(92px,24vw,126px) auto,clamp(92px,24vw,126px) auto,100% 100%!important;
+    background-position:left top,right top,center!important;
+  }
+  .dc-corner-logo{width:min(165px,42vw)!important;margin:0 auto 6px!important}
+}
