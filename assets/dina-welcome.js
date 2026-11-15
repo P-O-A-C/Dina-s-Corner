@@ -23,10 +23,16 @@
   }[char]));
 
   function safeMapsUrl(location) {
-    const branchLabel = [location.name, location.city, location.address].filter(Boolean).join(' ');
-    // The Cairo branch pin was supplied directly by the owner; prefer it in the rating branch picker too.
-    if (/القاهرة الجديدة|التجمع الأول|new cairo/i.test(branchLabel)) {
-      return 'https://maps.app.goo.gl/D6hTKnSj9kkkkW1X7';
+    const branchLabel = [location.name, location.city, location.address].filter(Boolean).join(' ').toLowerCase();
+    // Use the exact branch pins supplied by the owner across every customer-facing branch picker.
+    if (/(القاهرة الجديدة|التجمع|new cairo|tagamoa|el tagamoa)/i.test(branchLabel)) {
+      return 'https://maps.app.goo.gl/nn2z339uciJDsrgf7';
+    }
+    if (/(الاستاد|فرع الاستاد|الفرع الثاني|الفرع الثانى|stadium|شارع الحياة|نادي سيتي|نادى سيتي|city club)/i.test(branchLabel)) {
+      return 'https://maps.app.goo.gl/JcFqssjbdrKW5hKt5';
+    }
+    if (/(الفرع الرئيسي|الفرع الرئيسى|الرئيسي|الرئيسى|main branch|على مبارك|علي مبارك|مسجد الرضوان|جيم النعماني)/i.test(branchLabel)) {
+      return 'https://maps.app.goo.gl/sDsHMSHC5w6CRFqM6';
     }
     const supplied = String(location.maps_url || '').trim();
     try {

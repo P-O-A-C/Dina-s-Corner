@@ -1306,6 +1306,29 @@ async function loadCustomerProfile() {
   }
 }
 
+function dinaKnownBranchMapsUrl(location) {
+  const label = [location?.name, location?.city, location?.address].filter(Boolean).join(' ').toLowerCase();
+  if (/(القاهرة الجديدة|التجمع|new cairo|tagamoa|el tagamoa)/i.test(label)) {
+    return 'https://maps.app.goo.gl/nn2z339uciJDsrgf7';
+  }
+  if (/(الاستاد|فرع الاستاد|الفرع الثاني|الفرع الثانى|stadium|شارع الحياة|نادي سيتي|نادى سيتي|city club)/i.test(label)) {
+    return 'https://maps.app.goo.gl/JcFqssjbdrKW5hKt5';
+  }
+  if (/(الفرع الرئيسي|الفرع الرئيسى|الرئيسي|الرئيسى|main branch|على مبارك|علي مبارك|مسجد الرضوان|جيم النعماني)/i.test(label)) {
+    return 'https://maps.app.goo.gl/sDsHMSHC5w6CRFqM6';
+  }
+  return '';
+}
+
+function dinaResolvedBranchMapsUrl(location) {
+  const known = dinaKnownBranchMapsUrl(location);
+  if (known) return known;
+  const explicit = String(location?.maps_url || '').trim();
+  if (/^https?:\/\//i.test(explicit)) return explicit;
+  const query = [location?.name, location?.address, location?.city].filter(Boolean).join(' ');
+  return query ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}` : '';
+}
+
 async function loadCustomerLocations() {
   const profile = await guardRole(["customer"]);
   if (!profile) return;
@@ -1327,11 +1350,7 @@ async function loadCustomerLocations() {
   }
   box.innerHTML = rows.map(location => {
     const address = [location.address, location.city].filter(Boolean).join(", ");
-    const search = [location.name, address].filter(Boolean).join(" ");
-    let mapsUrl = String(location.maps_url || "").trim();
-    if (!/^https?:\/\//i.test(mapsUrl)) {
-      mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(search)}`;
-    }
+    const mapsUrl = dinaResolvedBranchMapsUrl(location);
     const details = [address, location.phone ? `Phone: ${location.phone}` : ""].filter(Boolean).join(" · ");
     return `<a class="customer-branch" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer"><span class="customer-branch-copy"><strong class="customer-branch-name">${esc(location.name || "Branch")}</strong>${details ? `<small class="customer-branch-meta">${esc(details)}</small>` : ""}</span><span class="customer-branch-map">OPEN MAP →</span></a>`;
   }).join("");
@@ -2012,12 +2031,7 @@ async function loadGmLocations() {
     if (cancelButton) cancelButton.hidden = true;
     setMessage("");
   };
-  const mapLinkFor = location => {
-    const explicit = String(location.maps_url || "").trim();
-    if (/^https?:\/\//i.test(explicit)) return explicit;
-    const query = [location.name, location.address, location.city].filter(Boolean).join(" ");
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-  };
+  const mapLinkFor = location => dinaResolvedBranchMapsUrl(location);
   const render = () => {
     if (!locations.length) {
       box.innerHTML = '<div class="branch-empty">No branches yet. Add your first real branch above.</div>';
@@ -2036,7 +2050,7 @@ async function loadGmLocations() {
       cityInput.value = location.city || "";
       addressInput.value = location.address || "";
       phoneInput.value = location.phone || "";
-      mapsInput.value = location.maps_url || "";
+      mapsInput.value = dinaResolvedBranchMapsUrl(location) || location.maps_url || "";
       activeInput.checked = location.is_active !== false;
       if (formTitle) formTitle.textContent = "Edit Branch Location";
       saveButton.textContent = "SAVE CHANGES";

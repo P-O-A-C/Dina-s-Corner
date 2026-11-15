@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v13-mobile-menu-contact";
+const CACHE = "dinas-corner-gm-v14-branch-map-links";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
