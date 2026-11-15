@@ -6,10 +6,16 @@
   if(!section||!track)return;
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
   let items=[];
+  function customerLabel(item){
+    const raw=String(item?.image_name||'').trim();
+    // Uploaded filenames are internal asset names, not customer-facing product names.
+    if(!raw||/\.(jpe?g|png|webp|avif|gif)$/i.test(raw)||/[\\/]/.test(raw))return 'من اختياراتنا المميزة';
+    return raw;
+  }
   function openPreview(item){
     if(!lightbox)return;
-    lightboxImage.src=item.image_url;lightboxImage.alt=item.image_name||'Dina’s Corner best seller';
-    lightboxName.textContent=item.image_name||'';lightbox.hidden=false;document.body.style.overflow='hidden';
+    lightboxImage.src=item.image_url;lightboxImage.alt=customerLabel(item);
+    lightboxName.textContent=customerLabel(item);lightbox.hidden=false;document.body.style.overflow='hidden';
     $('dcBestSellersLightboxClose')?.focus();
   }
   function closePreview(){if(!lightbox)return;lightbox.hidden=true;lightboxImage.removeAttribute('src');document.body.style.overflow='';}
@@ -27,7 +33,7 @@
       updateArrows();
       return;
     }
-    track.innerHTML=visible.map((item,index)=>'<button class="dc-best-sellers__card" type="button" data-best-index="'+index+'" aria-label="View '+esc(item.image_name||('Best seller '+(index+1)))+' photo"><img src="'+esc(item.image_url)+'" alt="'+esc(item.image_name||'Dina’s Corner best seller')+'" loading="'+(index<2?'eager':'lazy')+'" decoding="async"><strong>'+esc(item.image_name||'Customer favourite')+'</strong></button>').join('');
+    track.innerHTML=visible.map((item,index)=>'<button class="dc-best-sellers__card" type="button" data-best-index="'+index+'" aria-label="View best-selling product photo '+(index+1)+'"><img src="'+esc(item.image_url)+'" alt="Dina’s Corner featured product" loading="'+(index<2?'eager':'lazy')+'" decoding="async"><strong>'+esc(customerLabel(item))+'</strong></button>').join('');
     track.querySelectorAll('[data-best-index]').forEach(button=>button.addEventListener('click',()=>{
       const item=visible[Number(button.dataset.bestIndex)];if(item)openPreview(item);
     }));
