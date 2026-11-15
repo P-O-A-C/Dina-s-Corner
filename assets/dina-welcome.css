@@ -150,3 +150,110 @@
  .dc-best-sellers--full-frame .dc-best-sellers__card{flex:0 0 100%;height:100%;min-height:100%;padding:0;border:0;border-radius:0;box-shadow:none}
  .dc-best-sellers--full-frame .dc-best-sellers__card img{width:100%;height:100%;min-height:100%;object-fit:cover;border-radius:0}
 }
+
+
+/* Dina's Corner — final poster-match calibration (colors, proportions, full-width shell). */
+:root{
+ --dc-wine:#a20f4b;
+ --dc-wine-deep:#7e123e;
+ --dc-wine-soft:#b83d70;
+ --dc-pink:#e99ab2;
+ --dc-pink-pale:#f8dce6;
+ --dc-cream:#fff0f3;
+ --dc-paper:#fffaf9;
+ --dc-ink:#5d2038;
+ --dc-muted:#9a6d7d;
+ --dc-line:#e9a4b8;
+ --dc-shadow:0 10px 28px rgba(126,18,62,.12);
+}
+html{background:#f8dce6!important}
+body.dc-welcome-page{
+ width:100%!important;min-width:0!important;min-height:100dvh!important;
+ padding:8px 8px 18px!important;color:var(--dc-ink)!important;
+ background:linear-gradient(180deg,#f9e2e9 0%,#f7dce5 55%,#f9e5eb 100%)!important;
+}
+.dc-welcome-shell{
+ display:block!important;width:min(100%,1000px)!important;max-width:1000px!important;
+ margin:0 auto!important;padding:22px clamp(12px,2.3vw,25px) 24px!important;
+ border:1.5px solid #e7a0b4!important;border-radius:28px!important;
+ background:linear-gradient(180deg,#fff8f7 0%,#ffeff2 100%)!important;
+ box-shadow:0 12px 32px rgba(126,18,62,.12)!important;
+}
+.dc-welcome-header{padding:4px 8px 20px!important}
+.dc-corner-logo{width:clamp(170px,22vw,230px)!important;max-height:none!important;margin:0 auto 9px!important}
+.dc-welcome-eyebrow{color:#9f174c!important;letter-spacing:2px!important}
+.dc-welcome-rule{color:#c43d72!important}
+.dc-welcome-rule:before,.dc-welcome-rule:after{background:linear-gradient(90deg,transparent,#a20f4b)!important}
+.dc-welcome-header h1{color:#86113f!important;font-size:clamp(32px,5.3vw,52px)!important}
+.dc-action-grid{max-width:900px!important;gap:16px!important;margin:4px auto 22px!important}
+.dc-action-card{
+ border:2px solid #e58eaa!important;border-radius:27px!important;
+ background:linear-gradient(145deg,#fffaf9 0%,#fbe5eb 100%)!important;
+ box-shadow:0 8px 20px rgba(126,18,62,.12),inset 0 0 0 3px rgba(255,255,255,.78)!important;
+}
+.dc-action-title{color:#81103e!important}
+.dc-action-arrow{background:linear-gradient(135deg,#c84778,#8e123f)!important}
+.dc-section-heading>span{background:linear-gradient(135deg,#c94779,#941342)!important;border-color:#d8a35f!important;color:#fff!important}
+.dc-section-heading:before,.dc-section-heading:after{background:linear-gradient(90deg,transparent,#c99a62)!important}
+.dc-visit-layout{direction:ltr!important;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)!important;gap:14px!important;align-items:stretch!important}
+.dc-best-sellers,.dc-branches-panel{
+ border:2px solid #e7a0b4!important;border-radius:25px!important;
+ background:linear-gradient(155deg,#fffaf9 0%,#fce8ed 100%)!important;
+ box-shadow:0 8px 22px rgba(126,18,62,.10),inset 0 0 0 3px rgba(255,255,255,.76)!important;
+}
+.dc-best-sellers--full-frame{padding:0!important;overflow:hidden!important}
+.dc-best-sellers--full-frame .dc-best-sellers__track{width:100%!important;height:100%!important;min-height:0!important;padding:0!important;gap:0!important}
+.dc-best-sellers--full-frame .dc-best-sellers__card{flex:0 0 100%!important;width:100%!important;height:100%!important;min-height:100%!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.dc-best-sellers--full-frame .dc-best-sellers__card img{width:100%!important;height:100%!important;min-height:100%!important;object-fit:cover!important;border:0!important;border-radius:0!important}
+.dc-branches-title{color:#81103e!important}
+.dc-branch-cards{gap:9px!important}
+.dc-branch-card{
+ height:clamp(94px,9.8vw,112px)!important;min-height:clamp(94px,9.8vw,112px)!important;
+ border:1.5px solid #e6a0b4!important;border-radius:21px!important;
+ background:linear-gradient(120deg,#fffaf9,#fbe8ed)!important;
+ color:#79123d!important;box-shadow:0 4px 12px rgba(126,18,62,.07)!important;
+}
+.dc-branch-card__icon{background:#f6d7e2!important;color:#a20f4b!important}
+.dc-branch-card__go{background:#a20f4b!important}
+.dc-branch-card__body strong{color:#78123c!important}
+.dc-branch-card__body small{color:#76505f!important}
+.dc-talabat-card,.dc-payment-card,.dc-instagram-link{
+ border:1.7px solid #e7a0b4!important;
+ background:linear-gradient(145deg,#fffaf9,#fbe7ec)!important;
+ box-shadow:0 7px 17px rgba(126,18,62,.09)!important;
+}
+.dc-talabat-copy>strong{background:linear-gradient(135deg,#c94779,#941342)!important}
+.dc-talabat-cities span{border-color:#e6a0b4!important;color:#81103e!important}
+.dc-payment-number,.dc-instagram-link{color:#81103e!important}
+.dc-best-lightbox{background:rgba(55,10,29,.94)!important}
+@media(max-width:760px){
+ body.dc-welcome-page{padding:4px 4px 14px!important;background:linear-gradient(180deg,#f9e2e9,#f7dce5)!important}
+ .dc-welcome-shell{width:100%!important;max-width:none!important;padding:14px 9px 17px!important;border-radius:23px!important}
+ .dc-welcome-header{padding:0 4px 13px!important}
+ .dc-corner-logo{width:min(165px,42vw)!important;margin-bottom:7px!important}
+ .dc-welcome-header h1{font-size:clamp(28px,7vw,37px)!important}
+ .dc-action-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;margin:3px auto 14px!important}
+ .dc-action-card{min-height:145px!important;padding:8px 5px!important;border-radius:20px!important}
+ .dc-visit-section{margin:10px 0 14px!important}
+ .dc-section-heading{margin-bottom:10px!important}
+ .dc-visit-layout{direction:ltr!important;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)!important;gap:7px!important;align-items:stretch!important}
+ .dc-best-sellers,.dc-branches-panel{padding:8px 6px!important;border-radius:17px!important}
+ .dc-best-sellers--full-frame{padding:0!important}
+ .dc-branches-title{font-size:clamp(14px,3.8vw,18px)!important;margin:2px 0 8px!important}
+ .dc-branch-cards{gap:6px!important}
+ .dc-branch-card{height:clamp(78px,20vw,96px)!important;min-height:clamp(78px,20vw,96px)!important;grid-template-columns:20px minmax(0,1fr) 19px!important;gap:4px!important;padding:6px 4px!important;border-radius:13px!important}
+ .dc-branch-card__icon{width:20px!important;height:20px!important;font-size:14px!important}
+ .dc-branch-card__go{width:19px!important;height:19px!important;font-size:10px!important}
+ .dc-branch-card__body strong{font-size:clamp(8.5px,2.6vw,11px)!important}
+ .dc-branch-card__body small{font-size:clamp(7.8px,2.2vw,9.5px)!important;line-height:1.28!important}
+ .dc-best-sellers--full-frame .dc-best-sellers__track{min-height:100%!important;height:100%!important}
+ .dc-best-sellers--full-frame .dc-best-sellers__card{height:100%!important;min-height:100%!important}
+ .dc-best-sellers--full-frame .dc-best-sellers__card img{height:100%!important;min-height:100%!important;object-fit:cover!important}
+ .dc-talabat-card{grid-template-columns:88px minmax(0,1fr)!important;gap:6px!important;margin:12px 0!important;padding:9px 7px!important}
+}
+@media(max-width:360px){
+ .dc-visit-layout{grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr)!important;gap:5px!important}
+ .dc-branch-card{grid-template-columns:18px minmax(0,1fr) 17px!important;gap:3px!important}
+ .dc-branch-card__body strong{font-size:8px!important}
+ .dc-branch-card__body small{font-size:7.4px!important}
+}
