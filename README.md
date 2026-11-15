@@ -35,3 +35,8 @@ cd Dina-s-Corner
 ## License
 
 This project does not currently specify a license.
+
+
+## Welcome Best Sellers
+
+The Welcome page reads active rows from `public.home_featured_products` and displays them in a swipeable carousel. GM manages this list from `GM/gm-home-products.html`, which supports image uploads and selecting active menu products that already have an image. Run `SUPABASE-BEST-SELLERS-SETUP.sql` once in the Dina's Corner Supabase project to configure public active-photo reads and GM-only write access.

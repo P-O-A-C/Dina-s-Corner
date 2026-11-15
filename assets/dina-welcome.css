@@ -370,3 +370,63 @@ body.dc-welcome-page {
     object-position: center;
   }
 }
+
+
+/* Best Sellers carousel — appended after the approved Welcome artwork. */
+.dc-best-sellers{
+  width:min(100%,640px);margin:18px auto 28px;padding:20px 14px 16px;
+  border:1px solid #e7aab5;border-radius:25px;
+  background:linear-gradient(155deg,rgba(255,253,251,.98),rgba(255,237,237,.96));
+  box-shadow:0 10px 26px rgba(111,31,55,.09),inset 0 0 0 3px rgba(255,255,255,.72);
+  color:#76213d;line-height:normal;overflow:hidden
+}
+.dc-best-sellers[hidden]{display:none!important}
+.dc-best-sellers__header{text-align:center;margin:0 0 14px}
+.dc-best-sellers__eyebrow{margin:0 0 4px;color:#b64f6c;font-size:9px;font-weight:900;letter-spacing:2px}
+.dc-best-sellers__header h2{margin:0;color:#76213d;font:700 clamp(23px,5vw,29px)/1.15 Georgia,"Times New Roman",serif}
+.dc-best-sellers__header>p:last-child{margin:6px 0 0;color:#947b80;font-size:11px}
+.dc-best-sellers__carousel{display:grid;grid-template-columns:30px minmax(0,1fr) 30px;align-items:center;gap:7px}
+.dc-best-sellers__track{
+  display:flex;gap:12px;min-width:0;overflow-x:auto;overflow-y:hidden;padding:3px 2px 12px;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x pan-y
+}
+.dc-best-sellers__track::-webkit-scrollbar{display:none}
+.dc-best-sellers__card{
+  display:flex;flex:0 0 min(78%,245px);min-width:0;flex-direction:column;align-items:stretch;gap:8px;
+  padding:8px;border:1px solid #edc4ca;border-radius:18px;background:#fff;
+  color:#76213d;text-align:center;box-shadow:0 5px 14px rgba(111,31,55,.07);
+  cursor:zoom-in;scroll-snap-align:center;font:inherit
+}
+.dc-best-sellers__card img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#fff0f1}
+.dc-best-sellers__card strong{display:block;min-height:18px;font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+.dc-best-sellers__arrow{
+  display:grid;place-items:center;width:30px;height:38px;padding:0;border:1px solid #e7b4c0;border-radius:20px;
+  background:linear-gradient(135deg,#c45a79,#812640);color:#fff;font:28px/1 Georgia,serif;cursor:pointer
+}
+.dc-best-sellers__arrow:disabled{opacity:.3;cursor:default}
+.dc-best-sellers__hint{margin:0;color:#a1848b;text-align:center;font-size:10px}
+.dc-best-lightbox{
+  position:fixed;z-index:10050;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;
+  padding:54px 16px 24px;background:rgba(42,17,27,.92);line-height:normal
+}
+.dc-best-lightbox[hidden]{display:none!important}
+.dc-best-lightbox img{display:block;max-width:min(100%,680px);max-height:78dvh;object-fit:contain;border-radius:16px;background:#fff}
+.dc-best-lightbox p{margin:0;color:#fff;font-size:14px;font-weight:700;text-align:center}
+.dc-best-lightbox__close{
+  position:absolute;top:max(14px,env(safe-area-inset-top));right:16px;width:40px;height:40px;border:1px solid #ffffff80;
+  border-radius:50%;background:#ffffff18;color:#fff;font-size:28px;line-height:1;cursor:pointer
+}
+/* Keep the approved first screen intact, but allow visitors to scroll down to the photo carousel. */
+@media(max-width:520px){
+  html,html body.dc-artwork-mode{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important}
+  body.dc-artwork-mode{height:auto!important;min-height:100dvh!important}
+  .dc-artwork-page{height:100dvh!important;min-height:100dvh!important;overflow:hidden!important}
+  .dc-artwork-image{height:100%!important;width:100%!important;object-fit:fill!important}
+  .dc-best-sellers{width:calc(100% - 16px);margin:14px auto 22px;padding:17px 9px 13px;border-radius:20px}
+  .dc-best-sellers__carousel{grid-template-columns:25px minmax(0,1fr) 25px;gap:5px}
+  .dc-best-sellers__arrow{width:25px;height:34px;font-size:24px}
+  .dc-best-sellers__card{flex-basis:78%;max-width:235px;padding:7px;border-radius:15px}
+  .dc-best-sellers__card img{border-radius:10px}
+}
+@media(prefers-reduced-motion:reduce){.dc-best-sellers__track{scroll-behavior:auto}}

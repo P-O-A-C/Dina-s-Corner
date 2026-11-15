@@ -162,7 +162,7 @@ body.gm-settings-page::after{
 }
 .gm-settings-grid{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:clamp(14px,2.2vw,28px);
 }
 .gm-settings-tile{
@@ -208,6 +208,7 @@ body.gm-settings-page::after{
   overflow-wrap:anywhere;
 }
 @media(max-width:700px){
+  .gm-settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .gm-settings-logo-wrap{min-height:185px;padding-bottom:36px}
   .gm-settings-profile-row{gap:16px;flex-wrap:wrap;margin-bottom:24px}
   .gm-settings-avatar{width:112px;height:112px}
@@ -230,7 +231,6 @@ body.gm-settings-page::after{
   .gm-settings-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
   .gm-settings-tile{min-height:132px;padding:15px 8px}
   .gm-settings-tile strong{font-size:17px}
-  .gm-settings-tile:last-child{grid-column:1 / -1;min-height:118px}
 }
 </style>
 </head>
@@ -271,6 +271,10 @@ body.gm-settings-page::after{
     <a class="gm-settings-tile" href="gm-locations.html">
       <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M39 20c0 11-15 24-15 24S9 31 9 20a15 15 0 1 1 30 0Z"/><circle cx="24" cy="20" r="5"/></svg>
       <strong>Branch Locations</strong>
+    </a>
+    <a class="gm-settings-tile" href="gm-home-products.html">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="8" width="36" height="32" rx="4"/><path d="M10 32l9-10 7 7 5-6 7 9"/><circle cx="17" cy="17" r="3"/></svg>
+      <strong>Best Sellers</strong>
     </a>
   </nav>
 </main>

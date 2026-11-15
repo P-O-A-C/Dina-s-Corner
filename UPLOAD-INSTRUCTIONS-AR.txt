@@ -1,20 +1,25 @@
-إصلاح زر Back to Home واستعادة صفحة Home العامة
+تحديث Best Sellers في صفحة Welcome — Dina's Corner
 
-ارفع الملفات إلى مستودع Dina-s-Corner مع الحفاظ على المسارات:
+1) ارفع الملفات التالية إلى مستودع Dina-s-Corner مع الحفاظ على المسارات:
+   welcome.html
+   sw.js
+   GM/gm-dashboard.html
+   GM/gm-home-products.html
+   assets/dina-welcome.css
+   assets/dina-best-sellers.js
 
-1) menu.html                  -> جذر المستودع (استبدال الملف الحالي)
-2) welcome.html               -> جذر المستودع (ملف جديد)
-3) manifest.webmanifest       -> جذر المستودع (استبدال/إضافة)
-4) assets/dina-welcome.css    -> داخل assets
-5) assets/dina-welcome.js     -> داخل assets
-6) assets/dina-welcome-approved-artwork.jpg -> داخل assets
+2) افتح Supabase > SQL Editor ونفّذ مرة واحدة محتويات:
+   SUPABASE-BEST-SELLERS-SETUP.sql
 
-لا تستبدل مجلد assets بالكامل ولا تحذف أي ملفات موجودة داخله.
-لا تغيّر ملفات GM أو Supabase أو صور المنيو.
+3) بعد النشر افتح GM Dashboard ثم Best Sellers:
+   - ارفع صورًا جديدة، أو
+   - اختر منتجًا نشطًا له صورة من المنيو الحالي.
+   - رتّب الصور بالأسهم، أو احذف أي صورة.
 
-بعد Commit Changes:
-- صفحة Home: https://poacustomers.github.io/Dina-s-Corner/welcome.html
-- صفحة المنيو: https://poacustomers.github.io/Dina-s-Corner/menu.html
+4) صفحة Welcome تعرض الصور النشطة في شريط أفقي يمكن سحبه باللمس، ويمكن الضغط على الصورة لعرضها بحجم أكبر.
 
-زر Back to Home في المنيو يرجع إلى welcome.html.
-وزر View Our Menu في صفحة Home يرجع إلى menu.html.
+ملاحظات:
+- لا تستبدل مجلد assets بالكامل ولا تحذف الصور أو الملفات الأخرى.
+- لا تغيّر إعدادات Supabase الحالية. ملف SQL يضيف/يحدّث سياسات Best Sellers فقط.
+- لا يتم عرض القسم إذا لم توجد صور نشطة.
+- ملفات Welcome والـ GM تبقى في أماكنها الحالية.

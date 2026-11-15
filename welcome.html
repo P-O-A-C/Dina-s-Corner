@@ -8,12 +8,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Dina's Corner">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="manifest" href="manifest.webmanifest?v=20261115-home-height-back-restore-v1">
+<link rel="manifest" href="manifest.webmanifest?v=20261115-best-sellers-v1">
 <link rel="apple-touch-icon" href="assets/dina-corner-icon-192.png">
 <meta name="color-scheme" content="light">
 <meta name="description" content="Dina's Corner — view our menu and rate your experience.">
 <title>Dina's Corner | Welcome</title>
-<link rel="stylesheet" href="assets/dina-welcome.css?v=20261115-home-height-back-restore-v1">
+<link rel="stylesheet" href="assets/dina-welcome.css?v=20261115-best-sellers-v1">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="assets/tenant-config.js?v=20261113-integrated-bg-v6"></script>
 </head>
@@ -69,6 +69,26 @@
   <a class="dc-artwork-hotspot dc-hotspot-instagram" href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Follow Dina’s Corner on Instagram"></a>
 </main>
 
+<section class="dc-best-sellers" id="dcBestSellers" aria-labelledby="dcBestSellersTitle" hidden>
+  <header class="dc-best-sellers__header">
+    <p class="dc-best-sellers__eyebrow">CUSTOMER FAVOURITES</p>
+    <h2 id="dcBestSellersTitle">Our Best Sellers</h2>
+    <p>Discover the products everyone loves</p>
+  </header>
+  <div class="dc-best-sellers__carousel">
+    <button class="dc-best-sellers__arrow" id="dcBestSellersPrev" type="button" aria-label="Previous products">‹</button>
+    <div class="dc-best-sellers__track" id="dcBestSellersTrack" tabindex="0" role="region" aria-label="Best-selling products. Swipe left or right to explore."></div>
+    <button class="dc-best-sellers__arrow" id="dcBestSellersNext" type="button" aria-label="Next products">›</button>
+  </div>
+  <p class="dc-best-sellers__hint">Swipe to explore more favourites</p>
+</section>
+
+<div class="dc-best-lightbox" id="dcBestSellersLightbox" hidden role="dialog" aria-modal="true" aria-label="Product photo preview">
+  <button class="dc-best-lightbox__close" id="dcBestSellersLightboxClose" type="button" aria-label="Close product photo">×</button>
+  <img id="dcBestSellersLightboxImage" alt="">
+  <p id="dcBestSellersLightboxName"></p>
+</div>
+
 <div class="dc-dialog-backdrop" id="branchDialog" hidden>
   <section class="dc-dialog" role="dialog" aria-modal="true" aria-labelledby="branchDialogTitle">
     <button class="dc-dialog-close" id="closeBranchDialog" type="button" aria-label="Close">×</button>
@@ -82,6 +102,7 @@
 
 <script src="assets/config.js?v=20261113-integrated-bg-v6"></script>
 <script src="assets/app.js?v=20261113-integrated-bg-v6"></script>
-<script src="assets/dina-welcome.js?v=20261113-final-artwork-v10"></script>
+<script src="assets/dina-welcome.js?v=20261115-best-sellers-v1"></script>
+<script src="assets/dina-best-sellers.js?v=20261115-best-sellers-v1"></script>
 </body>
 </html>

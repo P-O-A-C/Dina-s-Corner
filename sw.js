@@ -1,6 +1,6 @@
-const CACHE = "dinas-corner-gm-v6-menu-route-fix";
+const CACHE = "dinas-corner-gm-v7-best-sellers-carousel";
 const SHELL = [
-  "./", "./index.html", "./login.html", "./menu.html", "./manifest.webmanifest",
+  "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
   "./GM/gm-menu.html", "./GM/gm-categories.html", "./GM/gm-home-products.html",
   "./GM/gm-locations.html",
@@ -10,7 +10,8 @@ const SHELL = [
   "./assets/dina-corner-icon-192.png", "./assets/dina-corner-icon-512.png",
   "./assets/dina-floral-tl.png", "./assets/dina-floral-tr.png",
   "./assets/dina-floral-bl.png", "./assets/dina-floral-br.png",
-  "./assets/dina-theme.css", "./assets/menu-display.css",
+  "./assets/dina-theme.css", "./assets/dina-welcome.css", "./assets/dina-welcome.js",
+  "./assets/dina-welcome-approved-artwork.jpg", "./assets/dina-best-sellers.js", "./assets/menu-display.css",
   "./assets/menu-display.js", "./assets/public-menu-client.js",
   "./assets/public-menu-premium.css", "./assets/public-menu-review-link.js"
 ];
