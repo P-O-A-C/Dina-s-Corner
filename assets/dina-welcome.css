@@ -602,3 +602,38 @@ body.dc-welcome-page{
     min-height: 0 !important;
   }
 }
+
+
+/* Social links: Instagram and Facebook, aligned as one compact group. */
+.dc-social-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  margin:18px auto 2px;
+  flex-wrap:wrap;
+}
+.dc-social-links>.dc-instagram-link{margin:0!important}
+.dc-facebook-link{
+  display:grid;
+  place-items:center;
+  flex:0 0 54px;
+  width:54px;
+  height:54px;
+  border:1.5px solid #e7aab5;
+  border-radius:18px;
+  background:linear-gradient(145deg,#fffefd,#ffeff0);
+  box-shadow:0 6px 16px rgba(111,31,55,.07);
+  color:#1877f2;
+  text-decoration:none;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.dc-facebook-link:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(111,31,55,.12)}
+.dc-facebook-link:focus-visible{outline:3px solid #a20f4b;outline-offset:3px}
+.dc-facebook-link svg{display:block;width:37px;height:37px}
+@media(max-width:760px){
+  .dc-social-links{gap:8px;margin:14px auto 2px}
+  .dc-facebook-link{flex-basis:43px;width:43px;height:43px;border-radius:14px}
+  .dc-facebook-link svg{width:31px;height:31px}
+}
