@@ -458,3 +458,110 @@ body.dc-welcome-page{
   }
   .dc-corner-logo{width:min(165px,42vw)!important;margin:0 auto 6px!important}
 }
+
+/* Desktop layout calibration: restore balanced proportions on laptop/desktop screens.
+   Phone rules above remain unchanged; the photo and four branch cards share one height. */
+@media (min-width: 900px){
+  body.dc-welcome-page{
+    padding:24px clamp(18px,3vw,42px) 42px!important;
+  }
+  .dc-welcome-shell{
+    width:min(100%,1240px)!important;
+    max-width:1240px!important;
+    padding:30px clamp(26px,3.2vw,48px) 38px!important;
+    border-radius:32px!important;
+  }
+  .dc-welcome-header{padding:8px 12px 24px!important}
+  .dc-corner-logo{width:clamp(190px,17vw,250px)!important;margin-bottom:9px!important}
+  .dc-welcome-eyebrow{font-size:12px!important;letter-spacing:2.6px!important}
+  .dc-welcome-rule{font-size:29px!important;margin:7px auto 3px!important}
+  .dc-welcome-header h1{font-size:clamp(42px,3.7vw,56px)!important;line-height:1.08!important}
+
+  .dc-action-grid--menu-only{
+    width:min(100%,860px)!important;
+    max-width:860px!important;
+    margin:8px auto 30px!important;
+  }
+  .dc-action-card--menu{
+    grid-template-columns:82px minmax(0,1fr) 46px!important;
+    min-height:126px!important;
+    padding:16px 24px!important;
+    border-radius:26px!important;
+  }
+  .dc-action-card--menu .dc-action-icon{width:72px!important;height:72px!important}
+  .dc-action-card--menu .dc-action-icon svg{width:58px!important;height:58px!important}
+  .dc-action-card--menu .dc-action-title{font-size:30px!important}
+  .dc-action-card--menu .dc-action-copy{font-size:15px!important}
+  .dc-action-card--menu .dc-action-arrow{width:42px!important;height:42px!important}
+
+  .dc-visit-section{margin:22px 0 28px!important}
+  .dc-section-heading{margin-bottom:18px!important}
+  .dc-section-heading>span{padding:10px 30px!important}
+  .dc-visit-layout{
+    direction:ltr!important;
+    grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;
+    gap:22px!important;
+    align-items:stretch!important;
+  }
+  .dc-best-sellers--full-frame{
+    display:flex!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    align-self:stretch!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border-radius:26px!important;
+  }
+  .dc-best-sellers--full-frame .dc-best-sellers__track,
+  .dc-best-sellers--full-frame .dc-best-sellers__card,
+  .dc-best-sellers--full-frame .dc-best-sellers__card img{
+    height:100%!important;
+    min-height:100%!important;
+  }
+  .dc-branches-panel{height:auto!important;min-height:0!important;align-self:stretch!important}
+  .dc-branch-cards{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:repeat(4,112px)!important;
+    gap:12px!important;
+  }
+  .dc-branch-card{
+    display:grid!important;
+    grid-template-columns:40px minmax(0,1fr) 34px!important;
+    gap:12px!important;
+    width:100%!important;
+    height:112px!important;
+    min-height:112px!important;
+    max-height:112px!important;
+    padding:12px 16px!important;
+    border-radius:20px!important;
+  }
+  .dc-branch-card__icon{width:36px!important;height:36px!important;font-size:22px!important}
+  .dc-branch-card__go{width:30px!important;height:30px!important;font-size:16px!important}
+  .dc-branch-card__body{gap:5px!important}
+  .dc-branch-card__body strong{font-size:16px!important;line-height:1.3!important}
+  .dc-branch-card__body small{font-size:13px!important;line-height:1.4!important}
+
+  .dc-talabat-card{
+    grid-template-columns:210px minmax(0,1fr)!important;
+    gap:24px!important;
+    margin:24px 0 22px!important;
+    padding:20px 26px!important;
+    border-radius:27px!important;
+  }
+  .dc-talabat-illustration{min-height:108px!important}
+  .dc-talabat-box{width:124px!important;height:78px!important;font-size:23px!important}
+  .dc-talabat-scooter{font-size:76px!important}
+  .dc-talabat-copy>strong{font-size:21px!important;padding:10px 18px!important}
+  .dc-talabat-copy>span{font-size:14px!important}
+  .dc-talabat-cities span{min-width:130px!important;padding:8px 22px!important;font-size:16px!important}
+  .dc-payment-section{margin-top:20px!important}
+  .dc-payment-grid{gap:18px!important}
+  .dc-payment-card{min-height:92px!important;padding:16px!important;border-radius:22px!important}
+  .dc-instagram-link{margin-top:20px!important;padding:12px 24px!important}
+  .dc-contact-section{margin:22px 0 6px!important}
+  .dc-contact-grid{gap:16px!important}
+  .dc-contact-card{min-height:76px!important;padding:16px 20px!important;border-radius:22px!important}
+  .dc-contact-copy strong{font-size:18px!important}
+}
