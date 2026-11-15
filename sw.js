@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v19-facebook-social-link";
+const CACHE = "dinas-corner-gm-v20-facebook-social-label";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",

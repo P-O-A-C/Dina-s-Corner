@@ -637,3 +637,80 @@ body.dc-welcome-page{
   .dc-facebook-link{flex-basis:43px;width:43px;height:43px;border-radius:14px}
   .dc-facebook-link svg{width:31px;height:31px}
 }
+
+
+/* Social links: show a clear text label for both Instagram and Facebook. */
+.dc-social-links{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:stretch;
+  justify-content:center;
+  gap:10px;
+  width:min(100%,620px);
+  margin:18px auto 2px;
+}
+.dc-social-links>.dc-instagram-link,
+.dc-social-links>.dc-facebook-link{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  min-height:54px;
+  height:auto;
+  box-sizing:border-box;
+  margin:0!important;
+  padding:9px 10px;
+  border:1.5px solid #e7aab5;
+  border-radius:30px;
+  background:linear-gradient(145deg,#fffefd,#ffeff0);
+  box-shadow:0 6px 16px rgba(111,31,55,.07);
+  text-decoration:none;
+}
+.dc-social-links>.dc-instagram-link strong,
+.dc-social-links>.dc-facebook-link strong{
+  min-width:0;
+  color:#76213d;
+  font:700 clamp(11px,1.2vw,15px) Georgia,"Times New Roman",serif;
+  line-height:1.15;
+  text-align:center;
+  white-space:normal;
+}
+.dc-social-links>.dc-facebook-link{
+  color:#1877f2;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.dc-social-links>.dc-facebook-link:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(111,31,55,.12);
+}
+.dc-social-links>.dc-facebook-link:focus-visible{
+  outline:3px solid #a20f4b;
+  outline-offset:3px;
+}
+.dc-social-links>.dc-facebook-link svg{
+  display:block;
+  flex:0 0 29px;
+  width:29px;
+  height:29px;
+}
+.dc-social-links>.dc-instagram-link .dc-instagram-icon{
+  flex:0 0 29px;
+  width:29px;
+  height:29px;
+  font-size:25px;
+}
+.dc-social-links>.dc-instagram-link>span:last-child{
+  display:none;
+}
+@media(max-width:760px){
+  .dc-social-links{gap:8px;margin:14px auto 2px}
+  .dc-social-links>.dc-instagram-link,
+  .dc-social-links>.dc-facebook-link{gap:5px;min-height:48px;padding:7px 6px}
+  .dc-social-links>.dc-instagram-link strong,
+  .dc-social-links>.dc-facebook-link strong{font-size:clamp(10px,2.9vw,12px)}
+  .dc-social-links>.dc-instagram-link .dc-instagram-icon{flex-basis:25px;width:25px;height:25px;font-size:22px}
+  .dc-social-links>.dc-facebook-link svg{flex-basis:25px;width:25px;height:25px}
+}
