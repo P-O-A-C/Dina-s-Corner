@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v22-exact-owner-maps-mafaza";
+const CACHE = "dinas-corner-gm-v23-updated-main-stadium-maps";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",

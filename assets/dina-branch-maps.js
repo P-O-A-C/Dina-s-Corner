@@ -3,8 +3,8 @@
 (function (global) {
   'use strict';
   const BRANCH_MAPS = Object.freeze({
-    tantaMain: 'https://maps.app.goo.gl/sDsHMSHC5w6CRFqM6',
-    tantaClub: 'https://maps.app.goo.gl/QwoPaW9ojJo9WnQ19',
+    tantaMain: 'https://maps.app.goo.gl/qVgwAo2xUAvsjDDt7',
+    tantaClub: 'https://maps.app.goo.gl/e3K3bkv4ryo5RJK49',
     tantaMafaza: 'https://www.google.com/maps/search/?api=1&query=Mafaza%20El%20Sabeel%2C%2018%20Hasan%20Hasseb%20St%2C%20Tanta&query_place_id=ChIJnYC7VwDJ9xQRQxUKUzrK914',
     newCairo: 'https://maps.app.goo.gl/3hrU7SKAWi6KXrnF6'
   });
