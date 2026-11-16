@@ -13,7 +13,7 @@
 <meta name="color-scheme" content="light">
 <meta name="description" content="Dina's Corner — explore our menu, discover customer favourites and find our branches.">
 <title>Dina's Corner | Welcome</title>
-<link rel="stylesheet" href="assets/dina-welcome.css?v=20261117-right-column-services-v1">
+<link rel="stylesheet" href="assets/dina-welcome.css?v=20261116-facebook-social-label-v2">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="assets/tenant-config.js?v=20261115-welcome-poster-match-v6"></script>
 
@@ -178,103 +178,6 @@
 }
 </style>
 
-
-<style id="dc-final-right-column-services">
-.dc-full-layout{margin:12px 0 16px!important}
-.dc-final-layout{direction:ltr!important;display:grid!important;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)!important;gap:13px!important;align-items:stretch!important}
-.dc-right-column{direction:rtl;display:flex;min-width:0;flex-direction:column;gap:10px}
-.dc-branch-group{padding:10px!important;min-width:0}
-.dc-branch-group .dc-section-heading{margin:0 auto 9px!important;font-size:clamp(15px,1.8vw,21px)!important}
-.dc-branch-group .dc-section-heading>span{padding:7px 13px!important;border-color:#e7a0b4!important;background:linear-gradient(135deg,#ce4f83,#9d174d)!important;box-shadow:0 4px 10px rgba(143,25,74,.12)!important}
-.dc-branch-group .dc-section-heading:before,.dc-branch-group .dc-section-heading:after{max-width:42px!important;background:linear-gradient(90deg,transparent,#d77b9c,transparent)!important}
-.dc-branch-group .dc-branch-cards{grid-template-columns:1fr!important;grid-template-rows:repeat(4,minmax(52px,auto))!important;gap:6px!important}
-.dc-branch-group .dc-branch-card{grid-template-columns:24px minmax(0,1fr) 20px!important;gap:6px!important;height:auto!important;min-height:52px!important;max-height:none!important;padding:6px 7px!important;border:1px solid #e6a0b5!important;border-radius:13px!important;background:linear-gradient(135deg,#fffdfd,#fff0f4)!important;box-shadow:0 3px 8px rgba(145,38,75,.07)!important}
-.dc-branch-group .dc-branch-card__icon{width:22px!important;height:22px!important;font-size:15px!important;background:#fbe1e9!important;color:#b22259!important}
-.dc-branch-group .dc-branch-card__go{width:19px!important;height:19px!important;font-size:12px!important;background:#bf2c64!important;color:#fff!important;border-radius:50%!important}
-.dc-branch-group .dc-branch-card__body{gap:2px!important}
-.dc-branch-group .dc-branch-card__body strong{font-size:clamp(10px,1.2vw,13px)!important;line-height:1.22!important;color:#7a183f!important}
-.dc-branch-group .dc-branch-card__body small{font-size:clamp(8.5px,1vw,11px)!important;line-height:1.25!important;color:#704653!important}
-.dc-services-panel{min-width:0;padding:10px;border:1.5px solid #e6a0b5;border-radius:17px;background:linear-gradient(150deg,#fffdfd,#fff0f4);box-shadow:0 5px 14px rgba(145,38,75,.07),inset 0 0 0 2px rgba(255,255,255,.75)}
-.dc-service-group{display:flex;flex-direction:column;gap:5px;margin:0 0 8px}
-.dc-service-heading{align-self:flex-start;margin:0 0 1px;padding:3px 11px;border-radius:999px;background:linear-gradient(135deg,#d54f86,#a51c53);color:#fff;font:800 clamp(10px,1.15vw,13px)/1.35 Arial,sans-serif;box-shadow:0 2px 6px rgba(165,28,83,.13)}
-.dc-service-card{direction:rtl;display:grid;grid-template-columns:32px minmax(0,1fr) 16px;align-items:center;gap:7px;width:100%;min-width:0;min-height:37px;padding:5px 8px;border:1px solid #e69ab1;border-radius:12px;background:linear-gradient(135deg,#fff,#fff0f4);box-shadow:0 3px 7px rgba(145,38,75,.06);color:#7b1b42;text-decoration:none;text-align:right;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.dc-service-card strong{min-width:0;font:800 clamp(9px,1.1vw,12px)/1.25 Arial,sans-serif;overflow-wrap:anywhere}
-.dc-service-logo{display:grid;place-items:center;width:29px;height:29px;max-width:29px;max-height:29px;justify-self:center;flex:0 0 29px}
-.dc-talabat-logo{display:flex;align-items:center;justify-content:center;border-radius:7px;background:#f47719;color:#fff;font:900 8px/1 Arial,sans-serif;letter-spacing:-.3px}
-.dc-vodafone-logo{fill:#ed1c24}
-.dc-vodafone-logo path{fill:none;stroke:#fff;stroke-width:4.2;stroke-linecap:round}
-.dc-vodafone-logo circle:last-child{fill:#fff}
-.dc-instapay-logo{fill:none;stroke:#7b2398;stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
-.dc-facebook-logo{fill:#1877f2}
-.dc-instagram-logo{fill:none;stroke:#c13584;stroke-width:2.2}
-.dc-instagram-logo circle:last-child{fill:#e8a02e;stroke:none}
-.dc-service-arrow{font:700 20px/1 Georgia,serif;color:#bd2862;justify-self:end}
-.dc-phone-row{direction:ltr;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:2px}
-.dc-phone-row a{display:flex;align-items:center;justify-content:center;min-width:0;min-height:34px;padding:6px 5px;border:1px solid #df85a4;border-radius:999px;background:#fff8fa;color:#8e1d48;text-decoration:none;font:800 clamp(10px,1.1vw,12px)/1 Arial,sans-serif;letter-spacing:.1px;white-space:nowrap}
-.dc-service-card:focus-visible,.dc-phone-row a:focus-visible{outline:2px solid #a51c53;outline-offset:2px}
-.dc-best-sellers--full-frame{display:flex!important;min-width:0;min-height:100%;height:100%;padding:0!important;overflow:hidden;border:1.7px solid #e69ab1!important;border-radius:19px!important;background:#fff7f9!important;box-shadow:0 7px 18px rgba(145,38,75,.10)!important}
-.dc-best-sellers--full-frame .dc-best-sellers__track{display:flex;flex:1 1 auto;align-items:stretch;gap:0;width:100%;height:100%;min-height:0;padding:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x pan-y}
-.dc-best-sellers--full-frame .dc-best-sellers__track::-webkit-scrollbar{display:none}
-.dc-best-sellers--full-frame .dc-best-sellers__card{display:block;flex:0 0 100%;width:100%;height:100%;min-height:0;margin:0;padding:0;overflow:hidden;border:0;border-radius:0;background:transparent;box-shadow:none;scroll-snap-align:start}
-.dc-best-sellers--full-frame .dc-best-sellers__card img{display:block;width:100%;height:100%;min-height:100%;aspect-ratio:auto;object-fit:cover;border:0;border-radius:0;background:transparent}
-.dc-best-sellers--full-frame .dc-best-sellers__empty{display:block;flex:1;min-height:100%;padding:0;border:0;border-radius:0;background:transparent}
-.dc-best-sellers--full-frame .dc-best-sellers__empty:empty{display:none}
-@media(max-width:760px){
- body.dc-welcome-page{padding:12px 7px 20px}
- .dc-welcome-shell{padding:12px 8px 16px;border-radius:20px}
- .dc-welcome-header{padding:0 4px 12px!important}
- .dc-corner-logo{width:clamp(104px,30vw,145px)!important;margin-bottom:5px!important}
- .dc-welcome-eyebrow{font-size:8px!important;letter-spacing:1.5px!important}
- .dc-welcome-header h1{font-size:clamp(25px,7vw,34px)!important}
- .dc-action-grid--menu-only{width:100%!important;max-width:100%!important;margin:3px auto 13px!important}
- .dc-action-card--menu{grid-template-columns:53px minmax(0,1fr) 32px!important;min-height:87px!important;padding:8px 9px!important;gap:7px!important;border-radius:17px!important}
- .dc-action-card--menu .dc-action-icon{width:48px!important;height:48px!important;border-radius:12px!important}
- .dc-action-card--menu .dc-action-icon svg{width:39px!important;height:39px!important}
- .dc-action-card--menu .dc-action-title{font-size:clamp(16px,4.8vw,22px)!important}
- .dc-action-card--menu .dc-action-copy{font-size:10px!important}
- .dc-action-card--menu .dc-action-arrow{width:29px!important;height:29px!important;font-size:22px!important}
- .dc-full-layout{margin:7px 0 10px!important}
- .dc-final-layout{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;gap:6px!important;align-items:stretch!important}
- .dc-right-column{gap:6px}
- .dc-branch-group{padding:6px 5px!important;border-radius:13px!important}
- .dc-branch-group .dc-section-heading{gap:4px!important;margin-bottom:6px!important;font-size:clamp(11px,3.3vw,14px)!important}
- .dc-branch-group .dc-section-heading>span{padding:5px 7px!important;border-radius:999px!important}
- .dc-branch-group .dc-section-heading:before,.dc-branch-group .dc-section-heading:after{max-width:14px!important}
- .dc-branch-group .dc-branch-cards{grid-template-rows:repeat(4,minmax(48px,auto))!important;gap:4px!important}
- .dc-branch-group .dc-branch-card{grid-template-columns:18px minmax(0,1fr) 15px!important;gap:3px!important;min-height:48px!important;padding:4px 3px!important;border-radius:10px!important}
- .dc-branch-group .dc-branch-card__icon{width:17px!important;height:17px!important;font-size:12px!important}
- .dc-branch-group .dc-branch-card__go{width:15px!important;height:15px!important;font-size:10px!important}
- .dc-branch-group .dc-branch-card__body{gap:2px!important}
- .dc-branch-group .dc-branch-card__body strong{font-size:clamp(8px,2.55vw,10px)!important;line-height:1.2!important}
- .dc-branch-group .dc-branch-card__body small{font-size:clamp(7px,2.05vw,8.5px)!important;line-height:1.2!important}
- .dc-services-panel{padding:6px 5px;border-radius:13px}
- .dc-service-group{gap:4px;margin-bottom:6px}
- .dc-service-heading{font-size:clamp(8px,2.5vw,10px);padding:2px 7px}
- .dc-service-card{grid-template-columns:23px minmax(0,1fr) 12px;gap:4px;min-height:32px;padding:4px 5px;border-radius:9px}
- .dc-service-card strong{font-size:clamp(7.3px,2.2vw,9px);line-height:1.2}
- .dc-service-logo{width:21px;height:21px;max-width:21px;max-height:21px;flex-basis:21px}
- .dc-talabat-logo{font-size:6.3px;border-radius:5px}
- .dc-service-arrow{font-size:16px}
- .dc-phone-row{gap:4px;margin-top:1px}
- .dc-phone-row a{min-height:29px;padding:4px 2px;font-size:clamp(8px,2.5vw,10px)}
- .dc-best-sellers--full-frame{border-radius:14px!important;min-height:100%;height:100%!important}
- .dc-best-sellers--full-frame .dc-best-sellers__track{min-height:100%;height:100%;gap:0;padding:0}
- .dc-best-sellers--full-frame .dc-best-sellers__card{flex:0 0 100%;height:100%;min-height:100%;padding:0;border:0;border-radius:0;box-shadow:none}
- .dc-best-sellers--full-frame .dc-best-sellers__card img{width:100%;height:100%;min-height:100%;object-fit:cover;border-radius:0}
-}
-@media(max-width:360px){
- .dc-final-layout{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)!important;gap:5px!important}
- .dc-branch-group .dc-branch-card{grid-template-columns:16px minmax(0,1fr) 14px!important;gap:2px!important;padding:3px 2px!important}
- .dc-branch-group .dc-branch-card__body strong{font-size:7.5px!important}
- .dc-branch-group .dc-branch-card__body small{font-size:6.7px!important}
- .dc-service-card{grid-template-columns:20px minmax(0,1fr) 10px;gap:3px;padding:3px 4px}
- .dc-service-card strong{font-size:7px}
- .dc-service-logo{width:19px;height:19px;max-width:19px;max-height:19px;flex-basis:19px}
- .dc-phone-row a{font-size:7.7px}
-}
-@media(prefers-reduced-motion:reduce){.dc-best-sellers__track{scroll-behavior:auto!important}}
-</style>
-
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -297,17 +200,16 @@
     </a>
   </section>
 
-  <section class="dc-visit-section dc-full-layout" aria-label="Dina’s Corner locations and services">
-  <div class="dc-visit-layout dc-final-layout" dir="ltr">
-    <section class="dc-best-sellers dc-best-sellers--full-frame" id="dcBestSellers" aria-label="Dina’s Corner featured product photos">
-      <div class="dc-best-sellers__track" id="dcBestSellersTrack" tabindex="0" role="region" aria-label="Featured products. Swipe or wait for the next photo.">
-        <div class="dc-best-sellers__empty" aria-live="polite"></div>
-      </div>
-    </section>
+  <section class="dc-visit-section" aria-labelledby="visitTitle">
+    <h2 class="dc-section-heading" id="visitTitle"><span>زورونا في فروعنا</span></h2>
+    <div class="dc-visit-layout">
+      <section class="dc-best-sellers dc-best-sellers--full-frame" id="dcBestSellers" aria-label="Dina’s Corner best-selling products">
+        <div class="dc-best-sellers__track" id="dcBestSellersTrack" tabindex="0" role="region" aria-label="Best-selling products. Swipe left or right to explore.">
+          <div class="dc-best-sellers__empty" aria-live="polite"></div>
+        </div>
+      </section>
 
-    <div class="dc-right-column" dir="rtl">
-      <section class="dc-branches-panel dc-branch-group" aria-labelledby="visitTitle">
-        <h2 class="dc-section-heading" id="visitTitle"><span>زورونا في فروعنا</span></h2>
+      <section class="dc-branches-panel" aria-label="Branch locations">
         <div class="dc-branch-cards">
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/qVgwAo2xUAvsjDDt7">
             <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong><small>على مبارك مع مسجد الرضوان، أمام مدخل جيم النعماني</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
@@ -323,50 +225,65 @@
           </a>
         </div>
       </section>
-
-      <section class="dc-services-panel" aria-label="Dina’s Corner services and contact links">
-        <section class="dc-service-group" aria-labelledby="orderServicesTitle">
-          <h3 class="dc-service-heading" id="orderServicesTitle">اطلب الآن</h3>
-          <a class="dc-service-card" href="https://www.talabat.com/egypt/dinas-corner" target="_blank" rel="noopener noreferrer" aria-label="اطلب أوردرَك من طلبات">
-            <span class="dc-service-logo dc-talabat-logo" aria-hidden="true">talabat</span>
-            <strong>اطلب أوردرَك من طلبات</strong><span class="dc-service-arrow" aria-hidden="true">‹</span>
-          </a>
-        </section>
-
-        <section class="dc-service-group" aria-labelledby="paymentServicesTitle">
-          <h3 class="dc-service-heading" id="paymentServicesTitle">طرق الدفع</h3>
-          <button class="dc-service-card" type="button" onclick="copyPaymentNumber('01002348055')" aria-label="نسخ رقم Vodafone Cash">
-            <svg class="dc-service-logo dc-vodafone-logo" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><path d="M29.8 13.4a13.1 13.1 0 1 0 5.1 14.7"/><circle cx="30.7" cy="15.6" r="4.3"/></svg>
-            <strong>ادفع بسهولة عبر Vodafone Cash</strong><span class="dc-service-arrow" aria-hidden="true">‹</span>
-          </button>
-          <a class="dc-service-card" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="افتح الدفع عبر InstaPay">
-            <svg class="dc-service-logo dc-instapay-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M18 27 9.8 35.2a7 7 0 0 1-9.9-9.9l8-8a7 7 0 0 1 9.9 0M30 21l8.2-8.2a7 7 0 1 1 9.9 9.9l-8 8a7 7 0 0 1-9.9 0M16 32l16-16"/></svg>
-            <strong>ادفع الآن عبر InstaPay</strong><span class="dc-service-arrow" aria-hidden="true">‹</span>
-          </a>
-        </section>
-
-        <section class="dc-service-group" aria-labelledby="socialServicesTitle">
-          <h3 class="dc-service-heading" id="socialServicesTitle">تابعنا</h3>
-          <a class="dc-service-card" href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook">
-            <svg class="dc-service-logo dc-facebook-logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.56-.12-2.53 0-4.26 1.54-4.26 4.37V9.6H7.1v3.2h2.78V21z"/></svg>
-            <strong>Follow us on Facebook</strong><span class="dc-service-arrow" aria-hidden="true">‹</span>
-          </a>
-          <a class="dc-service-card" href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
-            <svg class="dc-service-logo dc-instagram-logo" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.7" r="1"/></svg>
-            <strong>Follow us on Instagram</strong><span class="dc-service-arrow" aria-hidden="true">‹</span>
-          </a>
-        </section>
-
-        <div class="dc-phone-row" dir="ltr" aria-label="Dina’s Corner phone numbers">
-          <a href="tel:0403596418">0403596418</a>
-          <a href="tel:01066670803">01066670803</a>
-        </div>
-      </section>
     </div>
-  </div>
-  <div id="copyToast" class="dc-copy-toast" role="status" aria-live="polite">Copied Successfully!</div>
-</section>
+  </section>
 
+  <a class="dc-talabat-card" href="https://www.talabat.com/egypt/dinas-corner" target="_blank" rel="noopener noreferrer" aria-label="Order Dina’s Corner on Talabat">
+    <div class="dc-talabat-illustration" aria-hidden="true"><span class="dc-talabat-box">talabat</span><span class="dc-talabat-scooter">🛵</span></div>
+    <div class="dc-talabat-copy"><strong>اطلب من Dina’s Corner عبر تطبيق طلبات</strong><span>متاح في طنطا والقاهرة</span><div class="dc-talabat-cities"><span>طنطا</span><span>القاهرة</span></div></div>
+  </a>
+
+  <section class="dc-pc-payment" aria-labelledby="paymentTitle">
+    <h2 class="dc-pc-heading" id="paymentTitle">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H20v14H5.5A2.5 2.5 0 0 1 3 16.5z"/><path d="M3 8h14a3 3 0 0 0 3-3M16 12h4"/><circle cx="16" cy="12" r=".8"/></svg>
+      <span>طرق الدفع</span>
+    </h2>
+  
+    <div class="dc-pc-payment-grid">
+      <button class="dc-pc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')" aria-label="Copy Vodafone Cash number">
+        <svg class="dc-pc-vodafone-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><path d="M29.8 13.4a13.1 13.1 0 1 0 5.1 14.7"/><circle cx="30.7" cy="15.6" r="4.3"/></svg>
+        <span class="dc-pc-vodafone-name">Vodafone Cash</span>
+      </button>
+  
+      <a class="dc-pc-payment-card dc-pc-instapay" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.8 14 9.8M8.2 15.8l-1.1 1.1a3.3 3.3 0 0 1-4.7-4.7l4-4a3.3 3.3 0 0 1 4.7 0M15.8 8.2l1.1-1.1a3.3 3.3 0 0 1 4.7 4.7l-4 4a3.3 3.3 0 0 1-4.7 0"/></svg>
+        <span>InstaPay <b aria-hidden="true">»</b></span>
+      </a>
+    </div>
+  </section>
+  
+  <div class="dc-pc-divider" aria-hidden="true"><span>♥</span></div>
+  
+  <section class="dc-pc-contact" aria-labelledby="contactTitle">
+    <h2 class="dc-pc-heading" id="contactTitle">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
+      <span>تواصل معنا</span>
+    </h2>
+  
+    <div class="dc-pc-contact-row" dir="ltr">
+      <nav class="dc-pc-social" aria-label="Dina’s Corner social media">
+        <a href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Dina’s Corner on Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.56-.12-2.53 0-4.26 1.54-4.26 4.37V9.6H7.1v3.2h2.78V21z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Dina’s Corner on Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.7" r="1" class="dc-pc-insta-dot"/></svg>
+        </a>
+      </nav>
+  
+      <a class="dc-pc-phone-card" href="tel:0403596418" aria-label="Call 0403596418">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
+        <strong>0403596418</strong>
+      </a>
+  
+      <a class="dc-pc-phone-card" href="tel:01066670803" aria-label="Call 01066670803">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
+        <strong>01066670803</strong>
+      </a>
+    </div>
+  </section>
+  
+  <div class="dc-pc-bottom-divider" aria-hidden="true"><span>♥</span></div>
+    <div id="copyToast" class="dc-copy-toast" role="status" aria-live="polite">Copied Successfully!</div>
 </main>
 
 <div class="dc-best-lightbox" id="dcBestSellersLightbox" hidden role="dialog" aria-modal="true" aria-label="Product photo preview">
@@ -384,34 +301,9 @@ async function copyPaymentNumber(number){
 }
 </script>
 <script src="assets/config.js?v=20261115-welcome-poster-match-v6"></script>
-<script src="assets/dina-branch-maps.js?v=20261117-right-column-services-v1"></script>
+<script src="assets/dina-branch-maps.js?v=20261116-exact-owner-maps-v5-mafaza"></script>
 <script src="assets/app.js?v=20261116-exact-owner-maps-v5-mafaza"></script>
 <script src="assets/dina-welcome.js?v=20261115-branch-map-canonical-v2"></script>
-<script src="assets/dina-best-sellers.js?v=20261117-carousel-autoplay-5s-v1"></script>
-<script>
-(function(){
-  const track=document.getElementById('dcBestSellersTrack');
-  if(!track)return;
-  let timer=null,paused=false;
-  const moveNext=()=>{
-    const cards=[...track.querySelectorAll('.dc-best-sellers__card')];
-    if(cards.length<2||paused||document.hidden)return;
-    const current=cards.reduce((best,card,index)=>{
-      const d=Math.abs(card.offsetLeft-track.scrollLeft);
-      return d<best.d?{i:index,d}:{...best};
-    },{i:0,d:Infinity}).i;
-    const next=cards[(current+1)%cards.length];
-    track.scrollTo({left:next.offsetLeft,behavior:'smooth'});
-  };
-  const start=()=>{if(timer)clearInterval(timer);timer=setInterval(moveNext,5000);};
-  ['mouseenter','focusin','touchstart','pointerdown'].forEach(event=>track.addEventListener(event,()=>{paused=true;}, {passive:true}));
-  ['mouseleave','focusout','touchend','pointerup','touchcancel'].forEach(event=>track.addEventListener(event,()=>{paused=false;}, {passive:true}));
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)paused=false;});
-  const observer=new MutationObserver(()=>{if(track.querySelector('.dc-best-sellers__card'))start();});
-  observer.observe(track,{childList:true});
-  if(track.querySelector('.dc-best-sellers__card'))start();
-})();
-</script>
-
+<script src="assets/dina-best-sellers.js?v=20261115-best-sellers-autoplay-2s-v1"></script>
 </body>
 </html>
