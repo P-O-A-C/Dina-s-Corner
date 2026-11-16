@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -22,6 +23,7 @@
 <img class="dc-floral dc-floral--tr" src="assets/dina-floral-tr.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--bl" src="assets/dina-floral-bl.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--br" src="assets/dina-floral-br.png" alt="" aria-hidden="true">
+
 <main class="dc-welcome-shell" aria-label="Dina’s Corner welcome page">
   <header class="dc-welcome-header">
     <img class="dc-corner-logo" src="assets/dina-corner-logo-transparent.png" alt="Dina’s Corner Healthy Bakery">
@@ -74,8 +76,27 @@
   <section class="dc-payment-section" aria-labelledby="paymentTitle">
     <h2 class="dc-section-heading" id="paymentTitle"><span>Pay with Ease</span></h2>
     <div class="dc-payment-grid">
-      <a class="dc-payment-card" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay" style="text-decoration:none;color:inherit"><strong class="dc-payment-brand dc-instapay">InstaPay<span>›</span></strong></a>
-      <button class="dc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')"><strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong><span class="dc-payment-number"><i aria-hidden="true">☎</i>0100 234 8055</span></button>
+
+      <!-- InstaPay: رابط الدفع المباشر، بدون رقم هاتف -->
+      <a
+        class="dc-payment-card"
+        href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Pay with InstaPay"
+        style="text-decoration:none;color:inherit"
+      >
+        <strong
+          class="dc-payment-brand dc-instapay"
+          style="font-size:clamp(24px,4vw,30px)"
+        >InstaPay<span>›</span></strong>
+      </a>
+
+      <button class="dc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')">
+        <strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong>
+        <span class="dc-payment-number"><i aria-hidden="true">☎</i>0100 234 8055</span>
+      </button>
+
     </div>
   </section>
 
@@ -94,13 +115,13 @@
       <a class="dc-contact-card" href="tel:0403596418" aria-label="Call landline number 0403596418"><span class="dc-contact-icon" aria-hidden="true">☎</span><span class="dc-contact-copy"><small>Landline</small><strong dir="ltr">0403596418</strong></span></a>
     </div>
   </section>
+
   <div id="copyToast" class="dc-copy-toast" role="status" aria-live="polite">Copied Successfully!</div>
 </main>
 
 <div class="dc-best-lightbox" id="dcBestSellersLightbox" hidden role="dialog" aria-modal="true" aria-label="Product photo preview">
   <button class="dc-best-lightbox__close" id="dcBestSellersLightboxClose" type="button" aria-label="Close product photo">×</button>
   <img id="dcBestSellersLightboxImage" alt="">
-
 </div>
 
 <script>
