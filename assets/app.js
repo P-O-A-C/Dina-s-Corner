@@ -1337,7 +1337,10 @@ async function loadCustomerLocations() {
     const address = [location.address, location.city].filter(Boolean).join(", ");
     const mapsUrl = dinaResolvedBranchMapsUrl(location);
     const details = [address, location.phone ? `Phone: ${location.phone}` : ""].filter(Boolean).join(" · ");
-    return `<a class="customer-branch" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer"><span class="customer-branch-copy"><strong class="customer-branch-name">${esc(location.name || "Branch")}</strong>${details ? `<small class="customer-branch-meta">${esc(details)}</small>` : ""}</span><span class="customer-branch-map">OPEN MAP →</span></a>`;
+    const copy = `<span class="customer-branch-copy"><strong class="customer-branch-name">${esc(location.name || "Branch")}</strong>${details ? `<small class="customer-branch-meta">${esc(details)}</small>` : ""}</span>`;
+    return mapsUrl
+      ? `<a class="customer-branch" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer">${copy}<span class="customer-branch-map">OPEN MAP →</span></a>`
+      : `<div class="customer-branch" aria-disabled="true">${copy}<span class="customer-branch-map" title="Exact map link not confirmed">MAP NOT SET</span></div>`;
   }).join("");
 }
 
@@ -2025,7 +2028,11 @@ async function loadGmLocations() {
     box.innerHTML = locations.map(location => {
       const address = [location.address, location.city].filter(Boolean).join(", ");
       const detail = [address, location.phone ? `Phone: ${location.phone}` : ""].filter(Boolean).join(" · ");
-      return `<article class="branch-manage-card"><div class="branch-card-top"><div class="branch-card-icon" aria-hidden="true">⌖</div><div class="grow"><h4 class="branch-card-title">${esc(location.name || "Branch")}</h4>${detail ? `<small class="branch-card-meta">${esc(detail)}</small>` : ""}<small class="branch-card-meta">${location.is_active ? "Active · visible to customers" : "Inactive · hidden from customers"}</small></div></div><div class="branch-card-actions"><a class="btn soft" href="${esc(mapLinkFor(location))}" target="_blank" rel="noopener noreferrer">OPEN MAP</a><button class="btn soft" type="button" data-copy-nfc-link="${esc(location.id)}">COPY NFC MENU LINK</button><button class="btn" type="button" data-location-edit="${esc(location.id)}">EDIT</button><button class="btn danger" type="button" data-location-delete="${esc(location.id)}">DELETE</button></div></article>`;
+      const exactMapUrl = mapLinkFor(location);
+      const mapAction = exactMapUrl
+        ? `<a class="btn soft" href="${esc(exactMapUrl)}" target="_blank" rel="noopener noreferrer">OPEN MAP</a>`
+        : `<span class="btn soft" aria-disabled="true" title="Add the owner-confirmed exact Google Maps link">MAP LINK NOT CONFIRMED</span>`;
+      return `<article class="branch-manage-card"><div class="branch-card-top"><div class="branch-card-icon" aria-hidden="true">⌖</div><div class="grow"><h4 class="branch-card-title">${esc(location.name || "Branch")}</h4>${detail ? `<small class="branch-card-meta">${esc(detail)}</small>` : ""}<small class="branch-card-meta">${location.is_active ? "Active · visible to customers" : "Inactive · hidden from customers"}</small></div></div><div class="branch-card-actions">${mapAction}<button class="btn soft" type="button" data-copy-nfc-link="${esc(location.id)}">COPY NFC MENU LINK</button><button class="btn" type="button" data-location-edit="${esc(location.id)}">EDIT</button><button class="btn danger" type="button" data-location-delete="${esc(location.id)}">DELETE</button></div></article>`;
     }).join("");
     box.querySelectorAll("[data-location-edit]").forEach(button => button.addEventListener("click", () => {
       const location = locations.find(row => row.id === button.dataset.locationEdit);
@@ -2089,7 +2096,7 @@ async function loadGmLocations() {
     }
     locations = Array.isArray(data) ? data : [];
 
-    // Persist the three owner-confirmed map links so any consumer of locations.maps_url
+    // Persist the four owner-confirmed map links so any consumer of locations.maps_url
     // receives the same destination, not only pages using the front-end resolver.
     let correctedMapLinks = 0;
     let failedMapLinkUpdates = 0;
