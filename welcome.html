@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -17,13 +16,69 @@
 <link rel="stylesheet" href="assets/dina-welcome.css?v=20261116-facebook-social-label-v2">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="assets/tenant-config.js?v=20261115-welcome-poster-match-v6"></script>
+
+<style id="dc-payment-contact-minimal-styles">
+.dc-pc-payment,.dc-pc-contact{margin:16px 0 0!important}
+.dc-pc-heading{width:clamp(220px,42vw,300px);min-height:56px;box-sizing:border-box;margin:0 auto 22px!important;padding:8px 18px;display:flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:999px;background:linear-gradient(135deg,#d94f83,#b82c62);box-shadow:0 5px 14px rgba(177,37,91,.16);color:#fff;font:700 clamp(18px,3.5vw,22px)/1.15 Arial,sans-serif;text-align:center}
+.dc-pc-heading svg{width:30px;height:30px;flex:0 0 30px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dc-pc-payment-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;direction:ltr}
+.dc-pc-payment-card{box-sizing:border-box;min-width:0;min-height:68px;padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:13px;border:1.7px solid #e77ca3;border-radius:999px;background:linear-gradient(145deg,#fffafd,#ffeaf1);box-shadow:0 5px 13px rgba(177,37,91,.09);color:#a91f50;text-decoration:none;font:800 clamp(15px,2vw,20px)/1.15 Arial,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.dc-pc-payment-card:focus-visible,.dc-pc-social a:focus-visible,.dc-pc-phone-card:focus-visible{outline:3px solid #b82c62;outline-offset:3px}
+.dc-pc-vodafone-icon{width:42px;height:42px;flex:0 0 42px;fill:#ed1c24}
+.dc-pc-vodafone-icon path{fill:none;stroke:#fff;stroke-width:4.2;stroke-linecap:round}
+.dc-pc-vodafone-icon circle:last-child{fill:#fff}
+.dc-pc-vodafone-name{white-space:nowrap}
+.dc-pc-instapay svg{width:34px;height:34px;flex:0 0 34px;fill:none;stroke:#bd245e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dc-pc-instapay span{color:#34228f;font-size:clamp(19px,2.4vw,25px);font-style:italic;font-weight:900;white-space:nowrap}
+.dc-pc-instapay b{color:#f07824;font-size:1.12em}
+.dc-pc-divider,.dc-pc-bottom-divider{max-width:900px;margin:24px auto;display:flex;align-items:center;gap:14px;color:#d94f83;font-size:23px;line-height:1}
+.dc-pc-divider:before,.dc-pc-divider:after,.dc-pc-bottom-divider:before,.dc-pc-bottom-divider:after{content:"";height:1.5px;flex:1;background:linear-gradient(90deg,transparent,#e66c9a,transparent)}
+.dc-pc-contact{margin-top:0!important}
+.dc-pc-contact .dc-pc-heading{margin-bottom:18px!important}
+.dc-pc-contact-row{max-width:980px;margin:0 auto;display:grid;grid-template-columns:108px minmax(0,1fr) minmax(0,1fr);align-items:center;gap:12px}
+.dc-pc-social{display:flex;justify-content:center;gap:8px}
+.dc-pc-social a{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;box-sizing:border-box;border:1.6px solid #e77ca3;border-radius:50%;background:linear-gradient(145deg,#fffafd,#ffeaf1);box-shadow:0 4px 11px rgba(177,37,91,.08)}
+.dc-pc-social svg{width:27px;height:27px;fill:#1877f2}
+.dc-pc-social a:last-child svg{fill:none;stroke:#c42c91;stroke-width:1.9}
+.dc-pc-social .dc-pc-insta-dot{fill:#e4a02a;stroke:none}
+.dc-pc-phone-card{min-width:0;min-height:62px;box-sizing:border-box;padding:9px 12px;display:flex;align-items:center;justify-content:center;gap:9px;border:1.7px solid #e77ca3;border-radius:999px;background:linear-gradient(145deg,#fffafd,#ffeaf1);box-shadow:0 5px 13px rgba(177,37,91,.08);color:#a91f50;text-decoration:none;white-space:nowrap}
+.dc-pc-phone-card svg{width:25px;height:25px;flex:0 0 25px;fill:#bd245e}
+.dc-pc-phone-card strong{font:900 clamp(13px,1.7vw,18px)/1 Arial,sans-serif;letter-spacing:.1px}
+.dc-pc-bottom-divider{margin-top:24px;margin-bottom:4px}
+@media(max-width:600px){
+ .dc-pc-payment,.dc-pc-contact{margin-top:13px!important}
+ .dc-pc-heading{width:220px;min-height:52px;margin-bottom:16px!important;padding:7px 14px;font-size:19px;gap:10px}
+ .dc-pc-heading svg{width:27px;height:27px;flex-basis:27px}
+ .dc-pc-payment-grid{gap:8px}
+ .dc-pc-payment-card{min-height:58px;padding:8px 6px;gap:7px;font-size:clamp(12px,3.5vw,16px)}
+ .dc-pc-vodafone-icon{width:34px;height:34px;flex-basis:34px}
+ .dc-pc-instapay svg{width:27px;height:27px;flex-basis:27px}
+ .dc-pc-instapay span{font-size:clamp(16px,4.1vw,20px)}
+ .dc-pc-divider,.dc-pc-bottom-divider{margin:17px auto;gap:10px;font-size:20px}
+ .dc-pc-contact .dc-pc-heading{margin-bottom:15px!important}
+ .dc-pc-contact-row{grid-template-columns:76px minmax(0,1fr) minmax(0,1fr);gap:7px}
+ .dc-pc-social{gap:5px;flex-wrap:wrap}
+ .dc-pc-social a{width:34px;height:34px;flex-basis:34px}
+ .dc-pc-social svg{width:21px;height:21px}
+ .dc-pc-phone-card{min-height:52px;padding:6px 5px;gap:5px}
+ .dc-pc-phone-card svg{width:19px;height:19px;flex-basis:19px}
+ .dc-pc-phone-card strong{font-size:clamp(10px,2.9vw,13px)}
+}
+@media(max-width:360px){
+ .dc-pc-contact-row{grid-template-columns:66px minmax(0,1fr) minmax(0,1fr);gap:5px}
+ .dc-pc-social a{width:30px;height:30px;flex-basis:30px}
+ .dc-pc-social svg{width:18px;height:18px}
+ .dc-pc-phone-card{gap:3px;padding:5px 3px}
+ .dc-pc-phone-card strong{font-size:10px}
+ .dc-pc-phone-card svg{width:16px;height:16px;flex-basis:16px}
+}
+</style>
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--tr" src="assets/dina-floral-tr.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--bl" src="assets/dina-floral-bl.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--br" src="assets/dina-floral-br.png" alt="" aria-hidden="true">
-
 <main class="dc-welcome-shell" aria-label="Dina’s Corner welcome page">
   <header class="dc-welcome-header">
     <img class="dc-corner-logo" src="assets/dina-corner-logo-transparent.png" alt="Dina’s Corner Healthy Bakery">
@@ -73,55 +128,63 @@
     <div class="dc-talabat-copy"><strong>اطلب من Dina’s Corner عبر تطبيق طلبات</strong><span>متاح في طنطا والقاهرة</span><div class="dc-talabat-cities"><span>طنطا</span><span>القاهرة</span></div></div>
   </a>
 
-  <section class="dc-payment-section" aria-labelledby="paymentTitle">
-    <h2 class="dc-section-heading" id="paymentTitle"><span>Pay with Ease</span></h2>
-    <div class="dc-payment-grid">
-
-      <!-- InstaPay: رابط الدفع المباشر، بدون رقم هاتف -->
-      <a
-        class="dc-payment-card"
-        href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Pay with InstaPay"
-        style="text-decoration:none;color:inherit"
-      >
-        <strong
-          class="dc-payment-brand dc-instapay"
-          style="font-size:clamp(24px,4vw,30px)"
-        >InstaPay<span>›</span></strong>
-      </a>
-
-      <button class="dc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')">
-        <strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong>
-        <span class="dc-payment-number"><i aria-hidden="true">☎</i>0100 234 8055</span>
+  <section class="dc-pc-payment" aria-labelledby="paymentTitle">
+    <h2 class="dc-pc-heading" id="paymentTitle">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H20v14H5.5A2.5 2.5 0 0 1 3 16.5z"/><path d="M3 8h14a3 3 0 0 0 3-3M16 12h4"/><circle cx="16" cy="12" r=".8"/></svg>
+      <span>طرق الدفع</span>
+    </h2>
+  
+    <div class="dc-pc-payment-grid">
+      <button class="dc-pc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')" aria-label="Copy Vodafone Cash number">
+        <svg class="dc-pc-vodafone-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><path d="M29.8 13.4a13.1 13.1 0 1 0 5.1 14.7"/><circle cx="30.7" cy="15.6" r="4.3"/></svg>
+        <span class="dc-pc-vodafone-name">Vodafone Cash</span>
       </button>
-
+  
+      <a class="dc-pc-payment-card dc-pc-instapay" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.8 14 9.8M8.2 15.8l-1.1 1.1a3.3 3.3 0 0 1-4.7-4.7l4-4a3.3 3.3 0 0 1 4.7 0M15.8 8.2l1.1-1.1a3.3 3.3 0 0 1 4.7 4.7l-4 4a3.3 3.3 0 0 1-4.7 0"/></svg>
+        <span>InstaPay <b aria-hidden="true">»</b></span>
+      </a>
     </div>
   </section>
-
-  <nav class="dc-social-links" aria-label="Dina’s Corner social media">
-    <a class="dc-instagram-link" href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Follow Dina’s Corner on Instagram"><span class="dc-instagram-icon" aria-hidden="true">◎</span><strong>Follow Us on Instagram</strong><span aria-hidden="true">›</span></a>
-    <a class="dc-facebook-link" href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Follow Dina’s Corner on Facebook" title="Dina’s Corner on Facebook">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.56-.12-2.53 0-4.26 1.54-4.26 4.37V9.6H7.1v3.2h2.78V21h3.52z"/></svg>
-      <strong>Follow Us on Facebook</strong>
-    </a>
-  </nav>
-
-  <section class="dc-contact-section" aria-labelledby="contactTitle">
-    <h2 class="dc-section-heading" id="contactTitle"><span>تواصل معنا</span></h2>
-    <div class="dc-contact-grid">
-      <a class="dc-contact-card" href="tel:01066670803" aria-label="Call mobile number 01066670803"><span class="dc-contact-icon" aria-hidden="true">☎</span><span class="dc-contact-copy"><small>Mobile</small><strong dir="ltr">01066670803</strong></span></a>
-      <a class="dc-contact-card" href="tel:0403596418" aria-label="Call landline number 0403596418"><span class="dc-contact-icon" aria-hidden="true">☎</span><span class="dc-contact-copy"><small>Landline</small><strong dir="ltr">0403596418</strong></span></a>
+  
+  <div class="dc-pc-divider" aria-hidden="true"><span>♥</span></div>
+  
+  <section class="dc-pc-contact" aria-labelledby="contactTitle">
+    <h2 class="dc-pc-heading" id="contactTitle">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
+      <span>تواصل معنا</span>
+    </h2>
+  
+    <div class="dc-pc-contact-row" dir="ltr">
+      <nav class="dc-pc-social" aria-label="Dina’s Corner social media">
+        <a href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Dina’s Corner on Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.56-.12-2.53 0-4.26 1.54-4.26 4.37V9.6H7.1v3.2h2.78V21z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Dina’s Corner on Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.7" r="1" class="dc-pc-insta-dot"/></svg>
+        </a>
+      </nav>
+  
+      <a class="dc-pc-phone-card" href="tel:0403596418" aria-label="Call 0403596418">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
+        <strong>0403596418</strong>
+      </a>
+  
+      <a class="dc-pc-phone-card" href="tel:01066670803" aria-label="Call 01066670803">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
+        <strong>01066670803</strong>
+      </a>
     </div>
   </section>
-
-  <div id="copyToast" class="dc-copy-toast" role="status" aria-live="polite">Copied Successfully!</div>
+  
+  <div class="dc-pc-bottom-divider" aria-hidden="true"><span>♥</span></div>
+    <div id="copyToast" class="dc-copy-toast" role="status" aria-live="polite">Copied Successfully!</div>
 </main>
 
 <div class="dc-best-lightbox" id="dcBestSellersLightbox" hidden role="dialog" aria-modal="true" aria-label="Product photo preview">
   <button class="dc-best-lightbox__close" id="dcBestSellersLightboxClose" type="button" aria-label="Close product photo">×</button>
   <img id="dcBestSellersLightboxImage" alt="">
+
 </div>
 
 <script>
