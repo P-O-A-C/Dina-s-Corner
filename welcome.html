@@ -73,6 +73,111 @@
  .dc-pc-phone-card svg{width:16px;height:16px;flex-basis:16px}
 }
 </style>
+
+<style id="dc-reference-layout-update">
+/* Menu: one prominent feature card, with the evaluation card intentionally absent. */
+.dc-action-grid--menu-only{
+  width:min(100%,900px)!important;max-width:900px!important;
+  grid-template-columns:minmax(0,1fr)!important;margin:8px auto 26px!important;
+}
+.dc-action-card--menu{
+  grid-template-columns:104px minmax(0,1fr) 52px!important;
+  min-height:158px!important;padding:20px 25px!important;
+  border:2px solid #e777a1!important;border-radius:28px!important;
+  background:linear-gradient(135deg,#fffafd 0%,#ffeaf1 100%)!important;
+  box-shadow:0 10px 24px rgba(177,37,91,.11),inset 0 0 0 3px rgba(255,255,255,.78)!important;
+}
+.dc-action-card--menu .dc-action-icon{width:92px!important;height:92px!important;border-radius:22px!important}
+.dc-action-card--menu .dc-action-icon svg{width:74px!important;height:74px!important}
+.dc-action-card--menu .dc-action-title{font-size:clamp(26px,3.1vw,34px)!important}
+.dc-action-card--menu .dc-action-copy{font-size:16px!important}
+.dc-action-card--menu .dc-action-arrow{width:48px!important;height:48px!important;font-size:34px!important}
+
+/* Middle section: product photos rotate on the left; branch names/details stay on the right. */
+.dc-visit-layout{
+  direction:ltr!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;
+  gap:14px!important;align-items:stretch!important;
+}
+.dc-best-sellers--full-frame{
+  display:flex!important;flex-direction:column!important;
+  width:100%!important;height:auto!important;min-height:0!important;
+  align-self:stretch!important;padding:0!important;overflow:hidden!important;
+}
+.dc-best-sellers--full-frame .dc-best-sellers__track,
+.dc-best-sellers--full-frame .dc-best-sellers__card,
+.dc-best-sellers--full-frame .dc-best-sellers__card img{
+  height:100%!important;min-height:100%!important;
+}
+.dc-branches-panel{height:auto!important;min-height:0!important;align-self:stretch!important}
+.dc-branch-cards{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:repeat(4,minmax(76px,1fr))!important;gap:8px!important;height:100%!important}
+.dc-branch-card{height:auto!important;min-height:76px!important;max-height:none!important}
+
+/* Lower section: Talabat, payment methods, then social/contact links. */
+.dc-talabat-card{margin:22px 0 17px!important}
+.dc-pc-payment{margin-top:17px!important}
+.dc-pc-contact{margin-top:0!important}
+.dc-pc-heading{width:clamp(220px,42vw,300px)!important;min-height:56px!important}
+.dc-pc-divider,.dc-pc-bottom-divider{color:#d94f83!important}
+
+@media(max-width:760px){
+  .dc-action-grid--menu-only{width:100%!important;max-width:100%!important;margin:4px auto 16px!important}
+  .dc-action-card--menu{
+    grid-template-columns:76px minmax(0,1fr) 42px!important;
+    min-height:126px!important;padding:12px 12px!important;border-radius:22px!important;
+  }
+  .dc-action-card--menu .dc-action-icon{width:68px!important;height:68px!important;border-radius:17px!important}
+  .dc-action-card--menu .dc-action-icon svg{width:54px!important;height:54px!important}
+  .dc-action-card--menu .dc-action-title{font-size:clamp(21px,5.6vw,27px)!important}
+  .dc-action-card--menu .dc-action-copy{font-size:12px!important}
+  .dc-action-card--menu .dc-action-arrow{width:36px!important;height:36px!important;font-size:27px!important}
+
+  .dc-visit-layout{
+    direction:ltr!important;
+    grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;
+    gap:7px!important;align-items:stretch!important;
+  }
+  .dc-best-sellers--full-frame{
+    display:flex!important;aspect-ratio:.48 / 1!important;
+    height:auto!important;min-height:0!important;padding:0!important;
+  }
+  .dc-best-sellers--full-frame .dc-best-sellers__track,
+  .dc-best-sellers--full-frame .dc-best-sellers__card,
+  .dc-best-sellers--full-frame .dc-best-sellers__card img{
+    height:100%!important;min-height:0!important;
+  }
+  .dc-best-sellers--full-frame .dc-best-sellers__card{flex-basis:100%!important}
+  .dc-best-sellers--full-frame .dc-best-sellers__card img{object-fit:cover!important}
+  .dc-branches-panel{padding:6px 5px!important}
+  .dc-branch-cards{
+    height:100%!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:5px!important;
+  }
+  .dc-branch-card{
+    height:auto!important;min-height:0!important;max-height:none!important;
+    grid-template-columns:19px minmax(0,1fr) 18px!important;
+    gap:4px!important;padding:5px 4px!important;border-radius:13px!important;
+  }
+  .dc-branch-card__icon{width:19px!important;height:19px!important;font-size:13px!important}
+  .dc-branch-card__go{width:18px!important;height:18px!important;font-size:10px!important}
+  .dc-branch-card__body{gap:2px!important}
+  .dc-branch-card__body strong{font-size:clamp(8.5px,2.5vw,10.5px)!important;line-height:1.18!important}
+  .dc-branch-card__body small{font-size:clamp(7.5px,2.15vw,9px)!important;line-height:1.2!important}
+
+  .dc-talabat-card{margin:13px 0 12px!important}
+  .dc-pc-payment{margin-top:13px!important}
+  .dc-pc-heading{width:220px!important;min-height:52px!important;margin-bottom:16px!important;font-size:19px!important}
+}
+@media(max-width:360px){
+  .dc-visit-layout{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)!important;gap:5px!important}
+  .dc-branch-card{grid-template-columns:17px minmax(0,1fr) 16px!important;gap:3px!important}
+  .dc-branch-card__icon{width:17px!important;height:17px!important;font-size:12px!important}
+  .dc-branch-card__go{width:16px!important;height:16px!important}
+  .dc-branch-card__body strong{font-size:8px!important}
+  .dc-branch-card__body small{font-size:7.2px!important}
+}
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
