@@ -2,11 +2,8 @@
   'use strict';
   const $ = (id) => document.getElementById(id);
   const menuLink = $('viewMenuLink');
-  const evaluateButton = $('evaluateButton');
-  const backdrop = $('branchDialog');
-  const closeButton = $('closeBranchDialog');
-  const branchList = $('branchList');
-  const errorBox = $('branchError');
+  const branchCards = $('dcBranchCards');
+  let renderedBranchCount = 4;
 
   if (menuLink) {
     const incoming = new URLSearchParams(window.location.search);
@@ -22,73 +19,59 @@
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
   }[char]));
 
-  function safeMapsUrl(location) {
-    return window.DinaBranchMaps?.resolve(location) || '';
-  }
-
-  async function loadBranches() {
-    if (!branchList) return;
-    branchList.innerHTML = '<div class="dc-branch-loading">Loading branches…</div>';
-    if (errorBox) errorBox.hidden = true;
-    try {
-      const client = window.sb;
-      if (!client || typeof client.from !== 'function') {
-        throw new Error('Branch information is not available. Please refresh the page.');
-      }
-      const { data, error } = await client.from('locations')
-        .select('id,name,city,address,maps_url,is_active')
-        .eq('is_active', true)
-        .order('name', { ascending: true });
-      if (error) throw error;
-      const branches = (Array.isArray(data) ? data : []).filter((row) => row && row.name);
-      if (!branches.length) {
-        branchList.innerHTML = '<div class="dc-branch-loading">No active branches are available right now.</div>';
-        return;
-      }
-      branchList.innerHTML = branches.map((branch) => {
-        const url = safeMapsUrl(branch);
-        if (!url) return '';
-        const detail = [branch.city, branch.address].filter(Boolean).join(' · ');
-        return '<a class="dc-branch-button" href="' + escapeHtml(url) +
-          '" target="_blank" rel="noopener noreferrer"><span><strong>' +
-          escapeHtml(branch.name) + '</strong>' +
-          (detail ? '<small class="dc-branch-detail">' + escapeHtml(detail) + '</small>' : '') +
-          '</span></a>';
-      }).join('') || '<div class="dc-branch-loading">Review links are not set up yet.</div>';
-    } catch (error) {
-      console.error('Dina’s Corner branch list could not be loaded:', error);
-      if (branchList) branchList.innerHTML = '';
-      if (errorBox) {
-        errorBox.textContent = error && error.message ? error.message : 'Could not load branches. Please try again later.';
-        errorBox.hidden = false;
-      }
+  function syncBranchLayout(count) {
+    const safeCount = Math.max(1, Number(count) || 4);
+    if (branchCards) branchCards.style.setProperty('--dc-branch-count', String(safeCount));
+    const imageFrame = document.querySelector('.dc-best-sellers--full-frame');
+    if (imageFrame) {
+      const baseRatio = window.matchMedia && window.matchMedia('(max-width: 360px)').matches ? 0.44 : 0.47;
+      const ratio = Math.min(1.3, Math.max(0.28, (baseRatio * 4) / safeCount));
+      imageFrame.style.setProperty('--dc-branch-photo-ratio', `${ratio} / 1`);
     }
   }
 
-  function openDialog() {
-    if (!backdrop) return;
-    backdrop.hidden = false;
-    document.body.style.overflow = 'hidden';
-    loadBranches();
-    if (closeButton) closeButton.focus();
-  }
-  function closeDialog() {
-    if (!backdrop) return;
-    backdrop.hidden = true;
-    document.body.style.overflow = '';
-    if (evaluateButton) evaluateButton.focus();
-  }
-  if (evaluateButton) evaluateButton.addEventListener('click', openDialog);
-  const welcomeParams = new URLSearchParams(window.location.search);
-  if (welcomeParams.get('show_rating') === '1') {
-    window.setTimeout(openDialog, 180);
+  async function loadWelcomeBranches() {
+    if (!branchCards) return;
+    branchCards.setAttribute('aria-busy', 'true');
+    branchCards.innerHTML = '<div class="dc-branch-loading">جارٍ تحميل الفروع…</div>';
+    try {
+      const client = window.sb;
+      if (!client || typeof client.from !== 'function') {
+        throw new Error('Branch list is unavailable. Check the public locations read permission.');
+      }
+      const { data, error } = await client.from('locations')
+        .select('id,name,city,address,maps_url,is_active,created_at')
+        .eq('is_active', true)
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+
+      const branches = (Array.isArray(data) ? data : []).filter((row) => row && String(row.name || '').trim());
+      renderedBranchCount = branches.length || 4;
+      syncBranchLayout(renderedBranchCount);
+      if (!branches.length) {
+        branchCards.innerHTML = '<div class="dc-branch-loading">لا توجد فروع متاحة حاليًا.</div>';
+        return;
+      }
+
+      branchCards.innerHTML = branches.map((branch) => {
+        const name = String(branch.name || '').trim();
+        const detail = [branch.city, branch.address].map((value) => String(value || '').trim()).filter(Boolean).join(' · ');
+        const mapUrl = window.DinaBranchMaps?.resolve(branch) || '';
+        const body = `<span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>${escapeHtml(name)}</strong>${detail ? `<small>${escapeHtml(detail)}</small>` : ''}</span><span class="dc-branch-card__go" aria-hidden="true">${mapUrl ? '↗' : '—'}</span>`;
+        return mapUrl
+          ? `<a class="dc-branch-card" href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener noreferrer" aria-label="افتح موقع ${escapeHtml(name)} على خرائط Google">${body}</a>`
+          : `<div class="dc-branch-card dc-branch-card--unlinked" aria-disabled="true" title="لم تتم إضافة رابط خرائط دقيق لهذا الفرع بعد">${body}</div>`;
+      }).join('');
+    } catch (error) {
+      console.error('Dina’s Corner branches could not be loaded:', error);
+      renderedBranchCount = 4;
+      syncBranchLayout(renderedBranchCount);
+      branchCards.innerHTML = '<div class="dc-branch-loading" role="status">تعذر تحميل الفروع الآن. يرجى تحديث الصفحة.</div>';
+    } finally {
+      branchCards.setAttribute('aria-busy', 'false');
+    }
   }
 
-  if (closeButton) closeButton.addEventListener('click', closeDialog);
-  if (backdrop) backdrop.addEventListener('click', (event) => {
-    if (event.target === backdrop) closeDialog();
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && backdrop && !backdrop.hidden) closeDialog();
-  });
-}());
+  loadWelcomeBranches();
+  window.addEventListener('resize', () => syncBranchLayout(renderedBranchCount), { passive: true });
+})();

@@ -714,3 +714,37 @@ body.dc-welcome-page{
   .dc-social-links>.dc-instagram-link .dc-instagram-icon{flex-basis:25px;width:25px;height:25px;font-size:22px}
   .dc-social-links>.dc-facebook-link svg{flex-basis:25px;width:25px;height:25px}
 }
+
+
+/* GM-managed branch cards: preserve the approved design for any number of active branches. */
+.dc-branches-panel .dc-branch-loading{
+  display:grid;place-items:center;min-height:100px;padding:14px 10px;
+  border:1px dashed #e5b2bf;border-radius:14px;background:rgba(255,255,255,.62);
+  color:#8f6573;text-align:center;font-size:12px;line-height:1.5;
+}
+.dc-branch-card--unlinked{cursor:default;pointer-events:none;}
+.dc-branch-card--unlinked .dc-branch-card__go{background:#bda3ad;color:#fff;}
+@media(max-width:760px){
+  .dc-branch-cards{grid-template-rows:repeat(var(--dc-branch-count,4),minmax(0,1fr))!important;}
+  .dc-best-sellers--full-frame{aspect-ratio:var(--dc-branch-photo-ratio,.47 / 1)!important;}
+}
+
+
+/* Desktop branch stack stays aligned with the photo while GM can add or remove branches. */
+@media(min-width:761px){
+  .dc-visit-layout{align-items:stretch!important;}
+  .dc-branches-panel{
+    height:auto!important;min-height:0!important;max-height:none!important;
+    padding:0!important;align-self:stretch!important;
+  }
+  .dc-branch-cards{
+    display:grid!important;height:auto!important;
+    grid-template-rows:repeat(var(--dc-branch-count,4),76px)!important;
+    gap:7px!important;
+  }
+  .dc-branch-card{height:76px!important;min-height:76px!important;max-height:76px!important;}
+  .dc-best-sellers--full-frame{
+    height:100%!important;min-height:0!important;max-height:none!important;
+    align-self:stretch!important;
+  }
+}

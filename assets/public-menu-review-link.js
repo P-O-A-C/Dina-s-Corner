@@ -13,12 +13,8 @@
         .select('id,name,city,address,maps_url,is_active')
         .eq('id',locationId).eq('is_active',true).maybeSingle();
       if(error||!data)return;
-      let destination=window.DinaBranchMaps?.resolve(data) || String(data.maps_url||'').trim();
-      if(!isHttpsUrl(destination)){
-        const query=[data.name,data.address,data.city].filter(Boolean).join(' ');
-        if(!query)return;
-        destination='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(query);
-      }
+      const destination=window.DinaBranchMaps?.resolve(data) || '';
+      if(!isHttpsUrl(destination))return;
       link.href=destination;
       link.hidden=false;
       link.setAttribute('aria-label','رأيك يهمنا - افتح موقع '+String(data.name||'الفرع')+' على Google Maps');

@@ -1306,12 +1306,8 @@ async function loadCustomerProfile() {
   }
 }
 
-function dinaKnownBranchMapsUrl(location) {
-  return window.DinaBranchMaps?.knownUrl(location) || "";
-}
-
 function dinaResolvedBranchMapsUrl(location) {
-  return window.DinaBranchMaps?.resolve(location) || String(location?.maps_url || "").trim();
+  return window.DinaBranchMaps?.resolve(location) || "";
 }
 
 async function loadCustomerLocations() {
@@ -1323,7 +1319,7 @@ async function loadCustomerLocations() {
     .from("locations")
     .select("id,name,city,address,phone,maps_url,is_active")
     .eq("is_active", true)
-    .order("name", { ascending: true });
+    .order("created_at", { ascending: true });
   if (error) {
     box.innerHTML = `<div class="alert"><strong>Could not load branch locations.</strong><br>${esc(error.message)}</div>`;
     return;
@@ -2042,7 +2038,7 @@ async function loadGmLocations() {
       cityInput.value = location.city || "";
       addressInput.value = location.address || "";
       phoneInput.value = location.phone || "";
-      mapsInput.value = dinaResolvedBranchMapsUrl(location) || location.maps_url || "";
+      mapsInput.value = String(location.maps_url || "");
       activeInput.checked = location.is_active !== false;
       if (formTitle) formTitle.textContent = "Edit Branch Location";
       saveButton.textContent = "SAVE CHANGES";
@@ -2089,47 +2085,24 @@ async function loadGmLocations() {
     box.innerHTML = '<div class="branch-empty">Loading branches…</div>';
     const { data, error } = await sb.from("locations")
       .select("id,name,city,address,phone,maps_url,is_active,created_at,updated_at")
-      .order("name", { ascending: true });
+      .order("created_at", { ascending: true });
     if (error) {
       box.innerHTML = `<div class="alert">Could not load branches. Run the latest POACustomers menu/location setup SQL, then refresh. Details: ${esc(error.message)}</div>`;
       return;
     }
     locations = Array.isArray(data) ? data : [];
 
-    // Persist the four owner-confirmed map links so any consumer of locations.maps_url
-    // receives the same destination, not only pages using the front-end resolver.
-    let correctedMapLinks = 0;
-    let failedMapLinkUpdates = 0;
-    for (const location of locations) {
-      const canonicalUrl = dinaKnownBranchMapsUrl(location);
-      if (!canonicalUrl || String(location.maps_url || '').trim() === canonicalUrl) continue;
-      const { error: mapUpdateError } = await sb.from("locations")
-        .update({ maps_url: canonicalUrl, updated_at: new Date().toISOString() })
-        .eq("id", location.id);
-      if (mapUpdateError) {
-        failedMapLinkUpdates += 1;
-      } else {
-        location.maps_url = canonicalUrl;
-        correctedMapLinks += 1;
-      }
-    }
     render();
-    if (correctedMapLinks) {
-      setMessage(`Updated ${correctedMapLinks} owner-confirmed branch map link(s).`);
-    } else if (failedMapLinkUpdates) {
-      setMessage("Some map links could not be saved to the branch table. The customer pages still use the owner-confirmed links.", true);
-    }
   };
 
   saveButton.onclick = async () => {
     const name = nameInput.value.trim();
     const mapsUrl = mapsInput.value.trim();
     if (!name) { setMessage("Branch name is required.", true); nameInput.focus(); return; }
-    if (mapsUrl) {
-      try {
-        const parsed = new URL(mapsUrl);
-        if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error();
-      } catch { setMessage("Enter a valid Google Maps URL beginning with https:// or leave it blank.", true); mapsInput.focus(); return; }
+    if (mapsUrl && !window.DinaBranchMaps?.isExactMapsUrl(mapsUrl)) {
+      setMessage("Paste the direct Google Maps link for this exact branch pin. Generic map searches are not accepted.", true);
+      mapsInput.focus();
+      return;
     }
     saveButton.disabled = true;
     const originalText = saveButton.textContent;
@@ -2423,7 +2396,7 @@ if ("serviceWorker" in navigator) {
       // Standalone tenant deployments publish POACustomers as their root.
       workerPath = "../sw.js";
     }
-    navigator.serviceWorker.register(workerPath + "?v=20261026-offers-route-fix-v2")
+    navigator.serviceWorker.register(workerPath + "?v=20261116-gm-managed-locations-v1")
       .catch(error => console.warn("Service worker registration failed:", error));
   });
 }
