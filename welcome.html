@@ -231,6 +231,61 @@
   }
 </style>
 
+
+<style id="dc-mobile-images-right-layout">
+  /* Mobile only: place the animated product photos on the right, with branch/payment cards beside them on the left. */
+  @media (max-width: 760px) {
+    .dc-visit-layout {
+      display: grid !important;
+      direction: rtl !important;
+      grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr) !important;
+      grid-template-rows: auto !important;
+      grid-auto-flow: row !important;
+      align-items: stretch !important;
+      gap: 8px !important;
+      width: 100% !important;
+    }
+
+    .dc-visit-layout > .dc-best-sellers {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      order: 0 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      aspect-ratio: auto !important;
+      align-self: stretch !important;
+    }
+
+    .dc-visit-layout > .dc-branches-panel {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      order: 1 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      align-self: stretch !important;
+      box-sizing: border-box !important;
+    }
+
+    .dc-best-sellers--full-frame .dc-best-sellers__track,
+    .dc-best-sellers--full-frame .dc-best-sellers__card,
+    .dc-best-sellers--full-frame .dc-best-sellers__card img {
+      height: 100% !important;
+      min-height: 0 !important;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .dc-visit-layout {
+      grid-template-columns: minmax(0, .62fr) minmax(0, 1.38fr) !important;
+      gap: 6px !important;
+    }
+  }
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
