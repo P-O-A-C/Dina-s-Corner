@@ -2,47 +2,41 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#172f42">
-  <meta name="description" content="POAC — بوابة مشروعات الأعمال">
-  <title>POAC | Business Workspace</title>
-  <link rel="stylesheet" href="GrandDryClean/css/poac.css">
-  <style>
-    body{min-height:100vh;display:grid;place-items:center;padding:24px;background:#f6f5f0}
-    .poac-hub{width:min(780px,100%);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 20px 65px #19374718}
-    .hub-head{background:linear-gradient(145deg,#172f42,#28556a);color:#fff;padding:34px clamp(24px,6vw,54px)}
-    .hub-mark{width:52px;height:52px;border:1px solid #c6a66b;border-radius:50%;display:grid;place-items:center;color:#c6a66b;font:30px Georgia}
-    .hub-head h1{font-size:38px;letter-spacing:5px;margin:12px 0 2px}.hub-head p{color:#d5e0e3;font-size:12px;margin:0}
-    .hub-body{padding:30px clamp(20px,5vw,46px)}.hub-body h2{color:#172f42;font-size:20px;margin:0 0 6px}.hub-note{font-size:11px;color:#7c898d;line-height:1.9;margin:0 0 20px}
-    .hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.hub-card{display:block;text-decoration:none;border:1px solid #e5e9e6;border-radius:12px;padding:18px;color:#20343e;background:#fcfdfa;transition:.2s}.hub-card:hover{border-color:#c6a66b;transform:translateY(-2px)}.hub-card strong{display:block;color:#172f42;font-size:14px}.hub-card span{display:block;color:#7c898d;font-size:10px;margin-top:5px}.hub-card b{display:block;color:#9a7b47;font-size:10px;margin-top:15px}
-    .hub-foot{border-top:1px solid #e5e9e6;padding:14px 24px;color:#849095;font-size:9px;display:flex;justify-content:space-between}
-    @media(max-width:560px){.hub-grid{grid-template-columns:1fr}.hub-head h1{font-size:32px}}
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#183b50">
+  <meta name="description" content="POAC — بوابة الدخول الموحدة">
+  <title>POAC | تسجيل الدخول</title>
+  <link rel="stylesheet" href="assets/poac-portal.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
+  <script src="assets/config.js"></script>
 </head>
-<body>
-  <main class="poac-hub">
-    <header class="hub-head">
-      <div class="hub-mark" aria-hidden="true">P</div>
+<body data-page="public-login">
+  <main class="portal-shell">
+    <section class="portal-brand">
+      <div class="brand-monogram">P</div>
+      <span class="brand-kicker">BUSINESS WORKSPACE</span>
       <h1>POAC</h1>
-      <p>BUSINESS WORKSPACE · ONE PLATFORM, MULTIPLE BUSINESSES</p>
-    </header>
-    <section class="hub-body">
-      <h2>بوابة المشروعات</h2>
-      <p class="hub-note">هذه صفحة تنظيم ومعاينة مؤقتة للمشروعات الموجودة في المستودع. تسجيل الدخول الموحد والتحقق من صلاحيات الحسابات لم يتم تفعليهما في هذه النسخة.</p>
-      <div class="hub-grid">
-        <a class="hub-card" href="welcome.html">
-          <strong>Dina’s Corner</strong>
-          <span>فتح صفحة العرض الحالية للمشروع</span>
-          <b>فتح المعاينة ←</b>
-        </a>
-        <a class="hub-card" href="GrandDryClean/gm.html">
-          <strong>GRAND DRY CLEAN</strong>
-          <span>فتح لوحة GM التجريبية للمغسلة</span>
-          <b>فتح لوحة المعاينة ←</b>
-        </a>
-      </div>
+      <p>منصة موحدة لإدارة المشروعات والخدمات.</p>
+      <div class="brand-rule"><i></i><i></i><i></i></div>
+      <small>ONE PLATFORM · MULTIPLE BUSINESSES</small>
     </section>
-    <footer class="hub-foot"><span>POAC</span><span>PROJECT HUB · PREVIEW</span></footer>
+    <section class="portal-login">
+      <div class="login-heading">
+        <span class="eyebrow">WELCOME BACK</span>
+        <h2>تسجيل الدخول</h2>
+        <p>أدخل اسم المستخدم وكلمة المرور للوصول إلى مساحة العمل.</p>
+      </div>
+      <form id="unifiedLoginForm" novalidate>
+        <label for="username">اسم المستخدم أو البريد الإلكتروني</label>
+        <input id="username" name="username" autocomplete="username" placeholder="Username or email" required>
+        <label for="password">كلمة المرور</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
+        <button id="loginBtn" type="submit">دخول إلى POAC <span>←</span></button>
+        <p id="msg" class="login-message" role="status" aria-live="polite" hidden></p>
+      </form>
+      <footer><strong>POAC</strong><span>SECURE BUSINESS ACCESS</span></footer>
+    </section>
   </main>
+  <script src="assets/app.js"></script>
 </body>
 </html>

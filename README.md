@@ -1,48 +1,45 @@
-# POAC — Project Repository
+# Dina's Corner
 
-المستودع الحالي يجمع ملفات بوابة POAC ومشروع Dina’s Corner وواجهة GRAND DRY CLEAN التجريبية.
+Welcome to Dina's Corner, a new project repository.
 
-## الهيكل الحالي
+## Overview
 
-```text
-/
-├── index.html                  # بوابة POAC المؤقتة
-├── login.html                  # يحوّل إلى بوابة POAC
-├── welcome.html                # صفحة Dina’s Corner العامة
-├── menu.html                   # منيو Dina’s Corner
-├── assets/                     # ملفات التطبيق والهوية والإعدادات
-├── Dina'sCorner/               # مجموعة صفحات إدارة/تشغيل إضافية لدينا
-└── GrandDryClean/              # واجهات POAC وGM التجريبية للمغسلة
-    ├── index.html
-    ├── dashboard.html
-    ├── gm.html
-    ├── css/
-    └── js/
+This repository is currently being set up as the home for Dina's Corner. It can be used for:
+
+- project documentation
+- source code
+- assets and static content
+- future app or site development
+
+## Repository status
+
+This repository is intentionally minimal right now and ready for the project to grow.
+
+## Getting started
+
+1. Clone the repository.
+2. Open the project in your preferred editor or IDE.
+3. Start building the app, site, or service for Dina's Corner.
+
+```bash
+git clone https://github.com/POACustomers/Dina-s-Corner.git
+cd Dina-s-Corner
 ```
 
-## حالة النسخة
+## Notes
 
-- صفحة `index.html` هي مدخل POAC المؤقت، وتعرض روابط معاينة للمشروعين.
-- صفحة تسجيل الدخول الموحد والتحقق من صلاحيات المستخدمين **لم يتم تفعيلهما بعد**.
-- لوحة `GrandDryClean/gm.html` واجهة تجريبية؛ تغييرات الأصناف والأقسام لا تُحفظ في قاعدة بيانات.
-- مشروع Dina’s Corner يعتمد على إعدادات Supabase الموجودة في `assets/config.js` وملفات tenant الحالية.
-- لم يتم تغيير بيانات الاتصال أو سياسات قاعدة البيانات ضمن عملية التنسيق.
+- Update this README as the project evolves.
+- Add setup instructions, architecture notes, and usage guidance as needed.
+- Keep project documentation current for contributors and users.
 
-## قبل تفعيل تسجيل الدخول الموحد
+## License
 
-1. مراجعة ملفات المستخدمين والصلاحيات في Supabase.
-2. تحديد الحقول المعتمدة لتوجيه المستخدم: الشركة/المستأجر، الدور، حالة الحساب، ومسار لوحة التحكم.
-3. اعتماد مسارات صفحات Dina’s Corner وGRAND DRY CLEAN النهائية.
-4. تنفيذ التوجيه بعد نجاح التحقق من Supabase فقط، مع فرض العزل عبر RLS.
-5. اختبار كل دور بحساب منفصل قبل النشر.
+This project does not currently specify a license.
 
-## النشر على GitHub Pages
 
-من إعدادات المستودع: **Settings → Pages → Deploy from a branch**، ثم اختيار الفرع `main` والمجلد `/(root)`.
+## Welcome Best Sellers
 
-## تنبيهات
+The Welcome page reads active rows from `public.home_featured_products` and displays them in a swipeable carousel. GM manages this list from `GM/gm-home-products.html`, which supports image uploads and selecting active menu products that already have an image. Run `SUPABASE-BEST-SELLERS-SETUP.sql` once in the Dina's Corner Supabase project to configure public active-photo reads and GM-only write access.
 
-- لا ترفع كلمات مرور أو مفاتيح `service_role` إلى GitHub.
-- المستودع ظاهر كـ Public بحسب صورة المستودع المرسلة؛ لا تضع فيه بيانات عملاء أو ملفات سرية.
-- مفتاح Supabase من نوع publishable/anon يمكن استخدامه في المتصفح بشرط حماية الجداول والعمليات بسياسات RLS صحيحة.
-- احتفظ بنسخة احتياطية قبل أي تعديل على ملفات المشروع.
+
+راجع `POAC-ROUTING-NOTES-AR.md` لمعرفة آلية بوابة POAC وروابط العملاء المباشرة.

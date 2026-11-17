@@ -268,7 +268,7 @@ function routeForRoleFromRoot(role) {
   const normalized = String(role || "").toLowerCase();
   const standalone = document.body?.dataset?.loginScope === "tenant";
   const prefix = standalone ? "" : "POACustomers/";
-  if (normalized === "admin") return prefix + "admin/admin-dashboard.html";
+  if (normalized === "admin") return "POAC-Admin/index.html";
   if (normalized === "gm") return prefix + "GM/gm-dashboard.html";
   if (normalized === "staff") return prefix + "staff/staff-scan.html";
   if (normalized === "customer") return prefix + "customer/customer-home.html";
