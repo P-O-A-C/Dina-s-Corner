@@ -418,6 +418,81 @@
 }
 </style>
 
+
+<style id="dc-final-approved-layout">
+/* Branch markers only: no decorative star or trailing arrow. */
+.dc-visit-layout{display:grid!important;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)!important;align-items:stretch!important;gap:clamp(7px,1.2vw,12px)!important}
+.dc-branches-panel{display:flex!important;flex-direction:column!important;align-self:stretch!important;height:auto!important;min-height:0!important}
+.dc-branch-cards{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:repeat(4,minmax(46px,auto))!important;gap:7px!important;height:auto!important}
+.dc-branch-card{display:grid!important;grid-template-columns:28px minmax(0,1fr)!important;align-items:center!important;gap:8px!important}
+.dc-branch-card__icon{width:26px!important;height:26px!important;display:grid!important;place-items:center!important;background:transparent!important;color:#a91f50!important}
+.dc-branch-card__icon svg{width:25px!important;height:25px!important;display:block!important}
+.dc-branch-card__go{display:none!important}
+.dc-branch-card__body strong{text-align:center!important}
+
+/* Payment methods sit directly under the branches, in the same right column.
+   The photo stretches to the bottom of the Vodafone Cash card. */
+.dc-pc-payment--inline{width:100%!important;max-width:none!important;margin:9px 0 0!important}
+.dc-pc-payment-grid{width:100%!important;max-width:none!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important}
+.dc-pc-payment-card{width:100%!important;min-height:47px!important;box-sizing:border-box!important;
+  border:1.6px solid #76213d!important;outline:1px solid #c5a15a!important;outline-offset:-4px!important;
+  border-radius:13px!important;background:linear-gradient(140deg,#fffdfc,#fff0f1)!important;
+  box-shadow:0 4px 10px rgba(111,31,55,.08)!important;color:#76213d!important}
+.dc-pc-instapay span{font-size:clamp(16px,2vw,21px)!important}
+.dc-pc-instapay svg{width:29px!important;height:29px!important}
+.dc-pc-vodafone-icon{width:34px!important;height:34px!important;flex-basis:34px!important}
+.dc-best-sellers--full-frame{height:100%!important;min-height:0!important;aspect-ratio:auto!important;align-self:stretch!important}
+.dc-best-sellers--full-frame .dc-best-sellers__track,
+.dc-best-sellers--full-frame .dc-best-sellers__card,
+.dc-best-sellers--full-frame .dc-best-sellers__card img{height:100%!important;min-height:0!important}
+.dc-best-sellers--full-frame .dc-best-sellers__card img{object-fit:cover!important}
+
+/* Separate, labelled social cards; phone numbers remain side-by-side below. */
+.dc-pc-contact-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;align-items:stretch!important}
+.dc-pc-social{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;min-height:0!important;padding:0!important;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important}
+.dc-pc-social a{width:100%!important;min-height:58px!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:18px!important;padding:8px 18px!important;
+  border:1.6px solid #76213d!important;outline:1px solid #c5a15a!important;outline-offset:-4px!important;border-radius:16px!important;
+  background:linear-gradient(145deg,#fffdfc,#ffedf0)!important;box-shadow:0 4px 11px rgba(111,31,55,.08)!important;text-decoration:none!important}
+.dc-pc-social a svg{width:40px!important;height:40px!important;flex:0 0 40px!important}
+.dc-pc-social a span{font:800 clamp(15px,2.2vw,21px)/1.25 Arial,sans-serif!important;color:#a91f50!important}
+.dc-pc-phone-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;width:100%!important}
+.dc-pc-phone-card{min-width:0!important}
+
+@media(max-width:760px){
+  .dc-visit-layout{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)!important;align-items:stretch!important;gap:6px!important}
+  .dc-branches-panel{padding:3px 2px!important}
+  .dc-branch-cards{grid-template-rows:repeat(4,minmax(42px,auto))!important;gap:5px!important}
+  .dc-branch-card{grid-template-columns:19px minmax(0,1fr)!important;gap:4px!important;padding:5px 4px!important;min-height:42px!important}
+  .dc-branch-card__icon{width:18px!important;height:18px!important}
+  .dc-branch-card__icon svg{width:18px!important;height:18px!important}
+  .dc-pc-payment--inline{margin-top:6px!important}
+  .dc-pc-payment-grid{gap:5px!important}
+  .dc-pc-payment-card{min-height:43px!important;padding:5px 4px!important;gap:5px!important;border-radius:11px!important;font-size:clamp(11px,3.1vw,15px)!important}
+  .dc-pc-instapay svg{width:23px!important;height:23px!important;flex-basis:23px!important}
+  .dc-pc-instapay span{font-size:clamp(14px,3.8vw,18px)!important}
+  .dc-pc-vodafone-icon{width:28px!important;height:28px!important;flex-basis:28px!important}
+  .dc-best-sellers--full-frame{aspect-ratio:auto!important;height:100%!important}
+  .dc-pc-contact-row{grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
+  .dc-pc-social{gap:6px!important}
+  .dc-pc-social a{min-height:52px!important;padding:6px 12px!important;gap:13px!important;border-radius:13px!important}
+  .dc-pc-social a svg{width:34px!important;height:34px!important;flex-basis:34px!important}
+  .dc-pc-social a span{font-size:clamp(14px,4vw,18px)!important}
+  .dc-pc-phone-list{gap:5px!important}
+  .dc-pc-phone-card{min-height:45px!important;padding:5px 4px!important;gap:4px!important}
+  .dc-pc-phone-card strong{font-size:clamp(9px,2.8vw,12px)!important}
+}
+@media(max-width:360px){
+  .dc-visit-layout{grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)!important;gap:4px!important}
+  .dc-branch-card{grid-template-columns:16px minmax(0,1fr)!important;gap:3px!important;padding:4px 3px!important}
+  .dc-branch-card__icon,.dc-branch-card__icon svg{width:16px!important;height:16px!important}
+  .dc-pc-payment-card{gap:3px!important;padding:4px 2px!important}
+  .dc-pc-instapay span{font-size:13px!important}
+  .dc-pc-vodafone-name{font-size:11px!important}
+  .dc-pc-social a{gap:9px!important;padding:5px 9px!important}
+  .dc-pc-phone-card strong{font-size:8.5px!important}
+}
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -452,17 +527,29 @@
       <section class="dc-branches-panel" aria-label="Branch locations">
         <div class="dc-branch-cards">
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/qVgwAo2xUAvsjDDt7">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong><small>على مبارك مع مسجد الرضوان، أمام مدخل جيم النعماني</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+            <span class="dc-branch-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13A8 8 0 1 0 4 9c0 5.8 8 13 8 13Z" fill="#a91f50"/><circle cx="12" cy="9" r="2.7" fill="#fff"/></svg></span><span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong><small>على مبارك مع مسجد الرضوان، أمام مدخل جيم النعماني</small></span>
           </a>
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/e3K3bkv4ryo5RJK49">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – الفرع الثاني</strong><small>الاستاد، شارع الحياة، بجوار بوابة نادي سيتي الجانبية</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+            <span class="dc-branch-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13A8 8 0 1 0 4 9c0 5.8 8 13 8 13Z" fill="#a91f50"/><circle cx="12" cy="9" r="2.7" fill="#fff"/></svg></span><span class="dc-branch-card__body"><strong>طنطا – الفرع الثاني</strong><small>الاستاد، شارع الحياة، بجوار بوابة نادي سيتي الجانبية</small></span>
           </a>
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mafaza%20El%20Sabeel%2C%2018%20Hasan%20Hasseb%20St%2C%20Tanta&query_place_id=ChIJnYC7VwDJ9xQRQxUKUzrK914" aria-label="موقع منفذ مفازا السبيل على خرائط Google">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – منفذ مفازا السبيل</strong><small>داخل ماركت مفازا السبيل، شارع حسن حسيب</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+            <span class="dc-branch-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13A8 8 0 1 0 4 9c0 5.8 8 13 8 13Z" fill="#a91f50"/><circle cx="12" cy="9" r="2.7" fill="#fff"/></svg></span><span class="dc-branch-card__body"><strong>طنطا – منفذ مفازا السبيل</strong><small>داخل ماركت مفازا السبيل، شارع حسن حسيب</small></span>
           </a>
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/3hrU7SKAWi6KXrnF6">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong><small>حي البنفسج، أمام مدخل كارفور البنفسج مباشرة، منطقة المدارس</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+            <span class="dc-branch-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-7.2 8-13A8 8 0 1 0 4 9c0 5.8 8 13 8 13Z" fill="#a91f50"/><circle cx="12" cy="9" r="2.7" fill="#fff"/></svg></span><span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong><small>حي البنفسج، أمام مدخل كارفور البنفسج مباشرة، منطقة المدارس</small></span>
           </a>
+        </div>
+        <div class="dc-pc-payment dc-pc-payment--inline" aria-label="Payment methods">
+          <div class="dc-pc-payment-grid">
+            <a class="dc-pc-payment-card dc-pc-instapay" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.8 14 9.8M8.2 15.8l-1.1 1.1a3.3 3.3 0 0 1-4.7-4.7l4-4a3.3 3.3 0 0 1 4.7 0M15.8 8.2l1.1-1.1a3.3 3.3 0 0 1 4.7 4.7l-4 4a3.3 3.3 0 0 1-4.7 0"/></svg>
+              <span>InstaPay <b aria-hidden="true">»</b></span>
+            </a>
+            <button class="dc-pc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')" aria-label="Copy Vodafone Cash number">
+              <svg class="dc-pc-vodafone-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><path d="M29.8 13.4a13.1 13.1 0 1 0 5.1 14.7"/><circle cx="30.7" cy="15.6" r="4.3"/></svg>
+              <span class="dc-pc-vodafone-name">Vodafone Cash</span>
+            </button>
+          </div>
         </div>
       </section>
     </div>
@@ -473,24 +560,6 @@
     <div class="dc-talabat-copy"><strong>اطلب أوردرَك من طلبات</strong></div>
   </a>
 
-  <section class="dc-pc-payment" aria-labelledby="paymentTitle">
-    <h2 class="dc-pc-heading" id="paymentTitle">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H20v14H5.5A2.5 2.5 0 0 1 3 16.5z"/><path d="M3 8h14a3 3 0 0 0 3-3M16 12h4"/><circle cx="16" cy="12" r=".8"/></svg>
-      <span>طرق الدفع</span>
-    </h2>
-  
-    <div class="dc-pc-payment-grid">
-      <button class="dc-pc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')" aria-label="Copy Vodafone Cash number">
-        <svg class="dc-pc-vodafone-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><path d="M29.8 13.4a13.1 13.1 0 1 0 5.1 14.7"/><circle cx="30.7" cy="15.6" r="4.3"/></svg>
-        <span class="dc-pc-vodafone-name">Vodafone Cash</span>
-      </button>
-  
-      <a class="dc-pc-payment-card dc-pc-instapay" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.8 14 9.8M8.2 15.8l-1.1 1.1a3.3 3.3 0 0 1-4.7-4.7l4-4a3.3 3.3 0 0 1 4.7 0M15.8 8.2l1.1-1.1a3.3 3.3 0 0 1 4.7 4.7l-4 4a3.3 3.3 0 0 1-4.7 0"/></svg>
-        <span>InstaPay <b aria-hidden="true">»</b></span>
-      </a>
-    </div>
-  </section>
   
   <div class="dc-pc-divider" aria-hidden="true"><span>♥</span></div>
   
@@ -504,12 +573,15 @@
       <nav class="dc-pc-social" aria-label="Dina’s Corner social media">
         <a href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Dina’s Corner on Facebook">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.56-.12-2.53 0-4.26 1.54-4.26 4.37V9.6H7.1v3.2h2.78V21z"/></svg>
+          <span>تابعنا على الفيس بوك</span>
         </a>
         <a href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Dina’s Corner on Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.7" r="1" class="dc-pc-insta-dot"/></svg>
+          <span>تابعنا على الانستجرام</span>
         </a>
       </nav>
   
+      <div class="dc-pc-phone-list">
       <a class="dc-pc-phone-card" href="tel:0403596418" aria-label="Call 0403596418">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
         <strong>0403596418</strong>
@@ -519,6 +591,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
         <strong>01066670803</strong>
       </a>
+      </div>
     </div>
   </section>
   
