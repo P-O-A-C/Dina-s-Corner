@@ -460,6 +460,59 @@
 }
 </style>
 
+
+
+<style id="dc-readable-headings-refinement">
+/* Improve title contrast while preserving Dina's Corner's soft rose/sage/champagne palette. */
+.dc-welcome-header h1,
+.dc-welcome-header h1 .dc-welcome-line,
+.dc-welcome-header h1 .dc-welcome-brand {
+  color: #842D50 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.82), 0 2px 5px rgba(132,45,80,.12) !important;
+}
+.dc-action-card .dc-action-title {
+  color: #8B3457 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.88) !important;
+}
+.dc-action-card .dc-action-copy {
+  color: #72505F !important;
+  font-weight: 650 !important;
+}
+/* Section heading pills: richer dusty rose gives white lettering clear contrast. */
+.dc-section-heading > span {
+  color: #FFFFFF !important;
+  background: linear-gradient(135deg, #D08AA0 0%, #B96582 100%) !important;
+  border-color: #B96B85 !important;
+  text-shadow: 0 1px 2px rgba(91,35,58,.42) !important;
+  box-shadow: 0 4px 10px rgba(145,73,101,.16), inset 0 1px 3px rgba(255,255,255,.55) !important;
+}
+.dc-section-heading::before,
+.dc-section-heading::after {
+  background: linear-gradient(90deg, transparent, #C98299) !important;
+}
+/* Branch names and supporting text stay dark enough against the pale cards. */
+.dc-branch-card__body strong {
+  color: #762A4A !important;
+  font-weight: 900 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.86) !important;
+}
+.dc-branch-card__body small {
+  color: #6D4B59 !important;
+  font-weight: 650 !important;
+}
+.dc-talabat-copy > strong {
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 2px rgba(91,35,58,.40) !important;
+  background: linear-gradient(135deg, #D08AA0 0%, #B96582 100%) !important;
+}
+.dc-contact-section .dc-section-heading > span,
+.dc-payment-section .dc-section-heading > span { color: #FFFFFF !important; }
+.dc-contact-copy small { color: #795466 !important; font-weight: 800 !important; }
+.dc-contact-copy strong,
+.dc-instagram-link strong,
+.dc-facebook-link strong { color: #782A4A !important; }
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
