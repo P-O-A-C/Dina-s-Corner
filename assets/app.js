@@ -311,6 +311,14 @@ function resolvePoacProjectLogin(profile, user, expectedProject) {
     if (isDinaManagerAccount && (!hasMarkers || matchesDina)) {
       return { allowed: true, target: "Dina'sCorner/dashboard.html" };
     }
+
+    // GRAND DRY CLEAN management may also sign in through the central POAC
+    // login, but only when the authenticated GM account carries the exact
+    // GRAND DRY CLEAN project marker from Supabase app_metadata/profile.
+    if (role === "gm" && matchesDryClean) {
+      return { allowed: true, target: "GrandDryClean/dashboard.html" };
+    }
+
     return { allowed: false, message: "هذا الحساب غير مصرح له بدخول بوابة POAC. استخدم حساب الإدارة الصحيح للمشروع." };
   }
   if (expectedProject === "dina-corner") {
