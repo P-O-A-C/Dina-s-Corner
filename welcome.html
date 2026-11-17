@@ -493,6 +493,91 @@
 }
 </style>
 
+
+<style id="dc-user-staircase-payment-layout">
+/* Right-side staircase: the photo ends at InstaPay; Vodafone extends below it. */
+.dc-visit-layout{
+  direction:ltr!important;display:grid!important;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)!important;
+  grid-template-rows:repeat(4,minmax(43px,auto)) minmax(50px,auto) minmax(58px,auto)!important;
+  column-gap:clamp(7px,1.2vw,12px)!important;row-gap:7px!important;
+  align-items:stretch!important;
+}
+.dc-best-sellers--full-frame{
+  grid-column:1!important;grid-row:1 / 6!important;
+  align-self:stretch!important;height:auto!important;min-height:0!important;aspect-ratio:auto!important;
+}
+.dc-best-sellers--full-frame .dc-best-sellers__track,
+.dc-best-sellers--full-frame .dc-best-sellers__card,
+.dc-best-sellers--full-frame .dc-best-sellers__card img{
+  height:100%!important;min-height:0!important;
+}
+.dc-branches-panel,.dc-branch-cards,.dc-pc-payment,.dc-pc-payment-grid{display:contents!important}
+.dc-branch-card{grid-column:2!important;min-height:43px!important;height:auto!important}
+.dc-branch-card:nth-child(1){grid-row:1!important}
+.dc-branch-card:nth-child(2){grid-row:2!important}
+.dc-branch-card:nth-child(3){grid-row:3!important}
+.dc-branch-card:nth-child(4){grid-row:4!important}
+.dc-pc-instapay{
+  grid-column:2!important;grid-row:5!important;width:88%!important;justify-self:end!important;
+  min-height:52px!important;border-radius:14px!important;
+}
+.dc-pc-payment-grid>.dc-pc-payment-card:not(.dc-pc-instapay){
+  grid-column:2!important;grid-row:6!important;width:100%!important;justify-self:stretch!important;
+  min-height:62px!important;border-radius:14px!important;
+}
+.dc-pc-instapay span{font-size:clamp(16px,2vw,21px)!important}
+.dc-pc-instapay svg{width:29px!important;height:29px!important}
+.dc-pc-vodafone-icon{width:36px!important;height:36px!important;flex-basis:36px!important}
+
+/* Talabat sits immediately beneath the photo/payment block, with no heart divider. */
+.dc-talabat-card{
+  margin:0!important;margin-top:0!important;margin-bottom:0!important;
+  min-height:72px!important;height:72px!important;
+  grid-template-columns:minmax(116px,190px) minmax(0,1fr)!important;
+  gap:10px!important;
+}
+.dc-talabat-illustration{display:flex!important;align-items:center!important;justify-content:center!important;min-width:0!important}
+.dc-talabat-scooter{display:block!important;width:100%!important;max-width:190px!important;height:100%!important;max-height:68px!important;overflow:visible!important}
+.dc-talabat-box{display:none!important}
+.dc-talabat-copy{min-width:0!important;align-items:flex-start!important;justify-content:center!important}
+.dc-talabat-copy>strong{text-align:right!important}
+.dc-pc-divider{display:none!important}
+
+/* Social and phone cards retain the requested staggered, vertical arrangement. */
+.dc-pc-contact{margin-top:14px!important}
+.dc-pc-contact-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+.dc-pc-social{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important}
+.dc-pc-social a:first-child{width:86%!important;justify-self:end!important}
+.dc-pc-social a:last-child{width:100%!important;justify-self:start!important}
+.dc-pc-phone-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;justify-items:center!important;gap:9px!important}
+.dc-pc-phone-card:first-child{width:90%!important}
+.dc-pc-phone-card:last-child{width:82%!important}
+
+@media(max-width:760px){
+  .dc-visit-layout{
+    grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)!important;
+    grid-template-rows:repeat(4,minmax(42px,auto)) minmax(48px,auto) minmax(57px,auto)!important;
+    column-gap:6px!important;row-gap:6px!important;
+  }
+  .dc-branch-card{min-height:42px!important;padding:6px 5px!important}
+  .dc-pc-instapay{width:88%!important;min-height:49px!important}
+  .dc-pc-payment-grid>.dc-pc-payment-card:not(.dc-pc-instapay){min-height:59px!important}
+  .dc-talabat-card{height:64px!important;min-height:64px!important;grid-template-columns:minmax(104px,142px) minmax(0,1fr)!important;margin:0!important;padding:5px 9px!important}
+  .dc-talabat-scooter{max-height:56px!important}
+  .dc-talabat-copy>strong{font-size:clamp(12px,3.4vw,16px)!important}
+  .dc-pc-contact{margin-top:12px!important}
+  .dc-pc-social a{min-height:54px!important}
+  .dc-pc-phone-card{min-height:48px!important}
+}
+@media(max-width:360px){
+  .dc-visit-layout{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;column-gap:5px!important}
+  .dc-talabat-card{grid-template-columns:minmax(92px,120px) minmax(0,1fr)!important}
+  .dc-talabat-scooter{max-height:52px!important}
+  .dc-pc-social a{gap:10px!important;padding:5px 10px!important}
+}
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -556,19 +641,30 @@
   </section>
 
   <a class="dc-talabat-card" href="https://www.talabat.com/egypt/dinas-corner" target="_blank" rel="noopener noreferrer" aria-label="Order Dina’s Corner on Talabat">
-    <div class="dc-talabat-illustration" aria-hidden="true"><span class="dc-talabat-box">talabat</span></div>
+    <div class="dc-talabat-illustration" aria-hidden="true">
+      <svg class="dc-talabat-scooter" viewBox="0 0 220 112" role="img" aria-label="Talabat delivery scooter">
+        <g fill="none" stroke="#ef741b" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 53h24M4 64h20M15 75h18" stroke-width="4"/>
+          <circle cx="57" cy="86" r="19" stroke-width="8"/><circle cx="57" cy="86" r="6" stroke-width="4"/>
+          <circle cx="166" cy="86" r="19" stroke-width="8"/><circle cx="166" cy="86" r="6" stroke-width="4"/>
+          <path d="M57 86 79 56h39l25 30h23M79 56l-8 30M118 56l-5-18h24l15 18M92 56l12 30h37" stroke-width="7"/>
+          <path d="M110 38 99 19M98 19l-12 5M119 39l12-13" stroke-width="7"/>
+        </g>
+        <g fill="#ef741b">
+          <circle cx="94" cy="12" r="10"/>
+          <path d="M91 25c12-5 23 1 26 13l8 20-18 7-12-18-11 17-14-8 13-25c2-3 4-5 8-6Z"/>
+          <path d="M100 56 91 76l-17 7-6-8 16-12 5-15Z"/>
+          <path d="M117 53 132 70l19 5-2 9-25-4-18-18Z"/>
+          <rect x="143" y="10" width="69" height="48" rx="7"/>
+        </g>
+        <text x="177.5" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="800" fill="#fff">talabat</text>
+      </svg>
+    </div>
     <div class="dc-talabat-copy"><strong>اطلب أوردرَك من طلبات</strong></div>
   </a>
 
   
-  <div class="dc-pc-divider" aria-hidden="true"><span>♥</span></div>
-  
   <section class="dc-pc-contact" aria-labelledby="contactTitle">
-    <h2 class="dc-pc-heading" id="contactTitle">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
-      <span>تواصل معنا</span>
-    </h2>
-  
     <div class="dc-pc-contact-row" dir="ltr">
       <nav class="dc-pc-social" aria-label="Dina’s Corner social media">
         <a href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Dina’s Corner on Facebook">
@@ -582,14 +678,14 @@
       </nav>
   
       <div class="dc-pc-phone-list">
-      <a class="dc-pc-phone-card" href="tel:0403596418" aria-label="Call 0403596418">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
-        <strong>0403596418</strong>
-      </a>
-  
       <a class="dc-pc-phone-card" href="tel:01066670803" aria-label="Call 01066670803">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
         <strong>01066670803</strong>
+      </a>
+  
+      <a class="dc-pc-phone-card" href="tel:0403596418" aria-label="Call 0403596418">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8 9.4 3l2.1 4.5-2 1.8a15.2 15.2 0 0 0 5.2 5.2l1.8-2 4.5 2.1-.8 2.8a2.4 2.4 0 0 1-2.6 1.7A16.8 16.8 0 0 1 4.9 6.4a2.4 2.4 0 0 1 1.7-2.6Z"/></svg>
+        <strong>0403596418</strong>
       </a>
       </div>
     </div>
