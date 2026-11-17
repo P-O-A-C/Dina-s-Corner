@@ -2,38 +2,123 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#172f42">
-  <title>POAC | تسجيل الدخول</title>
-  <link rel="stylesheet" href="css/poac.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17394d">
+  <meta name="description" content="GRAND DRY CLEAN - خدمات الغسيل والتنظيف الجاف والعناية بملابسك">
+  <title>GRAND DRY CLEAN | خدمات الغسيل والتنظيف</title>
+  <link rel="stylesheet" href="css/customer.css">
 </head>
-<body class="login-page">
-  <main class="login-shell">
-    <section class="brand-panel">
-      <div class="poac-mark">P</div>
-      <p class="brand-kicker">BUSINESS WORKSPACE</p>
-      <h1>POAC</h1>
-      <p class="brand-copy">منصة موحدة لإدارة خدمات ومشروعات POAC.</p>
-      <div class="brand-lines"><i></i><i></i><i></i></div>
-      <small>ONE PLATFORM · MULTIPLE BUSINESSES</small>
-    </section>
-    <section class="login-panel">
-      <div class="login-heading">
-        <span class="eyebrow">WELCOME BACK</span>
-        <h2>تسجيل الدخول</h2>
-        <p>ادخل بيانات الحساب للوصول إلى مساحة العمل.</p>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="GRAND DRY CLEAN">
+      <span class="brand-symbol">G</span>
+      <span class="brand-name"><strong>GRAND</strong><small>DRY CLEAN</small></span>
+    </a>
+    <nav class="header-actions" aria-label="روابط سريعة">
+      <a class="header-location" href="https://maps.app.goo.gl/ZDPdcdtEioTkFLXa8?g_st=iwb" target="_blank" rel="noopener">
+        <span>⌖</span><span>موقعنا</span>
+      </a>
+      <a class="header-whatsapp" href="https://wa.me/201005854115" target="_blank" rel="noopener">
+        <span class="wa-mark">◔</span><span>واتساب</span>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <span class="hero-kicker"><i></i> CARE FOR EVERY FABRIC</span>
+        <h1>عناية تليق<br><em>بملابسك</em></h1>
+        <p>غسيل، كي وتنظيف جاف باهتمام في كل تفصيلة. اختار الخدمة المناسبة وابعث طلبك مباشرة على واتساب.</p>
+        <a href="#services" class="hero-cta">اكتشف خدماتنا <span>←</span></a>
+        <div class="hero-trust">
+          <span><b>✦</b> عناية بالتفاصيل</span>
+          <span><b>✦</b> خدمة سهلة وسريعة</span>
+        </div>
       </div>
-      <form id="loginForm">
-        <label for="username">اسم المستخدم</label>
-        <input id="username" name="username" autocomplete="username" placeholder="Username" required>
-        <label for="password">كلمة المرور</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
-        <button type="submit" class="login-button">دخول إلى POAC <span>←</span></button>
-        <p id="loginMessage" class="form-message" role="status">واجهة تجريبية — لم يتم ربط تسجيل الدخول بعد.</p>
-      </form>
-      <div class="login-footer"><span>POAC</span><span>SECURE BUSINESS ACCESS</span></div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="visual-orbit orbit-one"></div><div class="visual-orbit orbit-two"></div>
+        <div class="fabric-card fabric-back"></div>
+        <div class="fabric-card fabric-front"><span class="fabric-fold"></span><span class="fabric-seam"></span></div>
+        <div class="hanger-shape">⌁</div>
+        <span class="visual-star star-a">✦</span><span class="visual-star star-b">✧</span>
+        <span class="visual-caption">FRESHNESS<br>IN EVERY DETAIL</span>
+      </div>
+      <div class="hero-bottom-line"></div>
+    </section>
+
+    <section class="intro-section section-wrap" id="services">
+      <div class="section-heading">
+        <span class="eyebrow">OUR SERVICES</span>
+        <h2>اختار الخدمة المناسبة</h2>
+        <p>قائمة مبدئية قابلة للتحديث. الأسعار ستضاف بعد اعتماد قائمة الأسعار النهائية.</p>
+      </div>
+      <div class="service-highlights">
+        <article><span class="highlight-icon">♧</span><b>غسيل وكي</b><small>للعناية اليومية بملابسك</small></article>
+        <article><span class="highlight-icon">✧</span><b>تنظيف جاف</b><small>للقطع التي تحتاج عناية خاصة</small></article>
+        <article><span class="highlight-icon">⌂</span><b>مفروشات</b><small>للعناية بالقطع المنزلية</small></article>
+      </div>
+    </section>
+
+    <section class="catalog-section section-wrap">
+      <div class="catalog-head">
+        <div><span class="eyebrow">THE SERVICE MENU</span><h2>خدماتنا وأسعارنا</h2></div>
+        <span class="temporary-label">قائمة مؤقتة</span>
+      </div>
+      <div class="category-tabs" id="categoryTabs" aria-label="فلترة الأقسام"></div>
+      <div class="product-grid" id="productGrid" aria-live="polite"></div>
+    </section>
+
+    <section class="order-banner section-wrap">
+      <div class="order-banner-icon">✦</div>
+      <div><span class="eyebrow">EASY WHATSAPP ORDER</span><h2>طلبك يبدأ برسالة</h2><p>اختار القطع والكميات، وبعدها راجع طلبك وابعته لنا على واتساب.</p></div>
+      <button type="button" class="banner-order-btn" id="openOrderFromBanner">راجع طلبك <span>←</span></button>
+    </section>
+
+    <section class="visit-section section-wrap">
+      <div class="visit-copy">
+        <span class="eyebrow">COME VISIT US</span>
+        <h2>يسعدنا زيارتك</h2>
+        <p>افتح موقع GRAND DRY CLEAN على الخريطة واعرف طريقك إلينا.</p>
+        <a class="map-button" href="https://maps.app.goo.gl/ZDPdcdtEioTkFLXa8?g_st=iwb" target="_blank" rel="noopener">افتح اللوكيشن <span>↗</span></a>
+      </div>
+      <div class="visit-card">
+        <div class="map-pin">⌖</div>
+        <strong>GRAND DRY CLEAN</strong>
+        <small>موقع المغسلة على خرائط Google</small>
+        <a href="https://maps.app.goo.gl/ZDPdcdtEioTkFLXa8?g_st=iwb" target="_blank" rel="noopener">عرض الاتجاهات ↗</a>
+      </div>
     </section>
   </main>
-  <script src="js/login.js"></script>
+
+  <footer class="site-footer">
+    <a class="footer-brand" href="#"><span class="brand-symbol">G</span><span><strong>GRAND</strong><small>DRY CLEAN</small></span></a>
+    <span>عناية تليق بملابسك</span>
+    <a href="https://wa.me/201005854115" target="_blank" rel="noopener">تواصل معنا عبر واتساب ↗</a>
+  </footer>
+
+  <button class="floating-order" id="floatingOrder" type="button" aria-label="عرض الطلب">
+    <span class="bag-icon">▢</span><span>طلبك</span><b id="cartCount">0</b>
+  </button>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="order-drawer" id="orderDrawer" aria-hidden="true" aria-label="مراجعة طلبك">
+    <div class="drawer-header">
+      <div><span class="eyebrow">YOUR SELECTION</span><h2>مراجعة الطلب</h2></div>
+      <button id="closeDrawer" class="close-drawer" type="button" aria-label="إغلاق">×</button>
+    </div>
+    <div class="drawer-items" id="drawerItems"><p class="empty-cart">لسه ما أضفتش أي قطع. اختار الخدمات اللي محتاجها.</p></div>
+    <div class="price-note"><span>الإجمالي</span><strong id="drawerTotal">يتم تأكيد السعر عبر واتساب</strong></div>
+    <form class="order-form" id="orderForm">
+      <label>الاسم<input id="customerName" required placeholder="اكتب اسمك"></label>
+      <label>رقم الموبايل<input id="customerPhone" required inputmode="tel" placeholder="رقم للتواصل"></label>
+      <label>العنوان أو ملاحظات <small>(اختياري)</small><textarea id="customerNotes" rows="2" placeholder="اكتب العنوان أو أي تفاصيل عن القطع"></textarea></label>
+      <button class="send-order" type="submit">إرسال الطلب على واتساب <span>↗</span></button>
+      <small class="privacy-note">لن يتم حفظ بياناتك على الموقع. سيتم فتح واتساب برسالة جاهزة، وتضغط إرسال بنفسك.</small>
+    </form>
+  </aside>
+
+  <footer class="mobile-footer-space"></footer>
+  <script src="js/customer.js"></script>
 </body>
 </html>
