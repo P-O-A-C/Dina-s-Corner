@@ -263,15 +263,70 @@ function customerAuthEmail(username) {
   return `${String(username || "").trim().toLowerCase()}@poacustomers.invalid`;
 }
 
-function routeForRoleFromRoot(role) {
-  // Root repository login needs the POACustomers/ prefix; a standalone tenant build does not.
-  const normalized = String(role || "").toLowerCase();
-  const standalone = document.body?.dataset?.loginScope === "tenant";
-  const prefix = standalone ? "" : "POACustomers/";
-  if (normalized === "admin") return "POAC-Admin/index.html";
-  if (normalized === "gm") return prefix + "GM/gm-dashboard.html";
-  if (normalized === "staff") return prefix + "staff/staff-scan.html";
-  if (normalized === "customer") return prefix + "customer/customer-home.html";
+async function routeForRoleFromRoot(profile) {
+  // The central POAC login sends each GM to the dashboard of its own project.
+  // Project identity must come from a trusted profile field or Supabase app_metadata.
+  const normalizedRole = String(profile?.role || "").toLowerCase();
+
+  if (normalizedRole === "admin") return "POAC-Admin/index.html";
+
+  if (["dry_clean_gm", "grand_dry_clean_gm", "laundry_gm"].includes(normalizedRole)) {
+    return "GrandDryClean/dashboard.html";
+  }
+
+  if (normalizedRole === "gm") {
+    let authUser = null;
+    try {
+      const { data, error } = await sb.auth.getUser();
+      if (!error) authUser = data?.user || null;
+    } catch (error) {
+      console.warn("Could not read authenticated project metadata:", error);
+    }
+
+    const profileFields = [
+      profile?.project_key,
+      profile?.project_slug,
+      profile?.tenant_id,
+      profile?.tenant_slug,
+      profile?.business_slug,
+      profile?.company_slug,
+      profile?.project_name,
+      profile?.tenant_name,
+      profile?.business_name,
+      profile?.company_name
+    ];
+
+    const trustedAppMetadata = authUser?.app_metadata || {};
+    const appMetadataFields = [
+      trustedAppMetadata.poac_project,
+      trustedAppMetadata.project_key,
+      trustedAppMetadata.tenant_id,
+      trustedAppMetadata.tenant_slug,
+      trustedAppMetadata.business_slug,
+      trustedAppMetadata.company_slug
+    ];
+
+    const projectIdentity = [...profileFields, ...appMetadataFields]
+      .filter(value => value !== null && value !== undefined)
+      .map(value => String(value).toLowerCase().replace(/[^a-z0-9]+/g, ""))
+      .join("|");
+
+    if (/granddryclean|dryclean|laundry/.test(projectIdentity)) {
+      return "GrandDryClean/dashboard.html";
+    }
+
+    if (/dinascorner|dina/.test(projectIdentity)) {
+      return "Dina'sCorner/welcome.html";
+    }
+
+    // Backward-compatible default for the existing Dina's Corner GM account.
+    // Mark the GRAND DRY CLEAN GM account with app_metadata.poac_project = "grand-dry-clean"
+    // (or profile.project_key = "grand-dry-clean") to route it to its own dashboard.
+    return "Dina'sCorner/welcome.html";
+  }
+
+  if (normalizedRole === "staff") return "POACustomers/staff/staff-scan.html";
+  if (normalizedRole === "customer") return "POACustomers/customer/customer-home.html";
   return null;
 }
 
@@ -290,7 +345,7 @@ async function redirectRootSession() {
     const session = await getSession();
     if (!session?.user) return;
     const profile = await getProfile();
-    const target = routeForRoleFromRoot(profile?.role);
+    const target = await routeForRoleFromRoot(profile);
     if (target && profile?.is_active !== false) location.replace(target);
   } catch (error) {
     // Keep the login form available if the saved session cannot be verified.
@@ -363,7 +418,7 @@ async function loginAuto() {
     }
 
     const profile = await getProfile();
-    const target = routeForRoleFromRoot(profile?.role);
+    const target = await routeForRoleFromRoot(profile);
     if (!profile || !target || profile.is_active === false) {
       await sb.auth.signOut();
       showLoginMessage("الحساب غير نشط أو لم تُضبط له صلاحيات صحيحة. تواصل مع الإدارة.");

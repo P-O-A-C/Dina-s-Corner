@@ -2,21 +2,27 @@
 
 ## صفحة الدخول الموحدة
 - `index.html` هي صفحة تسجيل الدخول العامة.
-- تستخدم نفس Supabase config و`get_my_profile()` الموجودين في تطبيق Dina's Corner.
-- بعد نجاح الدخول، حساب `role = admin` ينتقل إلى `POAC-Admin/index.html`.
+- تستخدم صفحة الدخول اتصال Supabase الحالي و`get_my_profile()`.
+- حساب `role = admin` ينتقل إلى `POAC-Admin/index.html`.
+- حساب Dina GM ينتقل إلى `Dina'sCorner/welcome.html`.
+- حساب GRAND DRY CLEAN GM ينتقل إلى `GrandDryClean/dashboard.html`.
 
-## صفحة اختيار المشاريع
-- `POAC-Admin/index.html` لا تعرض محتواها إلا بعد وجود جلسة Supabase صحيحة.
-- يتم التحقق من `get_my_profile()` وأن `role` يساوي `admin` وأن `is_active` ليس false.
-- الحساب غير الإداري يتم تسجيل خروجه وإعادته إلى صفحة POAC.
-- هذا تحقق واجهة للبوابة؛ يجب أن تظل سياسات RLS على الجداول والعمليات هي الحماية الفعلية للبيانات.
+## تحديد مشروع حساب GM
+لأن الحسابين قد يحملان نفس `role = gm`، يجب تحديد المشروع عبر قيمة موثوقة:
+- حقل في بيانات الملف الشخصي مثل `project_key` أو `tenant_id` أو `tenant_slug`، أو
+- قيمة Supabase Auth `app_metadata.poac_project`.
 
-## روابط العملاء المباشرة
-- Dina's Corner: `welcome.html` (الرابط المباشر: `/users/welcome.html`).
-- GRAND DRY CLEAN: صفحة العملاء غير موجودة بعد في النسخة المرفوعة. مجلد `GrandDryClean` يحتوي حاليًا على نماذج GM/تجريبية، لذلك لم أضع رابطًا غير صالح للعميل. بعد تجهيز صفحة العرض سيكون رابطها المباشر `/users/GrandDryClean/` أو مسار الصفحة الذي نعتمده.
+القيمة المطلوبة للمغسلة: `grand-dry-clean`.
+القيمة المطلوبة لدينا: `dina-corner`.
 
-## مهم
-- لم يتم تغيير إعدادات Supabase أو جداول البيانات.
-- لم يتم حذف ملفات Dina's Corner.
-- لم يتم إنشاء حسابات أو كلمات مرور جديدة.
-- لا تعتبر روابط GitHub Pages وحدها نظام صلاحيات؛ أي صفحات إدارة يجب أن تتحقق من الجلسة والدور، وتُحمى البيانات بسياسات RLS.
+يمكن وضع `poac_project` في `app_metadata` من لوحة إدارة آمنة أو Edge Function باستخدام صلاحية خادم فقط. لا تضع `service_role` في ملفات JavaScript ولا تسمح للعميل بتعديل app_metadata.
+
+إذا لم توجد علامة مشروع للحساب الحالي ذي الدور `gm`، فالتوجيه الافتراضي القديم يفتح Dina's Corner للحفاظ على حساب دينا الحالي. لا يُنشئ هذا التغيير حسابات أو صلاحيات جديدة في Supabase.
+
+## روابط العملاء
+- Dina's Corner: `Dina'sCorner/welcome.html` (الصفحة تحوّل إلى صفحة الترحيب الأصلية في جذر المشروع، دون نقل ملفاتها أو تغيير مسارات الأصول).
+- GRAND DRY CLEAN: `GrandDryClean/index.html`.
+- لوحة GM للمغسلة: `GrandDryClean/dashboard.html`.
+
+## الحماية
+التوجيه يحدد الصفحة فقط، ولا يُعد بديلًا عن الحماية. يجب أن تتحقق كل صفحة إدارة من الجلسة والدور والمشروع، وأن تحمي بيانات المشروع بسياسات RLS في Supabase.
