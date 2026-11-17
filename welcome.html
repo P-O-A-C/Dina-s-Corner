@@ -16,91 +16,509 @@
 <link rel="stylesheet" href="assets/dina-welcome.css?v=20261116-facebook-social-label-v2">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="assets/tenant-config.js?v=20261115-welcome-poster-match-v6"></script>
+
+<style id="dc-poster-match">
+  :root {
+    --poster-pink: #d71968;
+    --poster-deep: #70152f;
+    --poster-gold: #c9a45d;
+    --poster-cream: #fffaf8;
+    --poster-ink: #65162d;
+    --poster-orange: #f47716;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body.dc-welcome-page {
+    position: relative;
+    overflow-x: hidden;
+    color: var(--poster-ink);
+    background:
+      radial-gradient(ellipse at 50% 28%, rgba(255,255,255,.82), transparent 54%),
+      linear-gradient(180deg, #fbe8ef 0%, #f9dce8 55%, #fbe8ef 100%);
+    font-family: "Arial", "Tahoma", sans-serif;
+    padding: 0 0 170px;
+  }
+  .dc-floral { pointer-events: none; position: absolute; z-index: 0; }
+  .dc-floral--tl, .dc-floral--tr { display: none !important; }
+  .dc-floral--bl, .dc-floral--br {
+    display: block !important;
+    width: clamp(112px, 24vw, 230px);
+    height: auto;
+    bottom: 0;
+    top: auto;
+    opacity: 1;
+  }
+  .dc-floral--bl { left: 0; right: auto; }
+  .dc-floral--br { right: 0; left: auto; }
+  .dc-welcome-shell {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 940px);
+    margin: 0 auto;
+    padding: 24px clamp(12px, 2.4vw, 22px) 18px;
+  }
+  .dc-welcome-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 22px;
+    min-height: 88px;
+  }
+  .dc-corner-logo, .dc-welcome-eyebrow, .dc-welcome-rule { display: none !important; }
+  .dc-welcome-header h1 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 38px 13px;
+    min-height: 76px;
+    border: 2px solid var(--poster-gold);
+    border-radius: 999px;
+    background: linear-gradient(110deg, #d91a68, #a90d4e 70%, #780d39);
+    color: #fff;
+    box-shadow: 0 7px 15px rgba(111, 16, 49, .22), inset 0 1px 2px rgba(255,255,255,.5);
+    font-size: clamp(25px, 4.1vw, 46px);
+    line-height: 1.2;
+    font-weight: 800;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .dc-welcome-line, .dc-welcome-brand { display: none !important; }
+  .dc-welcome-header h1::before { content: "زورونا في فروعنا"; }
+  .poster-visit-layout {
+    display: grid;
+    direction: ltr;
+    grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+    gap: 12px;
+    align-items: stretch;
+    margin: 0 0 22px;
+  }
+  .dc-best-sellers {
+    display: block !important;
+    position: relative;
+    min-width: 0;
+    height: clamp(440px, 75vw, 680px);
+    margin: 0;
+    overflow: hidden;
+    border: 3px solid #d91b70;
+    border-radius: 40px;
+    background: #f6dce6;
+    box-shadow: 0 5px 10px rgba(108, 19, 48, .13);
+  }
+  .dc-best-sellers__track {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    border-radius: inherit;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .dc-best-sellers__track > * {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .dc-best-sellers__track img {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center;
+    border-radius: 0 !important;
+  }
+  .dc-best-sellers__empty { display: none !important; }
+  .poster-right-stack {
+    direction: rtl;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 8px;
+  }
+  .dc-branches-panel { display: block !important; margin: 0; padding: 0; }
+  .dc-branch-cards { display: flex; flex-direction: column; gap: 10px; }
+  .dc-branch-card {
+    display: flex !important;
+    direction: rtl;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: clamp(66px, 9.8vw, 94px);
+    padding: 10px 14px;
+    border: 2px solid var(--poster-deep);
+    border-radius: 23px;
+    background: linear-gradient(110deg, #fff 0%, #fff8f6 100%);
+    color: var(--poster-ink) !important;
+    text-decoration: none !important;
+    box-shadow: 0 3px 5px rgba(78, 12, 35, .12), inset 0 0 0 2px #ead4a4;
+  }
+  .dc-branch-card__icon {
+    order: 2;
+    flex: 0 0 27px;
+    width: 27px;
+    height: 34px;
+    font-size: 0 !important;
+    position: relative;
+  }
+  .dc-branch-card__icon::before {
+    content: "";
+    position: absolute;
+    left: 5px; top: 1px;
+    width: 18px; height: 23px;
+    background: #b71958;
+    border-radius: 60% 60% 60% 0;
+    transform: rotate(-45deg);
+  }
+  .dc-branch-card__icon::after {
+    content: "";
+    position: absolute;
+    left: 10px; top: 7px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: white;
+  }
+  .dc-branch-card__body {
+    order: 1;
+    flex: 1;
+    text-align: center;
+    min-width: 0;
+  }
+  .dc-branch-card__body strong {
+    display: block;
+    color: var(--poster-ink);
+    font-size: clamp(13px, 1.8vw, 21px);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  .dc-branch-card__body small, .dc-branch-card__go { display: none !important; }
+  .poster-payment-stack {
+    direction: ltr;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: calc(100% + clamp(24px, 7vw, 62px));
+    margin-left: calc(-1 * clamp(24px, 7vw, 62px));
+    position: relative;
+    z-index: 3;
+  }
+  .poster-payment-card {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    align-items: stretch;
+    min-height: clamp(82px, 12vw, 112px);
+    overflow: hidden;
+    padding: 0;
+    border: 2px solid var(--poster-deep);
+    border-radius: 25px;
+    background: linear-gradient(100deg, #fff 0%, #fff8f6 100%);
+    box-shadow: 0 5px 8px rgba(78, 12, 35, .18), inset 0 0 0 2px #e5c78c;
+    color: var(--poster-ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .poster-payment-card--vodafone { transform: translateX(-12px); }
+  .poster-payment-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(145deg, #e51b69, #a90b4c);
+    clip-path: polygon(0 0, 100% 0, 76% 100%, 0 100%);
+    margin-right: -14px;
+    padding-right: 12px;
+  }
+  .poster-payment-icon svg { width: 38px; height: 38px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+  .poster-payment-brand {
+    direction: ltr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 12px 8px 20px;
+    font-size: clamp(16px, 2.6vw, 29px);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .poster-payment-brand--insta { color: #173d9a; font-style: italic; }
+  .poster-payment-brand--insta .chain { color: #c01b66; font-size: 1.45em; font-style: normal; line-height: 1; }
+  .poster-payment-brand--insta .chevrons { color: #f47716; font-size: 1.35em; }
+  .poster-payment-brand--vodafone { color: #64162d; }
+  .poster-payment-brand--vodafone .vodafone-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 49px; height: 49px; flex: 0 0 49px;
+    border-radius: 50%; background: #ed252d; color: white;
+    font-size: 36px; font-weight: 800; line-height: 1;
+  }
+  .dc-talabat-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 118px;
+    align-items: center;
+    direction: rtl;
+    gap: 12px;
+    min-height: 120px;
+    margin: 0 0 24px;
+    padding: 12px 20px;
+    border: 2px solid var(--poster-deep);
+    border-radius: 27px;
+    background: linear-gradient(100deg, #fff 0%, #fff7f5 100%);
+    box-shadow: 0 5px 8px rgba(78, 12, 35, .15), inset 0 0 0 2px #e4c78d;
+    color: var(--poster-ink) !important;
+    text-decoration: none !important;
+  }
+  .dc-talabat-illustration {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 86px;
+    position: relative;
+  }
+  .dc-talabat-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    height: 76px;
+    position: relative;
+    border: 3px solid #d75b08;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #ff9b20, #ed6900);
+    color: white;
+    font-size: 19px;
+    font-weight: 900;
+    box-shadow: 0 4px 6px rgba(160, 69, 0, .22), inset 0 2px 4px rgba(255,255,255,.45);
+  }
+  .dc-talabat-box::before {
+    content: "";
+    position: absolute;
+    width: 31px; height: 10px;
+    border: 5px solid #222;
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+    top: -13px; left: 26px;
+  }
+  .dc-talabat-scooter { display: none !important; }
+  .dc-talabat-copy {
+    grid-column: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .dc-talabat-copy strong { font-size: clamp(17px, 2.6vw, 28px); font-weight: 800; }
+  .dc-talabat-copy > span, .dc-talabat-cities { display: none !important; }
+  .dc-contact-section { margin: 0; }
+  #contactTitle { display: none !important; }
+  .dc-contact-grid {
+    display: flex !important;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .poster-contact-row {
+    display: grid;
+    direction: ltr;
+    grid-template-columns: minmax(0, 1fr) 88px;
+    gap: 12px;
+    align-items: stretch;
+    width: 100%;
+  }
+  .dc-contact-card {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 88px;
+    margin: 0;
+    padding: 12px 18px;
+    border: 2px solid var(--poster-deep);
+    border-radius: 24px;
+    background: linear-gradient(100deg, #fff 0%, #fff7f6 100%);
+    box-shadow: 0 4px 7px rgba(78, 12, 35, .14), inset 0 0 0 2px #e5c98f;
+    color: #b01858 !important;
+    text-decoration: none !important;
+  }
+  .poster-social-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 88px;
+    border: 2px solid var(--poster-deep);
+    border-radius: 22px;
+    background: #fff9f7;
+    box-shadow: 0 4px 7px rgba(78, 12, 35, .14), inset 0 0 0 2px #e5c98f;
+    text-decoration: none;
+  }
+  .poster-social-card svg { width: 54px; height: 54px; display: block; }
+  .dc-contact-icon { color: #b01858; font-size: 28px; margin-right: 12px; }
+  .dc-contact-copy { display: flex; align-items: center; }
+  .dc-contact-copy small { display: none !important; }
+  .dc-contact-copy strong { font-size: clamp(18px, 2.8vw, 29px); letter-spacing: .4px; }
+  .poster-bottom-divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 26px 0 0;
+    color: #d51d70;
+    font-size: 40px;
+    line-height: 1;
+  }
+  .poster-bottom-divider::before, .poster-bottom-divider::after {
+    content: "";
+    height: 2px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, #df1c70, transparent);
+  }
+  .dc-copy-toast { z-index: 10; }
+  .dc-best-lightbox { z-index: 20; }
+  @media (max-width: 560px) {
+    body.dc-welcome-page { padding-bottom: 125px; }
+    .dc-welcome-shell { padding: 12px 10px 12px; }
+    .dc-welcome-header { min-height: 70px; margin-bottom: 12px; }
+    .dc-welcome-header h1 { min-height: 58px; padding: 7px 23px 9px; font-size: clamp(23px, 6vw, 30px); }
+    .poster-visit-layout { grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); gap: 8px; margin-bottom: 14px; }
+    .dc-best-sellers { height: clamp(400px, 94vw, 560px); border-radius: 28px; }
+    .poster-right-stack { gap: 7px; padding-top: 4px; }
+    .dc-branch-cards { gap: 7px; }
+    .dc-branch-card { min-height: clamp(54px, 12vw, 70px); padding: 7px 8px; border-radius: 16px; }
+    .dc-branch-card__body strong { font-size: clamp(11px, 3.1vw, 14px); }
+    .dc-branch-card__icon { flex-basis: 21px; width: 21px; transform: scale(.85); }
+    .poster-payment-stack { gap: 7px; width: calc(100% + 28px); margin-left: -28px; }
+    .poster-payment-card { grid-template-columns: 58px minmax(0,1fr); min-height: 68px; border-radius: 17px; }
+    .poster-payment-icon svg { width: 28px; height: 28px; }
+    .poster-payment-brand { gap: 6px; padding: 6px 6px 6px 12px; font-size: clamp(12px, 3.4vw, 17px); }
+    .poster-payment-brand--vodafone .vodafone-mark { width: 34px; height: 34px; flex-basis: 34px; font-size: 26px; }
+    .poster-payment-card--vodafone { transform: translateX(-7px); }
+    .dc-talabat-card { grid-template-columns: minmax(0,1fr) 86px; min-height: 84px; margin-bottom: 16px; padding: 8px 10px; border-radius: 20px; }
+    .dc-talabat-illustration { min-height: 66px; }
+    .dc-talabat-box { width: 68px; height: 55px; font-size: 15px; border-radius: 8px; }
+    .dc-talabat-box::before { transform: scale(.8); top: -11px; left: 17px; }
+    .dc-talabat-copy strong { font-size: clamp(14px, 3.7vw, 18px); }
+    .dc-contact-grid { gap: 9px; padding: 0 8px 0 5px; }
+    .poster-contact-row { grid-template-columns: minmax(0, 1fr) 62px; gap: 8px; }
+    .dc-contact-card { min-height: 64px; padding: 8px; border-radius: 17px; }
+    .poster-social-card { min-height: 64px; border-radius: 15px; }
+    .poster-social-card svg { width: 42px; height: 42px; }
+    .dc-contact-icon { font-size: 22px; margin-right: 7px; }
+    .dc-contact-copy strong { font-size: clamp(15px, 3.7vw, 19px); }
+    .poster-bottom-divider { margin-top: 18px; font-size: 32px; }
+    .dc-floral--bl, .dc-floral--br { width: clamp(105px, 25vw, 150px); }
+  }
+  @media (max-width: 370px) {
+    .poster-visit-layout { grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr); }
+    .dc-branch-card__body strong { font-size: 10.5px; }
+    .poster-payment-brand { font-size: 11px; }
+    .dc-contact-copy strong { font-size: 14px; }
+  }
+</style>
+
 </head>
+
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--tr" src="assets/dina-floral-tr.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--bl" src="assets/dina-floral-bl.png" alt="" aria-hidden="true">
 <img class="dc-floral dc-floral--br" src="assets/dina-floral-br.png" alt="" aria-hidden="true">
+
 <main class="dc-welcome-shell" aria-label="Dina’s Corner welcome page">
   <header class="dc-welcome-header">
-    <img class="dc-corner-logo" src="assets/dina-corner-logo-transparent.png" alt="Dina’s Corner Healthy Bakery">
-    <p class="dc-welcome-eyebrow">A LITTLE MOMENT, A LOT OF JOY</p>
-    <div class="dc-welcome-rule" aria-hidden="true">♥</div>
-    <h1><span class="dc-welcome-line">Welcome to</span><span class="dc-welcome-brand">Dina’s Corner</span></h1>
+    <h1 aria-label="زورونا في فروعنا"></h1>
   </header>
 
-  <section class="dc-action-grid dc-action-grid--menu-only" aria-label="Explore the Dina’s Corner menu">
-    <a class="dc-action-card dc-action-card--menu" id="viewMenuLink" href="menu.html" aria-label="View our menu">
-      <span class="dc-action-icon dc-menu-icon" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M25 18h44a8 8 0 0 1 8 8v54H33a8 8 0 0 1-8-8z"/><path d="M33 18v62M40 32h27M40 41h27M40 50h20"/><path d="M15 26v48a8 8 0 0 0 8 8h54"/><path d="M45 58c0-8 14-8 14 0M52 51v-7"/></svg></span>
-      <span class="dc-action-copy-wrap"><strong class="dc-action-title">View Our Menu</strong><span class="dc-action-copy">Explore our selection</span></span>
-      <span class="dc-action-arrow" aria-hidden="true">›</span>
-    </a>
-  </section>
+  <section class="poster-visit-layout" aria-label="فروعنا وطرق الدفع">
+    <section class="dc-best-sellers dc-best-sellers--full-frame" id="dcBestSellers" aria-label="صور منتجات دينا كورنر">
+      <div class="dc-best-sellers__track" id="dcBestSellersTrack" tabindex="0" role="region" aria-label="صور المنتجات">
+        <div class="dc-best-sellers__empty" aria-live="polite"></div>
+      </div>
+    </section>
 
-  <section class="dc-visit-section" aria-labelledby="visitTitle">
-    <h2 class="dc-section-heading" id="visitTitle"><span>زورونا في فروعنا</span></h2>
-    <div class="dc-visit-layout">
-      <section class="dc-best-sellers dc-best-sellers--full-frame" id="dcBestSellers" aria-label="Dina’s Corner best-selling products">
-        <div class="dc-best-sellers__track" id="dcBestSellersTrack" tabindex="0" role="region" aria-label="Best-selling products. Swipe left or right to explore.">
-          <div class="dc-best-sellers__empty" aria-live="polite"></div>
-        </div>
-      </section>
-
-      <section class="dc-branches-panel" aria-label="Branch locations">
+    <div class="poster-right-stack">
+      <section class="dc-branches-panel" aria-label="عناوين الفروع">
         <div class="dc-branch-cards">
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/qVgwAo2xUAvsjDDt7">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong><small>على مبارك مع مسجد الرضوان، أمام مدخل جيم النعماني</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span>
+            <span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong><small>على مبارك مع مسجد الرضوان، أمام مدخل جيم النعماني</small></span>
+            <span class="dc-branch-card__go" aria-hidden="true">↗</span>
           </a>
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/e3K3bkv4ryo5RJK49">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – الفرع الثاني</strong><small>الاستاد، شارع الحياة، بجوار بوابة نادي سيتي الجانبية</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span>
+            <span class="dc-branch-card__body"><strong>طنطا – الفرع الثاني</strong><small>الاستاد، شارع الحياة، بجوار بوابة نادي سيتي الجانبية</small></span>
+            <span class="dc-branch-card__go" aria-hidden="true">↗</span>
           </a>
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mafaza%20El%20Sabeel%2C%2018%20Hasan%20Hasseb%20St%2C%20Tanta&query_place_id=ChIJnYC7VwDJ9xQRQxUKUzrK914" aria-label="موقع منفذ مفازا السبيل على خرائط Google">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – منفذ مفازا السبيل</strong><small>داخل ماركت مفازا السبيل، شارع حسن حسيب</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mafaza%20El%20Sabeel%2C%2018%20Hasan%20Hasseb%20St%2C%20Tanta&query_place_id=ChIJnYC7VwDJ9xQRQxUKUzrK914">
+            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span>
+            <span class="dc-branch-card__body"><strong>طنطا – منفذ مفازا السبيل</strong><small>داخل ماركت مفازا السبيل، شارع حسن حسيب</small></span>
+            <span class="dc-branch-card__go" aria-hidden="true">↗</span>
           </a>
           <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/3hrU7SKAWi6KXrnF6">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong><small>حي البنفسج، أمام مدخل كارفور البنفسج مباشرة، منطقة المدارس</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span>
+            <span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong><small>حي البنفسج، أمام مدخل كارفور البنفسج مباشرة، منطقة المدارس</small></span>
+            <span class="dc-branch-card__go" aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
+
+      <div class="poster-payment-stack" aria-label="طرق الدفع">
+        <a class="poster-payment-card" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="الدفع باستخدام InstaPay">
+          <span class="poster-payment-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><rect x="5" y="9" width="30" height="22" rx="2"/><path d="M5 15h30M10 25h8"/></svg>
+          </span>
+          <strong class="poster-payment-brand poster-payment-brand--insta"><span class="chain">∞</span> InstaPay <span class="chevrons">»</span></strong>
+        </a>
+        <button class="poster-payment-card poster-payment-card--vodafone" type="button" onclick="copyPaymentNumber('01002348055')" aria-label="نسخ رقم Vodafone Cash">
+          <span class="poster-payment-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><rect x="12" y="4" width="16" height="31" rx="2"/><path d="M17 8h6M18 30h4"/></svg>
+          </span>
+          <strong class="poster-payment-brand poster-payment-brand--vodafone"><span class="vodafone-mark">C</span> Vodafone Cash</strong>
+        </button>
+      </div>
     </div>
   </section>
 
-  <a class="dc-talabat-card" href="https://www.talabat.com/egypt/dinas-corner" target="_blank" rel="noopener noreferrer" aria-label="Order Dina’s Corner on Talabat">
-    <div class="dc-talabat-illustration" aria-hidden="true"><span class="dc-talabat-box">talabat</span><span class="dc-talabat-scooter">🛵</span></div>
-    <div class="dc-talabat-copy"><strong>اطلب من Dina’s Corner عبر تطبيق طلبات</strong><span>متاح في طنطا والقاهرة</span><div class="dc-talabat-cities"><span>طنطا</span><span>القاهرة</span></div></div>
+  <a class="dc-talabat-card" href="https://www.talabat.com/egypt/dinas-corner" target="_blank" rel="noopener noreferrer" aria-label="اطلب من دينا كورنر عبر طلبات">
+    <div class="dc-talabat-copy"><strong>اطلب أوردرَك من طلبات</strong><span>متاح في طنطا والقاهرة</span><div class="dc-talabat-cities"><span>طنطا</span><span>القاهرة</span></div></div>
+    <div class="dc-talabat-illustration" aria-hidden="true"><span class="dc-talabat-box">talabat</span></div>
   </a>
 
-  <section class="dc-payment-section" aria-labelledby="paymentTitle">
-    <h2 class="dc-section-heading" id="paymentTitle"><span>Pay with Ease</span></h2>
-    <div class="dc-payment-grid">
-      <a class="dc-payment-card" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay" style="text-decoration:none;color:inherit"><strong class="dc-payment-brand dc-instapay">InstaPay<span>›</span></strong></a>
-      <button class="dc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')"><strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong><span class="dc-payment-number"><i aria-hidden="true">☎</i>0100 234 8055</span></button>
-    </div>
-  </section>
-
-  <nav class="dc-social-links" aria-label="Dina’s Corner social media">
-    <a class="dc-instagram-link" href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Follow Dina’s Corner on Instagram"><span class="dc-instagram-icon" aria-hidden="true">◎</span><strong>Follow Us on Instagram</strong><span aria-hidden="true">›</span></a>
-    <a class="dc-facebook-link" href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Follow Dina’s Corner on Facebook" title="Dina’s Corner on Facebook">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.56-.12-2.53 0-4.26 1.54-4.26 4.37V9.6H7.1v3.2h2.78V21h3.52z"/></svg>
-      <strong>Follow Us on Facebook</strong>
-    </a>
-  </nav>
-
-  <section class="dc-contact-section" aria-labelledby="contactTitle">
-    <h2 class="dc-section-heading" id="contactTitle"><span>تواصل معنا</span></h2>
+  <section class="dc-contact-section" aria-label="التواصل معنا">
     <div class="dc-contact-grid">
-      <a class="dc-contact-card" href="tel:01066670803" aria-label="Call mobile number 01066670803"><span class="dc-contact-icon" aria-hidden="true">☎</span><span class="dc-contact-copy"><small>Mobile</small><strong dir="ltr">01066670803</strong></span></a>
-      <a class="dc-contact-card" href="tel:0403596418" aria-label="Call landline number 0403596418"><span class="dc-contact-icon" aria-hidden="true">☎</span><span class="dc-contact-copy"><small>Landline</small><strong dir="ltr">0403596418</strong></span></a>
+      <div class="poster-contact-row">
+        <a class="dc-contact-card" href="tel:0403596418" aria-label="اتصل بالرقم الأرضي 0403596418">
+          <span class="dc-contact-icon" aria-hidden="true">☎</span><span class="dc-contact-copy"><small>Landline</small><strong dir="ltr">0403596418</strong></span>
+        </a>
+        <a class="poster-social-card" href="https://www.facebook.com/share/g/1FXw3FBZbP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="تابعنا على فيسبوك">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877f2" d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.56-.12-2.53 0-4.26 1.54-4.26 4.37V9.6H7.1v3.2h2.78V21h3.52z"/></svg>
+        </a>
+      </div>
+      <div class="poster-contact-row">
+        <a class="dc-contact-card" href="tel:01066670803" aria-label="اتصل بالموبايل 01066670803">
+          <span class="dc-contact-icon" aria-hidden="true">☎</span><span class="dc-contact-copy"><small>Mobile</small><strong dir="ltr">01066670803</strong></span>
+        </a>
+        <a class="poster-social-card" href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="تابعنا على إنستجرام">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradient" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffb12e"/><stop offset=".45" stop-color="#e52b86"/><stop offset="1" stop-color="#7044d8"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#igGradient)" stroke-width="2.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="url(#igGradient)" stroke-width="2.5"/><circle cx="17.5" cy="6.7" r="1.2" fill="#e52b86"/></svg>
+        </a>
+      </div>
     </div>
   </section>
+
+  <div class="poster-bottom-divider" aria-hidden="true">♥</div>
   <div id="copyToast" class="dc-copy-toast" role="status" aria-live="polite">Copied Successfully!</div>
 </main>
+
 
 <div class="dc-best-lightbox" id="dcBestSellersLightbox" hidden role="dialog" aria-modal="true" aria-label="Product photo preview">
   <button class="dc-best-lightbox__close" id="dcBestSellersLightboxClose" type="button" aria-label="Close product photo">×</button>
   <img id="dcBestSellersLightboxImage" alt="">
-
 </div>
 
 <script>
