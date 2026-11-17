@@ -619,6 +619,43 @@ body.dc-welcome-page{position:relative!important;min-height:100svh!important;pad
 @media(max-width:360px){.dc-visit-layout{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;column-gap:5px!important}.dc-branch-card__body strong{font-size:8.7px!important}.dc-pc-vodafone-name{font-size:11px!important}.dc-pc-contact-row{grid-template-columns:minmax(0,1fr) 58px!important;gap:5px!important}.dc-pc-phone-card strong{font-size:10px!important}.dc-pc-social a svg{width:26px!important;height:26px!important}}
 </style>
 
+
+
+<style id="dc-post-review-corrections-v2">
+/* 1) Remove the phone mockup/bezel baked around the product photo by
+      cropping slightly inside the carousel image, while keeping its frame. */
+.dc-best-sellers--full-frame{overflow:hidden!important}
+.dc-best-sellers--full-frame .dc-best-sellers__track,
+.dc-best-sellers--full-frame .dc-best-sellers__card{overflow:hidden!important}
+.dc-best-sellers--full-frame .dc-best-sellers__card img{
+  width:100%!important;height:100%!important;object-fit:cover!important;
+  object-position:center center!important;transform:scale(1.17)!important;
+  transform-origin:center center!important;
+}
+
+/* 2) Put the Talabat scooter/brand illustration on the RIGHT and the
+      Arabic order message on the LEFT, matching the approved layout. */
+.dc-talabat-card{direction:rtl!important;grid-template-columns:minmax(100px,165px) minmax(0,1fr)!important}
+.dc-talabat-illustration{grid-column:1!important;grid-row:1!important}
+.dc-talabat-copy{grid-column:2!important;grid-row:1!important}
+
+/* 3) Keep the bottom florals flush with the page edge without reserving
+      a large artificial blank area beneath the content. */
+.dc-welcome-shell{padding-bottom:0!important}
+body.dc-welcome-page{padding-bottom:0!important}
+.dc-floral--bl,.dc-floral--br{bottom:0!important}
+
+@media(max-width:760px){
+  .dc-talabat-card{grid-template-columns:minmax(90px,125px) minmax(0,1fr)!important}
+  .dc-talabat-illustration{grid-column:1!important}
+  .dc-talabat-copy{grid-column:2!important}
+  .dc-welcome-shell{padding-bottom:0!important}
+}
+@media(max-width:360px){
+  .dc-talabat-card{grid-template-columns:minmax(82px,112px) minmax(0,1fr)!important}
+}
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
