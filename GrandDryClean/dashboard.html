@@ -7,7 +7,8 @@
   <title>POAC | GRAND DRY CLEAN</title>
   <link rel="stylesheet" href="css/poac.css">
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page auth-pending">
+  <div id="authGate" class="auth-gate">جارٍ التحقق من صلاحيات حساب GRAND DRY CLEAN…</div>
   <header class="dash-header">
     <a class="dash-brand" href="index.html"><span class="mini-mark">P</span><span><b>POAC</b><small>BUSINESS WORKSPACE</small></span></a>
     <div class="header-user"><span class="user-dot"></span><span>مساحة العمل</span><button id="logoutBtn" class="logout-button">تسجيل الخروج</button></div>
@@ -40,6 +41,9 @@
       <small class="muted">لن يتم حفظ البيانات بعد إغلاق الصفحة.</small>
     </form>
   </div>
-  <script src="js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
+<script src="../assets/config.js"></script>
+<script src="js/session-guard.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
 </html>

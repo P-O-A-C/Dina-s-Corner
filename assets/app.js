@@ -235,7 +235,8 @@ async function guardRole(allowedRoles) {
   const session = await getSession();
   if (!session) {
     const role = allowedRoles[0];
-    location.href = role === "customer" ? "customer-login.html" : role === "gm" ? "gm-login.html" : role === "admin" ? "admin-login.html" : "staff-login.html";
+    const isDinaProject = String(window.POA_TENANT_CONFIG?.TENANT_ID || "").toLowerCase() === "dina-corner";
+    location.href = role === "customer" ? "customer-login.html" : role === "gm" ? (isDinaProject ? "login.html" : "gm-login.html") : role === "admin" ? "admin-login.html" : "staff-login.html";
     return null;
   }
 
@@ -247,6 +248,18 @@ async function guardRole(allowedRoles) {
     await sb.auth.signOut();
     location.href = "../index.html";
     return null;
+  }
+  const tenantId = String(window.POA_TENANT_CONFIG?.TENANT_ID || "").toLowerCase();
+  if (tenantId === "dina-corner" && allowedRoles.includes("gm") && profile.role === "gm") {
+    const user = await getCurrentPoacAuthUser();
+    const markers = getPoacProjectMarkers(profile, user);
+    const explicitlyOtherProject = markers.length && !markers.some(v => v.includes("dinacorner") || v === "dina");
+    if (explicitlyOtherProject) {
+      toast("This account belongs to a different project.", false);
+      await sb.auth.signOut();
+      location.href = "login.html";
+      return null;
+    }
   }
   return profile;
 }
@@ -263,71 +276,56 @@ function customerAuthEmail(username) {
   return `${String(username || "").trim().toLowerCase()}@poacustomers.invalid`;
 }
 
-async function routeForRoleFromRoot(profile) {
-  // The central POAC login sends each GM to the dashboard of its own project.
-  // Project identity must come from a trusted profile field or Supabase app_metadata.
-  const normalizedRole = String(profile?.role || "").toLowerCase();
 
-  if (normalizedRole === "admin") return "POAC-Admin/index.html";
-
-  if (["dry_clean_gm", "grand_dry_clean_gm", "laundry_gm"].includes(normalizedRole)) {
-    return "GrandDryClean/dashboard.html";
+function normalizePoacProjectMarker(value) {
+  return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+function getPoacProjectMarkers(profile, user) {
+  const appMeta = user?.app_metadata || {};
+  const values = [
+    profile?.project_key, profile?.project_slug, profile?.project_name,
+    profile?.tenant_slug, profile?.tenant_name, profile?.business_slug,
+    profile?.business_name, profile?.company_slug, profile?.company_name,
+    appMeta.poac_project, appMeta.project_key, appMeta.project_slug,
+    appMeta.tenant_slug, appMeta.business_slug, appMeta.company_slug
+  ];
+  return values.filter(v => v !== null && v !== undefined && String(v).trim())
+    .map(normalizePoacProjectMarker)
+    .filter(v => v && !/^[a-f0-9]{32,}$/i.test(v));
+}
+function resolvePoacProjectLogin(profile, user, expectedProject) {
+  const role = String(profile?.role || "").toLowerCase();
+  const markers = getPoacProjectMarkers(profile, user);
+  const hasMarkers = markers.length > 0;
+  const matchesDina = markers.some(v => v.includes("dinacorner") || v === "dina");
+  const matchesDryClean = markers.some(v => v.includes("granddryclean") || v.includes("dryclean") || v === "laundry");
+  if (expectedProject === "poac-admin") {
+    return role === "admin" ? { allowed: true, target: "POAC-Admin/index.html" }
+      : { allowed: false, message: "هذا الدخول مخصص لمسؤول POAC فقط." };
   }
-
-  if (normalizedRole === "gm") {
-    let authUser = null;
-    try {
-      const { data, error } = await sb.auth.getUser();
-      if (!error) authUser = data?.user || null;
-    } catch (error) {
-      console.warn("Could not read authenticated project metadata:", error);
-    }
-
-    const profileFields = [
-      profile?.project_key,
-      profile?.project_slug,
-      profile?.tenant_id,
-      profile?.tenant_slug,
-      profile?.business_slug,
-      profile?.company_slug,
-      profile?.project_name,
-      profile?.tenant_name,
-      profile?.business_name,
-      profile?.company_name
-    ];
-
-    const trustedAppMetadata = authUser?.app_metadata || {};
-    const appMetadataFields = [
-      trustedAppMetadata.poac_project,
-      trustedAppMetadata.project_key,
-      trustedAppMetadata.tenant_id,
-      trustedAppMetadata.tenant_slug,
-      trustedAppMetadata.business_slug,
-      trustedAppMetadata.company_slug
-    ];
-
-    const projectIdentity = [...profileFields, ...appMetadataFields]
-      .filter(value => value !== null && value !== undefined)
-      .map(value => String(value).toLowerCase().replace(/[^a-z0-9]+/g, ""))
-      .join("|");
-
-    if (/granddryclean|dryclean|laundry/.test(projectIdentity)) {
-      return "GrandDryClean/dashboard.html";
-    }
-
-    if (/dinascorner|dina/.test(projectIdentity)) {
-      return "Dina'sCorner/welcome.html";
-    }
-
-    // Backward-compatible default for the existing Dina's Corner GM account.
-    // Mark the GRAND DRY CLEAN GM account with app_metadata.poac_project = "grand-dry-clean"
-    // (or profile.project_key = "grand-dry-clean") to route it to its own dashboard.
-    return "Dina'sCorner/welcome.html";
+  if (expectedProject === "dina-corner") {
+    if (role !== "gm") return { allowed: false, message: "هذا الحساب ليس حساب إدارة Dina’s Corner." };
+    if (hasMarkers && !matchesDina) return { allowed: false, message: "هذا الحساب مرتبط بمشروع آخر. استخدم صفحة الدخول الخاصة بمشروعه." };
+    return { allowed: true, target: "welcome.html" };
   }
-
-  if (normalizedRole === "staff") return "POACustomers/staff/staff-scan.html";
-  if (normalizedRole === "customer") return "POACustomers/customer/customer-home.html";
-  return null;
+  if (expectedProject === "grand-dry-clean") {
+    if (role !== "gm") return { allowed: false, message: "هذا الحساب ليس حساب إدارة GRAND DRY CLEAN." };
+    if (!matchesDryClean) return {
+      allowed: false,
+      message: "الحساب غير مربوط بمشروع GRAND DRY CLEAN. يلزم تعيين app_metadata.poac_project = grand-dry-clean لحساب المغسلة من جهة آمنة في Supabase."
+    };
+    return { allowed: true, target: "dashboard.html" };
+  }
+  return { allowed: false, message: "نوع صفحة الدخول غير محدد." };
+}
+async function getCurrentPoacAuthUser() {
+  const { data, error } = await sb.auth.getUser();
+  if (error) throw error;
+  return data?.user || null;
+}
+function routeForRoleFromRoot(role) {
+  const normalized = String(role || "").toLowerCase();
+  return normalized === "admin" ? "POAC-Admin/index.html" : null;
 }
 
 function showLoginMessage(message, good = false) {
@@ -345,10 +343,17 @@ async function redirectRootSession() {
     const session = await getSession();
     if (!session?.user) return;
     const profile = await getProfile();
-    const target = await routeForRoleFromRoot(profile);
-    if (target && profile?.is_active !== false) location.replace(target);
+    if (!profile || profile.is_active === false) return;
+    const expectedProject = document.body?.dataset?.loginProject || "";
+    if (expectedProject) {
+      const user = await getCurrentPoacAuthUser();
+      const decision = resolvePoacProjectLogin(profile, user, expectedProject);
+      if (decision.allowed) location.replace(document.body?.dataset?.loginTarget || decision.target);
+      return;
+    }
+    const target = routeForRoleFromRoot(profile?.role);
+    if (target) location.replace(target);
   } catch (error) {
-    // Keep the login form available if the saved session cannot be verified.
     console.warn("Could not auto-route the existing session:", error);
   }
 }
@@ -418,13 +423,30 @@ async function loginAuto() {
     }
 
     const profile = await getProfile();
-    const target = await routeForRoleFromRoot(profile);
-    if (!profile || !target || profile.is_active === false) {
+    if (!profile || profile.is_active === false) {
       await sb.auth.signOut();
       showLoginMessage("الحساب غير نشط أو لم تُضبط له صلاحيات صحيحة. تواصل مع الإدارة.");
       return;
     }
-
+    const expectedProject = document.body?.dataset?.loginProject || "";
+    let target = null;
+    if (expectedProject) {
+      const user = await getCurrentPoacAuthUser();
+      const decision = resolvePoacProjectLogin(profile, user, expectedProject);
+      if (!decision.allowed) {
+        await sb.auth.signOut();
+        showLoginMessage(decision.message || "هذا الحساب غير مصرح له بالدخول إلى هذه الصفحة.");
+        return;
+      }
+      target = document.body?.dataset?.loginTarget || decision.target;
+    } else {
+      target = routeForRoleFromRoot(profile?.role);
+    }
+    if (!target) {
+      await sb.auth.signOut();
+      showLoginMessage("هذا الحساب ليس لديه صلاحية دخول إلى بوابة POAC.");
+      return;
+    }
     location.replace(target);
   } catch (error) {
     showLoginMessage(error?.message || "تعذر تسجيل الدخول. حاول مرة أخرى.");
@@ -467,6 +489,17 @@ async function login(role) {
     if (profile.role !== role) {
       await sb.auth.signOut();
       throw new Error(`This account is not registered as ${role}.`);
+    }
+    const expectedProject = document.body?.dataset?.loginProject || "";
+    if (expectedProject) {
+      const user = await getCurrentPoacAuthUser();
+      const decision = resolvePoacProjectLogin(profile, user, expectedProject);
+      if (!decision.allowed) {
+        await sb.auth.signOut();
+        throw new Error(decision.message || "This account is not authorized for this project.");
+      }
+      location.href = document.body?.dataset?.loginTarget || decision.target;
+      return;
     }
     location.href = routeForRole(profile.role);
   } catch (e) {
@@ -2406,7 +2439,8 @@ async function init() {
     } else if (page === "gm-login") {
       $("loginBtn").onclick = () => login("gm");
     } else if (page === "gm-dashboard") {
-      await bindGmSettingsProfile();
+      const profile = await guardRole(["gm"]);
+      if (profile) await bindGmSettingsProfile();
     } else if (page === "gm-members") {
       await loadGmMembers();
     } else if (page === "gm-locations") {

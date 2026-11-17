@@ -45,5 +45,4 @@ The Welcome page reads active rows from `public.home_featured_products` and disp
 راجع `POAC-ROUTING-NOTES-AR.md` لمعرفة آلية بوابة POAC وروابط العملاء المباشرة.
 
 
-## POAC project routing
-راجع `POAC-ROUTING-NOTES-AR.md` لمسارات Dina's Corner وGRAND DRY CLEAN ومتطلب project_key لتوجيه حسابات GM.
+راجع `LOGIN-ROUTES-AR.md` لمسارات الدخول المستقلة وروابط العملاء المباشرة.
