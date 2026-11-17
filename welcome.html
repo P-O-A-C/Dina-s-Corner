@@ -319,6 +319,105 @@
 }
 </style>
 
+
+<style id="dc-user-requested-final-sizing">
+/* Keep the outer page transparent so the decorative florals are not covered. */
+.dc-welcome-shell{position:relative!important;z-index:1!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.dc-welcome-header{position:relative!important;z-index:2!important;background:transparent!important;background-image:none!important}
+.dc-corner-logo{position:relative!important;z-index:3!important}
+
+/* Reposition the existing floral artwork to flank the logo. */
+.dc-floral--tl,.dc-floral--tr{
+  display:block!important;position:absolute!important;top:14px!important;
+  width:clamp(76px,12vw,136px)!important;height:auto!important;max-height:none!important;
+  opacity:.96!important;z-index:0!important;pointer-events:none!important
+}
+.dc-floral--tl{left:calc(50% - clamp(185px,25vw,275px))!important;right:auto!important;transform:rotate(-8deg)!important}
+.dc-floral--tr{right:calc(50% - clamp(185px,25vw,275px))!important;left:auto!important;transform:scaleX(-1)!important}
+
+/* Branch cards: compact name-only cards with a burgundy and gold double frame. */
+.dc-branches-panel{height:auto!important;min-height:0!important;align-self:start!important;padding:3px!important}
+.dc-branch-cards{
+  height:auto!important;grid-template-rows:repeat(4,minmax(46px,auto))!important;
+  align-content:start!important;gap:7px!important
+}
+.dc-branch-card{
+  box-sizing:border-box!important;height:auto!important;min-height:46px!important;max-height:none!important;
+  padding:7px 10px!important;border:1.6px solid #76213d!important;outline:1px solid #c5a15a!important;
+  outline-offset:-4px!important;border-radius:13px!important;
+  background:linear-gradient(140deg,#fffdfc 0%,#fff0f1 100%)!important;
+  box-shadow:0 4px 10px rgba(111,31,55,.08),inset 0 0 0 1px rgba(197,161,90,.18)!important
+}
+.dc-branch-card__body{justify-content:center!important;gap:0!important;min-width:0!important}
+.dc-branch-card__body strong{display:block!important;color:#76213d!important;font-size:clamp(11px,1.25vw,14px)!important;line-height:1.2!important;text-align:center!important}
+.dc-branch-card__body small{display:none!important}
+.dc-branch-card__icon,.dc-branch-card__go{color:#8f2946!important}
+
+/* Talabat: shorter card, retaining only the brand wordmark and action text. */
+.dc-talabat-card{
+  min-height:68px!important;height:68px!important;grid-template-columns:78px minmax(0,1fr)!important;
+  align-items:center!important;gap:12px!important;margin:13px 0 12px!important;padding:7px 13px!important;
+  border:2px solid #76213d!important;outline:1px solid #c5a15a!important;outline-offset:-5px!important;
+  border-radius:17px!important;background:linear-gradient(135deg,#fffdfc,#ffedf0)!important;
+  box-shadow:0 5px 13px rgba(111,31,55,.08),inset 0 0 0 1px rgba(197,161,90,.2)!important
+}
+.dc-talabat-illustration{min-height:0!important;height:100%!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.dc-talabat-box{width:66px!important;height:43px!important;min-width:66px!important;font-size:15px!important;border-width:2px!important;border-radius:8px!important;transform:none!important}
+.dc-talabat-scooter{display:none!important}
+.dc-talabat-copy{align-items:flex-start!important;justify-content:center!important;gap:0!important;text-align:right!important;min-width:0!important}
+.dc-talabat-copy>strong{width:auto!important;padding:0!important;border-radius:0!important;background:transparent!important;color:#76213d!important;font-size:clamp(14px,1.6vw,18px)!important;line-height:1.25!important;text-align:right!important}
+.dc-talabat-copy>span,.dc-talabat-cities{display:none!important}
+
+/* Facebook and Instagram get their own clear framed card; increase icon size. */
+.dc-pc-contact-row{grid-template-columns:116px minmax(0,1fr) minmax(0,1fr)!important;gap:9px!important;align-items:stretch!important}
+.dc-pc-social{
+  min-width:0!important;min-height:60px!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;
+  padding:6px!important;border:2px solid #76213d!important;outline:1px solid #c5a15a!important;
+  outline-offset:-5px!important;border-radius:15px!important;
+  background:linear-gradient(145deg,#fffdfc,#ffedf0)!important;
+  box-shadow:0 4px 11px rgba(111,31,55,.08),inset 0 0 0 1px rgba(197,161,90,.18)!important
+}
+.dc-pc-social a{
+  width:43px!important;height:43px!important;flex:0 0 43px!important;display:grid!important;place-items:center!important;
+  border:1px solid #c5a15a!important;border-radius:50%!important;
+  background:#fff!important;box-shadow:0 2px 6px rgba(111,31,55,.08)!important
+}
+.dc-pc-social svg{width:29px!important;height:29px!important;display:block!important}
+.dc-pc-social a:first-child svg{fill:#1877f2!important}
+.dc-pc-social a:last-child svg{fill:none!important;stroke:#c42c91!important;stroke-width:2.1!important}
+.dc-pc-social .dc-pc-insta-dot{fill:#e4a02a!important;stroke:none!important}
+
+@media(max-width:760px){
+  .dc-floral--tl,.dc-floral--tr{top:10px!important;width:clamp(68px,20vw,82px)!important}
+  .dc-floral--tl{left:calc(50% - 150px)!important;right:auto!important}
+  .dc-floral--tr{right:calc(50% - 150px)!important;left:auto!important}
+  .dc-branch-cards{height:auto!important;grid-template-rows:repeat(4,minmax(43px,auto))!important;gap:5px!important}
+  .dc-branch-card{min-height:43px!important;padding:6px 5px!important;border-radius:11px!important}
+  .dc-branch-card__body strong{font-size:clamp(9.5px,2.8vw,11.5px)!important;line-height:1.15!important}
+  .dc-branch-card__icon{width:17px!important;height:17px!important;font-size:12px!important}
+  .dc-branch-card__go{width:16px!important;height:16px!important;font-size:10px!important}
+  .dc-talabat-card{height:60px!important;min-height:60px!important;grid-template-columns:66px minmax(0,1fr)!important;gap:8px!important;margin:10px 0!important;padding:5px 9px!important;border-radius:14px!important}
+  .dc-talabat-box{width:56px!important;height:37px!important;min-width:56px!important;font-size:13px!important}
+  .dc-talabat-copy>strong{font-size:clamp(12px,3.4vw,15px)!important}
+  .dc-pc-contact-row{grid-template-columns:94px minmax(0,1fr) minmax(0,1fr)!important;gap:6px!important}
+  .dc-pc-social{min-height:52px!important;gap:4px!important;padding:4px!important;border-radius:12px!important}
+  .dc-pc-social a{width:38px!important;height:38px!important;flex-basis:38px!important}
+  .dc-pc-social svg{width:26px!important;height:26px!important}
+  .dc-pc-phone-card{min-height:48px!important;padding:5px 4px!important;gap:4px!important}
+  .dc-pc-phone-card strong{font-size:clamp(10px,2.8vw,12px)!important}
+}
+@media(max-width:380px){
+  .dc-floral--tl{left:calc(50% - 142px)!important}
+  .dc-floral--tr{right:calc(50% - 142px)!important}
+  .dc-pc-contact-row{grid-template-columns:88px minmax(0,1fr) minmax(0,1fr)!important;gap:4px!important}
+  .dc-pc-social{gap:3px!important;padding:3px!important}
+  .dc-pc-social a{width:35px!important;height:35px!important;flex-basis:35px!important}
+  .dc-pc-social svg{width:24px!important;height:24px!important}
+  .dc-pc-phone-card strong{font-size:9.5px!important}
+}
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -370,8 +469,8 @@
   </section>
 
   <a class="dc-talabat-card" href="https://www.talabat.com/egypt/dinas-corner" target="_blank" rel="noopener noreferrer" aria-label="Order Dina’s Corner on Talabat">
-    <div class="dc-talabat-illustration" aria-hidden="true"><span class="dc-talabat-box">talabat</span><span class="dc-talabat-scooter">🛵</span></div>
-    <div class="dc-talabat-copy"><strong>اطلب من Dina’s Corner عبر تطبيق طلبات</strong><span>متاح في طنطا والقاهرة</span><div class="dc-talabat-cities"><span>طنطا</span><span>القاهرة</span></div></div>
+    <div class="dc-talabat-illustration" aria-hidden="true"><span class="dc-talabat-box">talabat</span></div>
+    <div class="dc-talabat-copy"><strong>اطلب أوردرَك من طلبات</strong></div>
   </a>
 
   <section class="dc-pc-payment" aria-labelledby="paymentTitle">
