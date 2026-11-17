@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v8-central-logout";
+const CACHE = "poac-unified-v9-dina-central-poac-login";
 const SHELL = [
   "./index.html",
   "./login.html",

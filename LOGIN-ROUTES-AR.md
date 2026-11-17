@@ -1,20 +1,20 @@
-# POAC — صفحات الدخول والروابط
+# مسارات الدخول الموحدة في POAC
 
-## صفحات تسجيل دخول الإدارة
-- POAC Admin: `/poac/` — الملف الجذري `index.html` ويقبل حساب `admin` فقط.
-- Dina's Corner GM: `/poac/Dina'sCorner/login.html` — صفحة دخول مستقلة بهوية دينا.
-- GRAND DRY CLEAN GM: `/poac/GrandDryClean/login.html` — صفحة دخول مستقلة بهوية المغسلة.
+## تسجيل الدخول للإدارة
+- صفحة الدخول الوحيدة للإدارة هي `/poac/` (ملف `index.html`).
+- حساب `gm@poac.com` بصلاحية `admin` ينتقل إلى إدارة POAC.
+- حساب `dina'scorner@poac.com` بصلاحية `gm` ومعرّف المشروع `dina-corner` ينتقل إلى لوحة Dina's Corner.
+- حساب `granddryclean@poac.com` بصلاحية `gm` ومعرّف المشروع `grand-dry-clean` ينتقل إلى لوحة GRAND DRY CLEAN.
+- تم إلغاء نموذج تسجيل الدخول المستقل لدينا. المسار القديم `Dina'sCorner/login.html` أصبح تحويلًا متوافقًا إلى صفحة POAC الموحدة فقط.
 
-## صفحات العملاء — بدون تسجيل دخول
-- Dina's Corner: `/poac/welcome.html`، والمسار البديل `/poac/Dina'sCorner/welcome.html`.
-- GRAND DRY CLEAN: `/poac/GrandDryClean/index.html`.
+## تسجيل الخروج
+- تسجيل الخروج من لوحة Dina's Corner يعيد المستخدم إلى صفحة تسجيل دخول POAC الموحدة.
+- رابط إدارة Dina's Corner في لوحة مشروعات POAC يفتح صفحة الدخول الموحدة.
 
-## فصل المشاريع في Supabase
-يمكن أن يكون حسابا المشروعين بدور `gm` نفسه، ولذلك يلزم ربط الحساب بالمشروع:
-- GRAND DRY CLEAN: `app_metadata.poac_project = "grand-dry-clean"`.
-- يُفضّل Dina's Corner: `app_metadata.poac_project = "dina-corner"`.
-يتم تعيين هذه البيانات من جهة موثوقة باستخدام Supabase Auth Admin API أو Edge Function مؤمنة. لا تضع `service_role` في ملفات المتصفح.
-حساب Dina القديم غير الموسوم يبقى مقبولًا من صفحة Dina حفاظًا على التوافق. صفحة GRAND DRY CLEAN تتطلب العلامة صراحة.
+## صفحات العملاء
+- صفحة عملاء Dina's Corner: `welcome.html`.
+- صفحة عملاء GRAND DRY CLEAN: `GrandDryClean/index.html`، وصفحة إرسال الطلب: `GrandDryClean/order.html`.
 
-## ملاحظة
-صفحات GRAND DRY CLEAN الإدارية تتحقق من الجلسة والدور وعلامة المشروع قبل إظهار المحتوى. بيانات لوحة المغسلة ما زالت تجريبية ولا تُحفظ في Supabase.
+## ملاحظة أمنية
+- التوجيه يعتمد على الدور وعلامة المشروع الموثقة في Supabase `app_metadata.poac_project`.
+- يجب أن تظل سياسات RLS هي الحماية الفعلية للبيانات والعمليات؛ توجيه الصفحات وحده ليس بديلًا عن صلاحيات قاعدة البيانات.

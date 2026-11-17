@@ -29,6 +29,23 @@ const KEYS = {
 
 const $ = (id) => document.getElementById(id);
 
+// Resolve the one central POAC login page from this script's real URL.
+// This avoids relative-path mistakes from nested project pages such as Dina'sCorner/.
+function getCentralPoacLoginUrl() {
+  const appScript = Array.from(document.scripts).find(script =>
+    /(?:^|\/)assets\/app\.js(?:[?#]|$)/i.test(script.getAttribute("src") || "")
+  );
+  if (appScript) {
+    const scriptUrl = new URL(appScript.getAttribute("src"), document.baseURI);
+    return new URL("../index.html", scriptUrl).href;
+  }
+  // Fallback for unusual embeds: use the repository root (first path segment on Pages).
+  const firstPathSegment = location.pathname.split("/").filter(Boolean)[0] || "";
+  const repositoryRoot = firstPathSegment ? `/${firstPathSegment}/` : "/";
+  return new URL("index.html", `${location.origin}${repositoryRoot}`).href;
+}
+
+
 function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, m => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
@@ -236,7 +253,14 @@ async function guardRole(allowedRoles) {
   if (!session) {
     const role = allowedRoles[0];
     const isDinaProject = String(window.POA_TENANT_CONFIG?.TENANT_ID || "").toLowerCase() === "dina-corner";
-    location.href = role === "customer" ? "customer-login.html" : role === "gm" ? (isDinaProject ? "login.html" : "gm-login.html") : role === "admin" ? "admin-login.html" : "staff-login.html";
+    if (role === "customer") {
+      location.replace("customer-login.html");
+    } else if (role === "gm" && isDinaProject) {
+      // Dina management now authenticates only through the central POAC login.
+      location.replace(getCentralPoacLoginUrl());
+    } else {
+      location.replace(role === "gm" ? "gm-login.html" : role === "admin" ? "admin-login.html" : "staff-login.html");
+    }
     return null;
   }
 
@@ -246,7 +270,7 @@ async function guardRole(allowedRoles) {
   if (!profile || (!allowedRoles.includes(profile.role) && !adminPortalAccess)) {
     toast("You do not have access to this portal.", false);
     await sb.auth.signOut();
-    location.href = "../index.html";
+    location.replace(getCentralPoacLoginUrl());
     return null;
   }
   const tenantId = String(window.POA_TENANT_CONFIG?.TENANT_ID || "").toLowerCase();
@@ -257,7 +281,7 @@ async function guardRole(allowedRoles) {
     if (explicitlyOtherProject) {
       toast("This account belongs to a different project.", false);
       await sb.auth.signOut();
-      location.href = "login.html";
+      location.replace(getCentralPoacLoginUrl());
       return null;
     }
   }
@@ -612,10 +636,16 @@ async function registerCustomer() {
 }
 
 async function logout() {
-  await sb.auth.signOut();
-  localStorage.removeItem(KEYS.customerToken);
-  localStorage.removeItem(KEYS.staffCustomer);
-  location.href = "../index.html";
+  try {
+    await sb.auth.signOut();
+  } catch (error) {
+    console.warn("Supabase sign-out request did not complete:", error);
+  } finally {
+    localStorage.removeItem(KEYS.customerToken);
+    localStorage.removeItem(KEYS.staffCustomer);
+    // Always return Dina's management session to the single POAC sign-in page.
+    location.replace(getCentralPoacLoginUrl());
+  }
 }
 
 function escapeOfferHtml(value) {
