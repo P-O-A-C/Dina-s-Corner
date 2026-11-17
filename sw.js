@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v6-dryclean-order";
+const CACHE = "poac-unified-v8-central-logout";
 const SHELL = [
   "./index.html",
   "./login.html",

@@ -21,5 +21,4 @@ document.getElementById("itemForm").addEventListener("submit",e=>{
   demoItems.push({name:document.getElementById("itemName").value.trim(),category:document.getElementById("itemCategory").value.trim(),price:document.getElementById("itemPrice").value});
   renderItems(); e.target.reset(); backdrop.classList.remove("show");
 });
-document.getElementById("logoutBtn").onclick=()=>location.href="login.html";
 renderItems();

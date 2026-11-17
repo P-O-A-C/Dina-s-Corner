@@ -1,32 +1,9 @@
 (async function () {
+  "use strict";
+
   const gate = document.getElementById("authGate");
   const sendToLogin = () => location.replace("login.html");
   let stage = "بدء التحقق";
-
-  function showGate(message, withRetry = false) {
-    if (!gate) return;
-    gate.textContent = "";
-    const text = document.createElement("p");
-    text.textContent = message;
-    text.style.whiteSpace = "pre-line";
-    gate.appendChild(text);
-
-    if (withRetry) {
-      const actions = document.createElement("div");
-      actions.style.cssText = "display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px";
-      const retry = document.createElement("button");
-      retry.type = "button";
-      retry.textContent = "إعادة المحاولة";
-      retry.style.cssText = "border:0;border-radius:8px;padding:10px 18px;background:#17394d;color:#fff;font:inherit;cursor:pointer";
-      retry.addEventListener("click", () => location.reload());
-      const login = document.createElement("a");
-      login.href = "login.html";
-      login.textContent = "العودة لتسجيل الدخول";
-      login.style.cssText = "border:1px solid #17394d;border-radius:8px;padding:10px 18px;color:#17394d;text-decoration:none";
-      actions.append(retry, login);
-      gate.appendChild(actions);
-    }
-  }
 
   function withTimeout(promise, milliseconds, label) {
     return new Promise((resolve, reject) => {
@@ -38,11 +15,94 @@
     });
   }
 
+  function renderGate(message, withRetry = false) {
+    if (!gate) return;
+    gate.replaceChildren();
+
+    const card = document.createElement("div");
+    card.className = "auth-gate-card";
+    const mark = document.createElement("span");
+    mark.className = "auth-gate-mark";
+    mark.textContent = "G";
+    const brand = document.createElement("span");
+    brand.className = "auth-gate-brand";
+    brand.textContent = "GRAND DRY CLEAN";
+    const text = document.createElement("p");
+    text.textContent = message;
+    text.setAttribute("aria-live", "polite");
+    card.append(mark, brand, text);
+
+    if (withRetry) {
+      const actions = document.createElement("div");
+      actions.className = "auth-gate-actions";
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.textContent = "إعادة المحاولة";
+      retry.addEventListener("click", () => location.reload());
+      const login = document.createElement("a");
+      login.href = "login.html";
+      login.textContent = "العودة لتسجيل الدخول";
+      actions.append(retry, login);
+      card.append(actions);
+    } else {
+      const loader = document.createElement("span");
+      loader.className = "auth-loader";
+      loader.setAttribute("aria-hidden", "true");
+      card.append(loader);
+    }
+    gate.append(card);
+  }
+
+  function normalize(value) {
+    return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+  }
+
+  async function loadProfile(client, user) {
+    stage = "تحميل صلاحيات الحساب";
+    renderGate("تم استعادة الجلسة. جارٍ تحميل صلاحيات حساب المغسلة…");
+
+    // First use the same profile RPC used by the central POAC login.
+    let rpcError = null;
+    try {
+      const result = await withTimeout(
+        client.rpc("get_my_profile"),
+        15000,
+        "تحميل صلاحيات الحساب"
+      );
+      if (result.error) rpcError = result.error;
+      else {
+        const row = Array.isArray(result.data) ? result.data[0] : result.data;
+        if (row) return row;
+      }
+    } catch (error) {
+      rpcError = error;
+    }
+
+    // Fallback: read only the signed-in user's own profile row. RLS must allow
+    // a user to read their own profile; no service-role key is used here.
+    stage = "التحقق من سجل الحساب في profiles";
+    renderGate("جارٍ التحقق من سجل حساب المغسلة…");
+    const direct = await withTimeout(
+      client.from("profiles")
+        .select("id,email,role,is_active")
+        .eq("id", user.id)
+        .maybeSingle(),
+      12000,
+      "قراءة سجل الحساب"
+    );
+    if (direct.error) {
+      const detail = rpcError?.message ? " (" + rpcError.message + ")" : "";
+      throw new Error("تعذر قراءة صلاحيات الحساب من profiles" + detail + ": " + direct.error.message);
+    }
+    if (!direct.data) throw new Error("لم يتم العثور على سجل الحساب في profiles.");
+    return direct.data;
+  }
+
   try {
     stage = "تحميل إعدادات Supabase";
     const cfg = window.POA_CONFIG || {};
     if (!window.supabase?.createClient || !cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY) {
-      showGate("تعذر تحميل إعدادات الدخول. افتح صفحة تسجيل دخول المغسلة وتأكد من تحميل ملفات المشروع.", true);
+      renderGate("تعذر تحميل إعدادات الاتصال. تأكد من نشر assets/config.js وملف Supabase.", true);
       return;
     }
 
@@ -51,23 +111,28 @@
     });
 
     stage = "استعادة جلسة الدخول";
-    showGate("جارٍ استعادة جلسة الدخول...");
-    const { data: sessionData, error: sessionError } = await withTimeout(client.auth.getSession(), 12000, "استعادة جلسة الدخول");
-    if (sessionError) throw sessionError;
-    const session = sessionData?.session;
-    if (!session?.user) { sendToLogin(); return; }
+    renderGate("جارٍ استعادة جلسة الدخول…");
+    const sessionResult = await withTimeout(client.auth.getSession(), 12000, "استعادة جلسة الدخول");
+    if (sessionResult.error) throw sessionResult.error;
+    const session = sessionResult.data?.session;
+    if (!session?.user) {
+      sendToLogin();
+      return;
+    }
 
-    // The freshly authenticated session already contains the verified Auth user.
-    // Reuse it here rather than issuing a second auth.getUser() request on page load.
-    const user = session.user;
+    // Ask Supabase for the current Auth user so project app_metadata is not
+    // taken only from a potentially old browser-cached session object.
+    stage = "تأكيد هوية الحساب";
+    renderGate("جارٍ تأكيد هوية حساب المغسلة…");
+    const authResult = await withTimeout(client.auth.getUser(), 12000, "تأكيد هوية الحساب");
+    if (authResult.error) throw authResult.error;
+    const user = authResult.data?.user || session.user;
+    if (!user?.id) throw new Error("تعذر تحديد هوية المستخدم المسجل.");
 
-    stage = "تحميل صلاحيات الحساب من profiles";
-    showGate("تم استعادة الجلسة. جارٍ تحميل صلاحيات حساب المغسلة...");
-    const profileResult = await withTimeout(client.rpc("get_my_profile"), 15000, "تحميل صلاحيات الحساب");
-    if (profileResult.error) throw profileResult.error;
-    const profile = Array.isArray(profileResult.data) ? profileResult.data[0] : profileResult.data;
+    const profile = await loadProfile(client, user);
 
     stage = "مطابقة الحساب مع مشروع GRAND DRY CLEAN";
+    renderGate("تم تحميل الحساب. جارٍ مطابقة صلاحيات GRAND DRY CLEAN…");
     const app = user.app_metadata || {};
     const markers = [
       profile?.project_key, profile?.project_slug, profile?.project_name,
@@ -75,31 +140,49 @@
       profile?.business_name, profile?.company_slug, profile?.company_name,
       app.poac_project, app.project_key, app.project_slug,
       app.tenant_slug, app.business_slug, app.company_slug
-    ].filter(v => v !== null && v !== undefined && String(v).trim())
-      .map(v => String(v).toLowerCase().replace(/[^a-z0-9]+/g, ""));
+    ].filter(value => value !== null && value !== undefined && String(value).trim())
+      .map(normalize);
 
-    const belongsToDryClean = markers.some(v =>
-      v.includes("granddryclean") || v.includes("dryclean") || v === "laundry"
+    const belongsToDryClean = markers.some(value =>
+      value.includes("granddryclean") || value.includes("dryclean") || value === "laundry"
     );
+    const isCorrectRole = String(profile?.role || "").toLowerCase() === "gm";
+    const isActive = profile?.is_active !== false;
 
-    if (!profile || String(profile.role || "").toLowerCase() !== "gm" || profile.is_active === false || !belongsToDryClean) {
+    if (!isCorrectRole || !isActive || !belongsToDryClean) {
       await client.auth.signOut();
-      sendToLogin();
+      renderGate("هذا الحساب غير مخصص لإدارة GRAND DRY CLEAN. تأكد من دور gm وربط المشروع grand-dry-clean في Supabase.", true);
       return;
     }
 
+    // Reveal the protected management interface only after every check succeeds.
     document.body.classList.remove("auth-pending");
     if (gate) gate.hidden = true;
-    document.getElementById("logoutBtn")?.addEventListener("click", async () => {
-      await client.auth.signOut();
-      sendToLogin();
+
+    // Signing out from a business workspace always returns to the central POAC portal.
+    // Keep sendToLogin() for expired sessions and failed authorization checks only.
+    document.getElementById("logoutBtn")?.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const button = document.getElementById("logoutBtn");
+      if (button) {
+        button.disabled = true;
+        button.setAttribute("aria-disabled", "true");
+      }
+      try {
+        const { error } = await client.auth.signOut();
+        if (error) console.error("GRAND DRY CLEAN sign-out failed:", error);
+      } catch (error) {
+        console.error("GRAND DRY CLEAN sign-out failed:", error);
+      } finally {
+        location.replace("../index.html");
+      }
     });
   } catch (error) {
     console.error("GRAND DRY CLEAN access check failed at stage:", stage, error);
     const isTimeout = String(error?.message || "").startsWith("TIMEOUT:");
-    const reason = isTimeout
-      ? "الاتصال بـ Supabase استغرق وقتًا أطول من المتوقع. تأكد من الاتصال بالإنترنت ثم أعد المحاولة."
-      : "تعذر التحقق من صلاحية الحساب. راجع إعدادات Supabase أو صلاحية get_my_profile.";
-    showGate(reason + "\n\nمرحلة التحقق: " + stage, true);
+    const message = isTimeout
+      ? "الاتصال بـ Supabase استغرق وقتًا أطول من المتوقع. تحقق من الاتصال ثم أعد المحاولة."
+      : "تعذر إكمال التحقق من الحساب. راجع اتصال Supabase وصلاحية قراءة سجل الحساب.";
+    renderGate(message + "\nمرحلة التحقق: " + stage, true);
   }
 })();

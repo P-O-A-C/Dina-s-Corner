@@ -5,10 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#172f42">
   <title>POAC | GRAND DRY CLEAN</title>
-  <link rel="stylesheet" href="css/poac.css">
+  <link rel="stylesheet" href="css/poac.css?v=20261117-dashboard-fix2">
 </head>
 <body class="dashboard-page auth-pending">
-  <div id="authGate" class="auth-gate">جارٍ التحقق من صلاحيات حساب GRAND DRY CLEAN…</div>
+  <div id="authGate" class="auth-gate">
+    <div class="auth-gate-card">
+      <span class="auth-gate-mark">G</span>
+      <span class="auth-gate-brand">GRAND DRY CLEAN</span>
+      <p>جارٍ التحقق من صلاحيات حساب المغسلة…</p>
+      <span class="auth-loader" aria-hidden="true"></span>
+    </div>
+  </div>
   <header class="dash-header">
     <a class="dash-brand" href="index.html"><span class="mini-mark">P</span><span><b>POAC</b><small>BUSINESS WORKSPACE</small></span></a>
     <div class="header-user"><span class="user-dot"></span><span>مساحة العمل</span><button id="logoutBtn" class="logout-button">تسجيل الخروج</button></div>
@@ -43,7 +50,7 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="../assets/config.js"></script>
-<script src="js/session-guard.js?v=20261117-guard-fix1"></script>
-<script src="js/dashboard.js"></script>
+<script src="js/session-guard.js?v=20261117-poac-logout-v1"></script>
+<script src="js/dashboard.js?v=20261117-poac-logout-v1"></script>
 </body>
 </html>
