@@ -66,6 +66,38 @@
 
 <style id="dc-branch-cards-compact-names-only">
   /* Branch cards only: compact height and branch name as the sole visible content */
+  .dc-branches-panel .dc-branch-cards {
+    gap: 7px !important;
+    row-gap: 7px !important;
+  }
+
+  .dc-branches-panel .dc-payment-section {
+    width: 100%;
+    margin: 9px 0 0 !important;
+  }
+
+  .dc-branches-panel .dc-payment-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 7px !important;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .dc-branches-panel .dc-branch-cards {
+      gap: 5px !important;
+      row-gap: 5px !important;
+    }
+
+    .dc-branches-panel .dc-payment-section {
+      margin-top: 6px !important;
+    }
+
+    .dc-branches-panel .dc-payment-grid {
+      gap: 5px !important;
+    }
+  }
+
   .dc-branches-panel .dc-branch-card {
     box-sizing: border-box;
     height: 52px !important;
@@ -152,6 +184,13 @@
             <span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong></span>
           </a>
         </div>
+        <section class="dc-payment-section" aria-labelledby="paymentTitle">
+          <h2 class="dc-section-heading" id="paymentTitle"><span>Pay with Ease</span></h2>
+          <div class="dc-payment-grid">
+            <a class="dc-payment-card" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay" style="text-decoration:none;color:inherit"><strong class="dc-payment-brand dc-instapay">InstaPay<span>›</span></strong></a>
+            <button class="dc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')"><strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong></button>
+          </div>
+        </section>
       </section>
     </div>
   </section>
@@ -161,13 +200,6 @@
     <div class="dc-talabat-copy"><strong>اطلب من Dina’s Corner عبر تطبيق طلبات</strong><span>متاح في طنطا والقاهرة</span><div class="dc-talabat-cities"><span>طنطا</span><span>القاهرة</span></div></div>
   </a>
 
-  <section class="dc-payment-section" aria-labelledby="paymentTitle">
-    <h2 class="dc-section-heading" id="paymentTitle"><span>Pay with Ease</span></h2>
-    <div class="dc-payment-grid">
-      <a class="dc-payment-card" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay" style="text-decoration:none;color:inherit"><strong class="dc-payment-brand dc-instapay">InstaPay<span>›</span></strong></a>
-      <button class="dc-payment-card" type="button" onclick="copyPaymentNumber('01002348055')"><strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong></button>
-    </div>
-  </section>
 
   <nav class="dc-social-links" aria-label="Dina’s Corner social media">
     <a class="dc-instagram-link" href="https://www.instagram.com/dinas_corner_healthy?vrfl=MWVqN2J4ejN4M2F5cA==" target="_blank" rel="noopener noreferrer" aria-label="Follow Dina’s Corner on Instagram"><span class="dc-instagram-icon" aria-hidden="true">◎</span><strong>Follow Us on Instagram</strong><span aria-hidden="true">›</span></a>
