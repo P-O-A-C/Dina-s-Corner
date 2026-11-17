@@ -63,6 +63,49 @@
   }
 </style>
 
+
+<style id="dc-branch-cards-compact-names-only">
+  /* Branch cards only: compact height and branch name as the sole visible content */
+  .dc-branches-panel .dc-branch-card {
+    box-sizing: border-box;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 8px 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .dc-branches-panel .dc-branch-card__body {
+    display: flex !important;
+    width: 100%;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    text-align: center;
+  }
+
+  .dc-branches-panel .dc-branch-card__body strong {
+    margin: 0 !important;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .dc-branches-panel .dc-branch-card__body small,
+  .dc-branches-panel .dc-branch-card__icon,
+  .dc-branches-panel .dc-branch-card__go {
+    display: none !important;
+  }
+
+  @media (max-width: 600px) {
+    .dc-branches-panel .dc-branch-card {
+      height: 48px !important;
+      min-height: 48px !important;
+      padding: 7px 10px !important;
+    }
+  }
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -96,17 +139,17 @@
 
       <section class="dc-branches-panel" aria-label="Branch locations">
         <div class="dc-branch-cards">
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/qVgwAo2xUAvsjDDt7">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong><small>على مبارك مع مسجد الرضوان، أمام مدخل جيم النعماني</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/qVgwAo2xUAvsjDDt7" aria-label="طنطا – الفرع الرئيسي">
+            <span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong></span>
           </a>
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/e3K3bkv4ryo5RJK49">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – الفرع الثاني</strong><small>الاستاد، شارع الحياة، بجوار بوابة نادي سيتي الجانبية</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/e3K3bkv4ryo5RJK49" aria-label="طنطا – الفرع الثاني">
+            <span class="dc-branch-card__body"><strong>طنطا – الفرع الثاني</strong></span>
           </a>
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mafaza%20El%20Sabeel%2C%2018%20Hasan%20Hasseb%20St%2C%20Tanta&query_place_id=ChIJnYC7VwDJ9xQRQxUKUzrK914" aria-label="موقع منفذ مفازا السبيل على خرائط Google">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>طنطا – منفذ مفازا السبيل</strong><small>داخل ماركت مفازا السبيل، شارع حسن حسيب</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mafaza%20El%20Sabeel%2C%2018%20Hasan%20Hasseb%20St%2C%20Tanta&query_place_id=ChIJnYC7VwDJ9xQRQxUKUzrK914" aria-label="طنطا – منفذ مفازا السبيل">
+            <span class="dc-branch-card__body"><strong>طنطا – منفذ مفازا السبيل</strong></span>
           </a>
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/3hrU7SKAWi6KXrnF6">
-            <span class="dc-branch-card__icon" aria-hidden="true">⌖</span><span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong><small>حي البنفسج، أمام مدخل كارفور البنفسج مباشرة، منطقة المدارس</small></span><span class="dc-branch-card__go" aria-hidden="true">↗</span>
+          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/3hrU7SKAWi6KXrnF6" aria-label="القاهرة الجديدة – التجمع الأول">
+            <span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong></span>
           </a>
         </div>
       </section>
