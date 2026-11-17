@@ -63,146 +63,170 @@
   }
 </style>
 
-
-<style id="dc-branch-cards-compact-names-only">
-  /* Branch cards only: compact height and branch name as the sole visible content */
-  .dc-branches-panel .dc-branch-cards {
-    gap: 7px !important;
-    row-gap: 7px !important;
-  }
-
-  .dc-branches-panel .dc-payment-section {
-    width: 100%;
-    margin: 9px 0 0 !important;
-  }
-
-  .dc-branches-panel .dc-payment-grid {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 7px !important;
-    width: 100%;
-  }
-
-  @media (max-width: 600px) {
-    .dc-branches-panel .dc-branch-cards {
-      gap: 5px !important;
-      row-gap: 5px !important;
-    }
-
-    .dc-branches-panel .dc-payment-section {
-      margin-top: 6px !important;
-    }
-
-    .dc-branches-panel .dc-payment-grid {
-      gap: 5px !important;
-    }
-  }
-
-  .dc-branches-panel .dc-branch-card {
-    box-sizing: border-box;
-    height: 52px !important;
-    min-height: 52px !important;
-    padding: 8px 14px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .dc-branches-panel .dc-branch-card__body {
-    display: flex !important;
-    width: 100%;
-    align-items: center !important;
-    justify-content: center !important;
-    margin: 0 !important;
-    text-align: center;
-  }
-
-  .dc-branches-panel .dc-branch-card__body strong {
-    margin: 0 !important;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .dc-branches-panel .dc-branch-card__body small,
-  .dc-branches-panel .dc-branch-card__icon,
-  .dc-branches-panel .dc-branch-card__go {
-    display: none !important;
-  }
-
-  @media (max-width: 600px) {
-    .dc-branches-panel .dc-branch-card {
-      height: 48px !important;
-      min-height: 48px !important;
-      padding: 7px 10px !important;
-    }
-  }
-</style>
-
-
-<style id="dc-mobile-vertical-card-spacing">
-  /* Mobile only: branch and payment cards in one tidy vertical stack */
+<style id="dc-mobile-cards-final-layout">
+  /* One consistent mobile layout: full-width branch and payment cards, without forced row stretching. */
   @media (max-width: 760px) {
+    .dc-visit-layout {
+      grid-template-columns: minmax(0, 1fr) !important;
+      gap: 10px !important;
+      align-items: start !important;
+    }
+
+    .dc-branches-panel {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      box-sizing: border-box !important;
+      gap: 6px !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
     .dc-branches-panel .dc-branch-cards {
       display: grid !important;
       grid-template-columns: minmax(0, 1fr) !important;
+      grid-template-rows: none !important;
+      grid-auto-rows: 44px !important;
+      align-content: start !important;
       gap: 4px !important;
       row-gap: 4px !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
       margin: 0 !important;
+      padding: 0 !important;
     }
 
     .dc-branches-panel .dc-branch-card {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
       box-sizing: border-box !important;
       width: 100% !important;
-      height: 48px !important;
-      min-height: 48px !important;
-      max-height: 48px !important;
+      height: 44px !important;
+      min-height: 44px !important;
+      max-height: 44px !important;
       margin: 0 !important;
+      padding: 0 12px !important;
+      overflow: hidden !important;
+      border-radius: 14px !important;
+    }
+
+    .dc-branches-panel .dc-branch-card__body {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      text-align: center !important;
+    }
+
+    .dc-branches-panel .dc-branch-card__body strong {
+      display: block !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      overflow: hidden !important;
+      white-space: nowrap !important;
+      text-overflow: ellipsis !important;
+      text-align: center !important;
+      font-size: clamp(11px, 3.1vw, 13px) !important;
+      line-height: 1.2 !important;
+    }
+
+    .dc-branches-panel .dc-branch-card__body small,
+    .dc-branches-panel .dc-branch-card__icon,
+    .dc-branches-panel .dc-branch-card__go {
+      display: none !important;
     }
 
     .dc-branches-panel .dc-payment-section {
+      display: block !important;
+      flex: 0 0 auto !important;
       width: 100% !important;
-      margin: 5px 0 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      margin: 2px 0 0 !important;
       padding: 0 !important;
     }
 
     .dc-branches-panel .dc-payment-section .dc-section-heading {
       margin: 0 auto 5px !important;
-      gap: 6px !important;
-      font-size: 16px !important;
+      gap: 5px !important;
+      font-size: 15px !important;
+      line-height: 1.2 !important;
     }
 
     .dc-branches-panel .dc-payment-section .dc-section-heading > span {
-      padding: 5px 16px !important;
+      padding: 4px 13px !important;
     }
 
     .dc-branches-panel .dc-payment-grid {
       display: grid !important;
       grid-template-columns: minmax(0, 1fr) !important;
+      grid-auto-rows: 44px !important;
+      align-content: start !important;
       gap: 4px !important;
       row-gap: 4px !important;
       width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
       margin: 0 !important;
+      padding: 0 !important;
     }
 
     .dc-branches-panel .dc-payment-grid > .dc-payment-card {
-      box-sizing: border-box !important;
       display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
       width: 100% !important;
-      height: 48px !important;
-      min-height: 48px !important;
-      max-height: 48px !important;
+      height: 44px !important;
+      min-height: 44px !important;
+      max-height: 44px !important;
       margin: 0 !important;
-      padding: 6px 10px !important;
+      padding: 5px 12px !important;
+      gap: 6px !important;
+      border-radius: 14px !important;
+      line-height: 1.1 !important;
     }
 
     .dc-branches-panel .dc-payment-brand.dc-instapay {
+      margin: 0 !important;
       font-size: 19px !important;
       line-height: 1.1 !important;
+      white-space: nowrap !important;
     }
 
     .dc-branches-panel .dc-payment-brand.dc-vodafone {
+      margin: 0 !important;
       font-size: 15px !important;
       line-height: 1.1 !important;
+      white-space: nowrap !important;
+    }
+  }
+</style>
+
+
+<style id="dc-mobile-image-card-height-adjustment">
+  /* Mobile only: reduce the featured photo card height while keeping its width and image crop. */
+  @media (max-width: 760px) {
+    .dc-best-sellers--full-frame {
+      height: auto !important;
+      min-height: 0 !important;
+      aspect-ratio: .75 / 1 !important;
+      align-self: stretch !important;
+    }
+    .dc-best-sellers--full-frame .dc-best-sellers__track,
+    .dc-best-sellers--full-frame .dc-best-sellers__card,
+    .dc-best-sellers--full-frame .dc-best-sellers__card img {
+      height: 100% !important;
+      min-height: 0 !important;
     }
   }
 </style>
