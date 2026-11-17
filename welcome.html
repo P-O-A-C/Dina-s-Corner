@@ -287,53 +287,23 @@
 </style>
 
 
-<style id="dc-mobile-images-left-final-fix">
-  /* Deterministic mobile columns: photos LEFT, branch/payment cards RIGHT. */
-  @media (max-width: 760px) {
-    .dc-visit-layout {
-      display: grid !important;
-      direction: ltr !important;
-      grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr) !important;
-      grid-template-areas: "photos branches" !important;
-      grid-template-rows: auto !important;
-      gap: 8px !important;
-      align-items: start !important;
-      width: 100% !important;
-    }
-    .dc-visit-layout > .dc-best-sellers {
-      grid-area: photos !important;
-      grid-column: auto !important;
-      grid-row: auto !important;
-      order: 0 !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      align-self: start !important;
-    }
-    .dc-visit-layout > .dc-branches-panel {
-      grid-area: branches !important;
-      grid-column: auto !important;
-      grid-row: auto !important;
-      order: 0 !important;
-      direction: rtl !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      align-self: start !important;
-    }
-    .dc-branches-panel .dc-branch-cards,
-    .dc-branches-panel .dc-payment-grid {
-      width: 100% !important;
-      min-width: 0 !important;
-    }
-  }
-  @media (max-width: 360px) {
-    .dc-visit-layout {
-      grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr) !important;
-      gap: 6px !important;
-    }
-  }
+<style id="dc-mobile-two-column-final">
+/* Mobile: product photos LEFT; branch and payment cards RIGHT. */
+@media (max-width: 760px) {
+  .dc-visit-layout { display:grid!important; direction:ltr!important; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important; grid-template-rows:auto!important; grid-auto-flow:row!important; align-items:stretch!important; gap:8px!important; width:100%!important; }
+  .dc-visit-layout > .dc-best-sellers { grid-column:1!important; grid-row:1!important; order:0!important; width:100%!important; min-width:0!important; height:auto!important; min-height:0!important; aspect-ratio:auto!important; align-self:stretch!important; padding:5px!important; box-sizing:border-box!important; }
+  .dc-visit-layout > .dc-branches-panel { grid-column:2!important; grid-row:1!important; order:0!important; width:100%!important; min-width:0!important; height:auto!important; min-height:0!important; align-self:stretch!important; padding:5px!important; box-sizing:border-box!important; }
+  .dc-visit-layout > .dc-branches-panel .dc-branch-cards { display:flex!important; flex-direction:column!important; height:auto!important; gap:5px!important; }
+  .dc-visit-layout > .dc-branches-panel .dc-branch-card { flex:0 0 auto!important; width:100%!important; min-height:44px!important; height:44px!important; max-height:44px!important; box-sizing:border-box!important; }
+  .dc-visit-layout > .dc-branches-panel .dc-payment-section { margin-top:7px!important; }
+  .dc-visit-layout > .dc-branches-panel .dc-section-heading { margin:4px 0 6px!important; }
+  .dc-visit-layout > .dc-branches-panel .dc-payment-grid { display:flex!important; flex-direction:column!important; gap:5px!important; }
+  .dc-visit-layout > .dc-branches-panel .dc-payment-card { width:100%!important; min-height:44px!important; height:44px!important; box-sizing:border-box!important; }
+  .dc-best-sellers--full-frame .dc-best-sellers__track, .dc-best-sellers--full-frame .dc-best-sellers__card, .dc-best-sellers--full-frame .dc-best-sellers__card img { height:100%!important; min-height:0!important; }
+}
+@media (max-width:360px) { .dc-visit-layout { grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr)!important; gap:6px!important; } }
 </style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
