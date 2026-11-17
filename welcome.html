@@ -574,7 +574,7 @@
           <h2 class="dc-section-heading" id="paymentTitle"><span>Pay with Ease</span></h2>
           <div class="dc-payment-grid">
             <a class="dc-payment-card" href="https://ipn.eg/S/dinakhaledzakaria/instapay/1lXywS" target="_blank" rel="noopener noreferrer" aria-label="Pay with InstaPay" style="text-decoration:none;color:inherit"><strong class="dc-payment-brand dc-instapay">InstaPay<span>›</span></strong></a>
-            <a class="dc-payment-card" href="http://vf.eg/vfcash?id=mt&amp;qrId=biSpPu&amp;qrString=01eedd4e79838704931825fda0ef14264500c9b5f290687af5d8d3ecb5a95398" target="_blank" rel="noopener noreferrer" aria-label="Pay with Vodafone Cash" style="text-decoration:none;color:inherit"><strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong></a>
+            <a class="dc-payment-card" id="vodafoneCashTransferLink" href="http://vf.eg/vfcash?id=mt&amp;qrId=biSpPu" aria-label="فتح تحويل Vodafone Cash"><strong class="dc-payment-brand dc-vodafone">▣ Vodafone Cash</strong></a>
           </div>
         </section>
       </section>
@@ -618,6 +618,7 @@ async function copyPaymentNumber(number){
   catch(_){toast.textContent='Please copy the number: '+number;}
   toast.classList.add('show');clearTimeout(window.copyToastTimer);window.copyToastTimer=setTimeout(()=>toast.classList.remove('show'),2200);
 }
+
 </script>
 <script src="assets/config.js?v=20261115-welcome-poster-match-v6"></script>
 <script src="assets/dina-branch-maps.js?v=20261116-exact-owner-maps-v5-mafaza"></script>
