@@ -231,15 +231,64 @@ function toast(message, good = true) {
 }
 
 async function getSession() {
-  const { data, error } = await sb.auth.getSession();
+  const { data, error } = await poacWithTimeout(sb.auth.getSession(), 10000, "استعادة جلسة الدخول");
   if (error) throw error;
   return data.session;
 }
 
+async function poacWithTimeout(promise, milliseconds, label) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("TIMEOUT:" + label)), milliseconds);
+    Promise.resolve(promise).then(
+      value => { clearTimeout(timer); resolve(value); },
+      error => { clearTimeout(timer); reject(error); }
+    );
+  });
+}
+
+async function poacSafeSignOut(maxWait = 1200) {
+  try {
+    await Promise.race([
+      sb.auth.signOut(),
+      new Promise(resolve => setTimeout(resolve, maxWait))
+    ]);
+  } catch (error) {
+    console.warn("Supabase sign-out did not complete before navigation:", error);
+  }
+}
+
 async function getProfile() {
-  const { data, error } = await sb.rpc("get_my_profile");
-  if (error) throw error;
-  return Array.isArray(data) ? data[0] : data;
+  // Use the existing RPC first, but never let a slow RPC leave a protected page blank.
+  let rpcError = null;
+  try {
+    const result = await poacWithTimeout(sb.rpc("get_my_profile"), 10000, "تحميل الملف الشخصي");
+    if (!result.error) {
+      const row = Array.isArray(result.data) ? result.data[0] : result.data;
+      if (row) return row;
+    } else {
+      rpcError = result.error;
+    }
+  } catch (error) {
+    rpcError = error;
+  }
+
+  // Safe fallback: read only the currently authenticated user's own row (RLS applies).
+  const authResult = await poacWithTimeout(sb.auth.getUser(), 10000, "تأكيد المستخدم");
+  if (authResult.error) throw authResult.error;
+  const userId = authResult.data?.user?.id;
+  if (!userId) throw new Error("انتهت جلسة الدخول. سجّل الدخول مرة أخرى.");
+
+  const direct = await poacWithTimeout(
+    sb.from("profiles").select("*").eq("id", userId).maybeSingle(),
+    10000,
+    "قراءة بيانات الحساب"
+  );
+  if (direct.error) {
+    const detail = rpcError?.message ? " (RPC: " + rpcError.message + ")" : "";
+    throw new Error("تعذر تحميل صلاحيات الحساب من profiles" + detail + ": " + direct.error.message);
+  }
+  if (!direct.data) throw new Error("لم يتم العثور على سجل الحساب في profiles.");
+  return direct.data;
 }
 
 async function getStaffProfile() {
@@ -269,18 +318,18 @@ async function guardRole(allowedRoles) {
     allowedRoles.some(r => r === "gm" || r === "staff");
   if (!profile || (!allowedRoles.includes(profile.role) && !adminPortalAccess)) {
     toast("You do not have access to this portal.", false);
-    await sb.auth.signOut();
+    const signingOut = sb.auth.signOut().catch(error => console.warn("Sign-out during access redirect failed:", error));
+    await Promise.race([signingOut, new Promise(resolve => setTimeout(resolve, 1200))]);
     location.replace(getCentralPoacLoginUrl());
     return null;
   }
   const tenantId = String(window.POA_TENANT_CONFIG?.TENANT_ID || "").toLowerCase();
   if (tenantId === "dina-corner" && allowedRoles.includes("gm") && profile.role === "gm") {
     const user = await getCurrentPoacAuthUser();
-    const markers = getPoacProjectMarkers(profile, user);
-    const explicitlyOtherProject = markers.length && !markers.some(v => v.includes("dinacorner") || v === "dina");
-    if (explicitlyOtherProject) {
-      toast("This account belongs to a different project.", false);
-      await sb.auth.signOut();
+    const email = String(user?.email || "").trim().toLowerCase();
+    if (email !== "dina'scorner@poac.com") {
+      toast("This account is not assigned to Dina’s Corner.", false);
+      await poacSafeSignOut();
       location.replace(getCentralPoacLoginUrl());
       return null;
     }
@@ -318,50 +367,56 @@ function getPoacProjectMarkers(profile, user) {
     .filter(v => v && !/^[a-f0-9]{32,}$/i.test(v));
 }
 function resolvePoacProjectLogin(profile, user, expectedProject) {
-  const role = String(profile?.role || "").toLowerCase();
+  const role = String(profile?.role || "").trim().toLowerCase();
+  const email = String(user?.email || profile?.email || "").trim().toLowerCase();
   const markers = getPoacProjectMarkers(profile, user);
   const hasMarkers = markers.length > 0;
-  const matchesDina = markers.some(v => v.includes("dinacorner") || v === "dina");
-  const matchesDryClean = markers.some(v => v.includes("granddryclean") || v.includes("dryclean") || v === "laundry");
-  const email = String(user?.email || "").trim().toLowerCase();
-  const isDinaManagerAccount = email === "dina'scorner@poac.com" && role === "gm";
 
+  // app_metadata.poac_project is the canonical project marker. If it is not
+  // present, fall back to the existing project fields returned by the profile RPC.
+  const appProject = normalizePoacProjectMarker(user?.app_metadata?.poac_project || "");
+  const projectMarkers = appProject ? [appProject] : markers;
+  const hasProjectMarker = projectMarkers.length > 0;
+  const matchesDina = projectMarkers.some(v => v.includes("dinacorner") || v === "dina");
+  const matchesDryClean = projectMarkers.some(v => v.includes("granddryclean") || v.includes("dryclean") || v === "laundry");
+
+  // Each management mailbox is explicitly assigned to one project.
+  // Keep the database role as gm for both business managers; DryClean is a
+  // presentation label, not a new authorization role in this application.
+  const isDinaManager = email === "dina'scorner@poac.com" && role === "gm";
+  const isDryCleanManager = email === "granddryclean@poac.com" && (role === "gm" || role === "dryclean");
+  // Dedicated manager mailboxes are the canonical project assignment.
+  // Project markers remain in app_metadata for auditing, but stale legacy markers
+  // must not strand the correctly identified manager on an endless/loading screen.
   if (expectedProject === "poac-admin") {
-    // POAC central administration is reserved for accounts with the admin role.
-    if (role === "admin") return { allowed: true, target: "POAC-Admin/index.html" };
-
-    // The dedicated Dina GM account may use the central login, but is routed
-    // only to Dina's management dashboard, never to the customer welcome page.
-    if (isDinaManagerAccount && (!hasMarkers || matchesDina)) {
+    if (role === "admin" && email === "gm@poac.com") return { allowed: true, target: "POAC-Admin/index.html" };
+    if (isDinaManager) {
       return { allowed: true, target: "Dina'sCorner/dashboard.html" };
     }
-
-    // GRAND DRY CLEAN management may also sign in through the central POAC
-    // login, but only when the authenticated GM account carries the exact
-    // GRAND DRY CLEAN project marker from Supabase app_metadata/profile.
-    if (role === "gm" && matchesDryClean) {
+    if (isDryCleanManager) {
       return { allowed: true, target: "GrandDryClean/dashboard.html" };
     }
+    return { allowed: false, message: "هذا الحساب غير مخصص لهذه البوابة أو أن ربط المشروع غير صحيح في Supabase." };
+  }
 
-    return { allowed: false, message: "هذا الحساب غير مصرح له بدخول بوابة POAC. استخدم حساب الإدارة الصحيح للمشروع." };
-  }
   if (expectedProject === "dina-corner") {
-    if (!isDinaManagerAccount) return { allowed: false, message: "استخدم حساب dina'scorner@poac.com المخصص لإدارة Dina’s Corner." };
-    if (hasMarkers && !matchesDina) return { allowed: false, message: "هذا الحساب مرتبط بمشروع آخر. استخدم صفحة الدخول الخاصة بمشروعه." };
+    if (!isDinaManager) {
+      return { allowed: false, message: "استخدم حساب dina'scorner@poac.com المخصص لإدارة Dina’s Corner." };
+    }
     return { allowed: true, target: "dashboard.html" };
   }
+
   if (expectedProject === "grand-dry-clean") {
-    if (role !== "gm") return { allowed: false, message: "هذا الحساب ليس حساب إدارة GRAND DRY CLEAN." };
-    if (!matchesDryClean) return {
-      allowed: false,
-      message: "الحساب غير مربوط بمشروع GRAND DRY CLEAN. يلزم تعيين app_metadata.poac_project = grand-dry-clean لحساب المغسلة من جهة آمنة في Supabase."
-    };
+    if (!isDryCleanManager) {
+      return { allowed: false, message: "حساب GRAND DRY CLEAN يجب أن يكون بريده granddryclean@poac.com ودوره الداخلي gm." };
+    }
     return { allowed: true, target: "dashboard.html" };
   }
+
   return { allowed: false, message: "نوع صفحة الدخول غير محدد." };
 }
 async function getCurrentPoacAuthUser() {
-  const { data, error } = await sb.auth.getUser();
+  const { data, error } = await poacWithTimeout(sb.auth.getUser(), 10000, "تأكيد هوية المستخدم");
   if (error) throw error;
   return data?.user || null;
 }
@@ -466,7 +521,7 @@ async function loginAuto() {
 
     const profile = await getProfile();
     if (!profile || profile.is_active === false) {
-      await sb.auth.signOut();
+      await poacSafeSignOut();
       showLoginMessage("الحساب غير نشط أو لم تُضبط له صلاحيات صحيحة. تواصل مع الإدارة.");
       return;
     }
@@ -476,7 +531,7 @@ async function loginAuto() {
       const user = await getCurrentPoacAuthUser();
       const decision = resolvePoacProjectLogin(profile, user, expectedProject);
       if (!decision.allowed) {
-        await sb.auth.signOut();
+        await poacSafeSignOut();
         showLoginMessage(decision.message || "هذا الحساب غير مصرح له بالدخول إلى هذه الصفحة.");
         return;
       }
@@ -485,7 +540,7 @@ async function loginAuto() {
       target = routeForRoleFromRoot(profile?.role);
     }
     if (!target) {
-      await sb.auth.signOut();
+      await poacSafeSignOut();
       showLoginMessage("هذا الحساب ليس لديه صلاحية دخول إلى بوابة POAC.");
       return;
     }
@@ -529,7 +584,7 @@ async function login(role) {
     const profile = await getProfile();
     if (!profile) throw new Error("Your profile is not ready yet. Please try again.");
     if (profile.role !== role) {
-      await sb.auth.signOut();
+      await poacSafeSignOut();
       throw new Error(`This account is not registered as ${role}.`);
     }
     const expectedProject = document.body?.dataset?.loginProject || "";
@@ -537,7 +592,7 @@ async function login(role) {
       const user = await getCurrentPoacAuthUser();
       const decision = resolvePoacProjectLogin(profile, user, expectedProject);
       if (!decision.allowed) {
-        await sb.auth.signOut();
+        await poacSafeSignOut();
         throw new Error(decision.message || "This account is not authorized for this project.");
       }
       location.href = document.body?.dataset?.loginTarget || decision.target;
@@ -637,7 +692,7 @@ async function registerCustomer() {
 
 async function logout() {
   try {
-    await sb.auth.signOut();
+    await poacSafeSignOut(1200);
   } catch (error) {
     console.warn("Supabase sign-out request did not complete:", error);
   } finally {
