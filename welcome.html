@@ -305,14 +305,13 @@
 </style>
 
 
-<style id="dc-gold-card-finish">
+<style id="dc-fuchsia-card-finish">
 :root {
-  --dc-gold-frame: #d6a43b;
-  --dc-gold-soft: #fff0b6;
-  --dc-gold-deep: #986016;
-  --dc-burgundy-frame: #963b56;
+  --dc-fuchsia-frame: #d63384;
+  --dc-fuchsia-highlight: #ffb8dc;
+  --dc-fuchsia-deep: #b92570;
 }
-/* One consistent burgundy-and-polished-gold frame treatment across the Welcome page. */
+/* One consistent fuchsia-only frame treatment across the Welcome page. */
 .dc-welcome-shell,
 .dc-action-card,
 .dc-branch-card,
@@ -323,25 +322,26 @@
 .dc-contact-grid > *,
 .dc-best-sellers,
 .dc-best-sellers__card {
-  border-color: var(--dc-burgundy-frame) !important;
+  border-color: var(--dc-fuchsia-frame) !important;
   box-shadow:
-    0 0 0 1px rgba(255, 239, 184, .98),
-    0 0 0 2px rgba(181, 119, 25, .78),
-    0 5px 13px rgba(135, 47, 71, .12),
-    inset 0 0 0 1px rgba(255, 224, 132, .96),
-    inset 0 1px 4px rgba(255, 249, 220, .76),
-    inset 0 -1px 2px rgba(152, 96, 22, .18) !important;
+    0 0 0 1px rgba(255, 184, 220, .98),
+    0 0 0 2px rgba(214, 51, 132, .72),
+    0 5px 13px rgba(185, 37, 112, .13),
+    inset 0 0 0 1px rgba(255, 220, 239, .88),
+    inset 0 1px 4px rgba(255, 245, 251, .72),
+    inset 0 -1px 2px rgba(185, 37, 112, .12) !important;
 }
-/* Section-label frames use the same metallic gold highlight over their burgundy fill. */
+/* Section labels use the same fuchsia palette, with no gold or burgundy frame. */
 .dc-section-heading > span {
-  border-color: var(--dc-burgundy-frame) !important;
+  background: linear-gradient(135deg, #e84b9a, #c52778) !important;
+  border-color: var(--dc-fuchsia-frame) !important;
   box-shadow:
-    0 0 0 1px rgba(255, 239, 184, .98),
-    0 0 0 2px rgba(181, 119, 25, .78),
-    0 4px 10px rgba(135, 47, 71, .14),
-    inset 0 1px 4px rgba(255, 249, 220, .55) !important;
+    0 0 0 1px rgba(255, 184, 220, .98),
+    0 0 0 2px rgba(214, 51, 132, .72),
+    0 4px 10px rgba(185, 37, 112, .14),
+    inset 0 1px 4px rgba(255, 245, 251, .56) !important;
 }
-/* Decorative gold detail on the menu card */
+/* Keep the small decorative menu detail, recolored fuchsia. */
 .dc-action-card--menu {
   position: relative !important;
   overflow: hidden !important;
@@ -352,10 +352,10 @@
   position: absolute;
   inset-inline-end: 13px;
   top: 7px;
-  color: var(--dc-gold-frame);
+  color: var(--dc-fuchsia-frame);
   font-size: 17px;
   line-height: 1;
-  text-shadow: 0 0 3px rgba(255, 231, 153, .95), 0 1px 3px rgba(152, 96, 22, .45);
+  text-shadow: 0 0 3px rgba(255, 184, 220, .95), 0 1px 3px rgba(185, 37, 112, .35);
   pointer-events: none;
 }
 /* Remove the city availability text and city labels from the Talabat card */
