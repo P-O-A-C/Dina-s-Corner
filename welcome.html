@@ -440,19 +440,8 @@
       </section>
 
       <section class="dc-branches-panel" aria-label="Branch locations">
-        <div class="dc-branch-cards">
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/qVgwAo2xUAvsjDDt7" aria-label="طنطا – الفرع الرئيسي">
-            <span class="dc-branch-card__body"><strong>طنطا – الفرع الرئيسي</strong></span>
-          </a>
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/e3K3bkv4ryo5RJK49" aria-label="طنطا – الفرع الثاني">
-            <span class="dc-branch-card__body"><strong>طنطا – الفرع الثاني</strong></span>
-          </a>
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mafaza%20El%20Sabeel%2C%2018%20Hasan%20Hasseb%20St%2C%20Tanta&query_place_id=ChIJnYC7VwDJ9xQRQxUKUzrK914" aria-label="طنطا – منفذ مفازا السبيل">
-            <span class="dc-branch-card__body"><strong>طنطا – منفذ مفازا السبيل</strong></span>
-          </a>
-          <a class="dc-branch-card" target="_blank" rel="noopener noreferrer" href="https://maps.app.goo.gl/3hrU7SKAWi6KXrnF6" aria-label="القاهرة الجديدة – التجمع الأول">
-            <span class="dc-branch-card__body"><strong>القاهرة الجديدة – التجمع الأول</strong></span>
-          </a>
+        <div class="dc-branch-cards" id="dcBranchCards" aria-live="polite" aria-busy="true">
+          <div class="dc-branch-loading">جارٍ تحميل الفروع…</div>
         </div>
         <section class="dc-payment-section" aria-labelledby="paymentTitle">
           <h2 class="dc-section-heading" id="paymentTitle"><span>Pay with Ease</span></h2>
@@ -506,7 +495,7 @@ async function copyPaymentNumber(number){
 <script src="assets/config.js?v=20261115-welcome-poster-match-v6"></script>
 <script src="assets/dina-branch-maps.js?v=20261116-exact-owner-maps-v5-mafaza"></script>
 <script src="assets/app.js?v=20261116-exact-owner-maps-v5-mafaza"></script>
-<script src="assets/dina-welcome.js?v=20261115-branch-map-canonical-v2"></script>
+<script src="assets/dina-welcome.js?v=20261117-gm-branch-location-fix-v1"></script>
 <script src="assets/dina-best-sellers.js?v=20261115-best-sellers-autoplay-2s-v1"></script>
 </body>
 </html>
