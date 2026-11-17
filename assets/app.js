@@ -299,12 +299,22 @@ function resolvePoacProjectLogin(profile, user, expectedProject) {
   const hasMarkers = markers.length > 0;
   const matchesDina = markers.some(v => v.includes("dinacorner") || v === "dina");
   const matchesDryClean = markers.some(v => v.includes("granddryclean") || v.includes("dryclean") || v === "laundry");
+  const email = String(user?.email || "").trim().toLowerCase();
+  const isDinaManagerAccount = email === "dina'scorner@poac.com" && role === "gm";
+
   if (expectedProject === "poac-admin") {
-    return role === "admin" ? { allowed: true, target: "POAC-Admin/index.html" }
-      : { allowed: false, message: "هذا الدخول مخصص لمسؤول POAC فقط." };
+    // POAC central administration is reserved for accounts with the admin role.
+    if (role === "admin") return { allowed: true, target: "POAC-Admin/index.html" };
+
+    // The dedicated Dina GM account may use the central login, but is routed
+    // only to Dina's management dashboard, never to the customer welcome page.
+    if (isDinaManagerAccount && (!hasMarkers || matchesDina)) {
+      return { allowed: true, target: "Dina'sCorner/dashboard.html" };
+    }
+    return { allowed: false, message: "هذا الحساب غير مصرح له بدخول بوابة POAC. استخدم حساب الإدارة الصحيح للمشروع." };
   }
   if (expectedProject === "dina-corner") {
-    if (role !== "gm") return { allowed: false, message: "هذا الحساب ليس حساب إدارة Dina’s Corner." };
+    if (!isDinaManagerAccount) return { allowed: false, message: "استخدم حساب dina'scorner@poac.com المخصص لإدارة Dina’s Corner." };
     if (hasMarkers && !matchesDina) return { allowed: false, message: "هذا الحساب مرتبط بمشروع آخر. استخدم صفحة الدخول الخاصة بمشروعه." };
     return { allowed: true, target: "dashboard.html" };
   }

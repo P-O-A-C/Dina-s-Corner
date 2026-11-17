@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v1";
+const CACHE = "poac-unified-v3-account-routing";
 const SHELL = [
   "./index.html",
   "./login.html",
