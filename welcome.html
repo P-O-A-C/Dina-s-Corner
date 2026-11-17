@@ -306,8 +306,14 @@
 
 
 <style id="dc-gold-card-finish">
-:root { --dc-gold-frame: #c9a24e; --dc-gold-soft: #e5cc8e; }
-/* A consistent slim gold frame across the welcome-page cards */
+:root {
+  --dc-gold-frame: #d6a43b;
+  --dc-gold-soft: #fff0b6;
+  --dc-gold-deep: #986016;
+  --dc-burgundy-frame: #781735;
+}
+/* One consistent burgundy-and-polished-gold frame treatment across the Welcome page. */
+.dc-welcome-shell,
 .dc-action-card,
 .dc-branch-card,
 .dc-payment-card,
@@ -315,9 +321,25 @@
 .dc-instagram-link,
 .dc-facebook-link,
 .dc-contact-grid > *,
-.dc-best-sellers {
-  border: 1.5px solid var(--dc-gold-frame) !important;
-  box-shadow: 0 3px 10px rgba(111,31,55,.07), inset 0 0 0 1px rgba(229,204,142,.28) !important;
+.dc-best-sellers,
+.dc-best-sellers__card {
+  border-color: var(--dc-burgundy-frame) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 239, 184, .98),
+    0 0 0 2px rgba(181, 119, 25, .78),
+    0 5px 13px rgba(111, 31, 55, .13),
+    inset 0 0 0 1px rgba(255, 224, 132, .96),
+    inset 0 1px 4px rgba(255, 249, 220, .76),
+    inset 0 -1px 2px rgba(152, 96, 22, .18) !important;
+}
+/* Section-label frames use the same metallic gold highlight over their burgundy fill. */
+.dc-section-heading > span {
+  border-color: var(--dc-burgundy-frame) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 239, 184, .98),
+    0 0 0 2px rgba(181, 119, 25, .78),
+    0 4px 10px rgba(111, 31, 55, .15),
+    inset 0 1px 4px rgba(255, 249, 220, .55) !important;
 }
 /* Decorative gold detail on the menu card */
 .dc-action-card--menu {
@@ -333,7 +355,7 @@
   color: var(--dc-gold-frame);
   font-size: 17px;
   line-height: 1;
-  text-shadow: 0 1px 2px rgba(201,162,78,.25);
+  text-shadow: 0 0 3px rgba(255, 231, 153, .95), 0 1px 3px rgba(152, 96, 22, .45);
   pointer-events: none;
 }
 /* Remove the city availability text and city labels from the Talabat card */
