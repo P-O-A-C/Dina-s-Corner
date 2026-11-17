@@ -306,7 +306,7 @@ function resolvePoacProjectLogin(profile, user, expectedProject) {
   if (expectedProject === "dina-corner") {
     if (role !== "gm") return { allowed: false, message: "هذا الحساب ليس حساب إدارة Dina’s Corner." };
     if (hasMarkers && !matchesDina) return { allowed: false, message: "هذا الحساب مرتبط بمشروع آخر. استخدم صفحة الدخول الخاصة بمشروعه." };
-    return { allowed: true, target: "welcome.html" };
+    return { allowed: true, target: "dashboard.html" };
   }
   if (expectedProject === "grand-dry-clean") {
     if (role !== "gm") return { allowed: false, message: "هذا الحساب ليس حساب إدارة GRAND DRY CLEAN." };
