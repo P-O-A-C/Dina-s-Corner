@@ -305,13 +305,14 @@
 </style>
 
 
-<style id="dc-fuchsia-card-finish">
+<style id="dc-brand-pink-card-finish">
 :root {
-  --dc-fuchsia-frame: #c77f9f;
-  --dc-fuchsia-highlight: #efd0de;
-  --dc-fuchsia-deep: #ad6b89;
+  /* Dina’s Corner identity palette sampled from the approved Welcome reference */
+  --dc-brand-pink: #D9367A;
+  --dc-brand-pink-highlight: #FFD7E6;
+  --dc-brand-pink-deep: #981045;
 }
-/* One consistent fuchsia-only frame treatment across the Welcome page. */
+/* One consistent Dina’s Corner berry-pink frame treatment across the Welcome page. */
 .dc-welcome-shell,
 .dc-action-card,
 .dc-branch-card,
@@ -322,26 +323,26 @@
 .dc-contact-grid > *,
 .dc-best-sellers,
 .dc-best-sellers__card {
-  border-color: var(--dc-fuchsia-frame) !important;
+  border-color: var(--dc-brand-pink) !important;
   box-shadow:
-    0 0 0 1px rgba(239, 208, 222, .92),
-    0 0 0 2px rgba(199, 127, 159, .48),
-    0 5px 13px rgba(173, 107, 137, .10),
-    inset 0 0 0 1px rgba(250, 235, 242, .82),
-    inset 0 1px 4px rgba(255, 245, 251, .72),
-    inset 0 -1px 2px rgba(173, 107, 137, .09) !important;
+    0 0 0 1px rgba(255, 215, 230, .96),
+    0 0 0 2px rgba(217, 54, 122, .48),
+    0 5px 13px rgba(152, 16, 69, .13),
+    inset 0 0 0 1px rgba(255, 240, 246, .90),
+    inset 0 1px 4px rgba(255, 245, 250, .82),
+    inset 0 -1px 2px rgba(152, 16, 69, .07) !important;
 }
-/* Section labels use the same fuchsia palette, with no gold or burgundy frame. */
+/* Section labels use the same rose-and-berry identity palette. */
 .dc-section-heading > span {
-  background: linear-gradient(135deg, #d49ab3, #bd7898) !important;
-  border-color: var(--dc-fuchsia-frame) !important;
+  background: linear-gradient(135deg, #E95291, #C91E62) !important;
+  border-color: var(--dc-brand-pink) !important;
   box-shadow:
-    0 0 0 1px rgba(239, 208, 222, .92),
-    0 0 0 2px rgba(199, 127, 159, .48),
-    0 4px 10px rgba(173, 107, 137, .10),
-    inset 0 1px 4px rgba(255, 245, 251, .56) !important;
+    0 0 0 1px rgba(255, 215, 230, .96),
+    0 0 0 2px rgba(217, 54, 122, .48),
+    0 4px 10px rgba(152, 16, 69, .13),
+    inset 0 1px 4px rgba(255, 245, 250, .78) !important;
 }
-/* Keep the small decorative menu detail, recolored fuchsia. */
+/* Keep the small decorative menu detail in the same brand pink. */
 .dc-action-card--menu {
   position: relative !important;
   overflow: hidden !important;
@@ -352,10 +353,10 @@
   position: absolute;
   inset-inline-end: 13px;
   top: 7px;
-  color: var(--dc-fuchsia-frame);
+  color: var(--dc-brand-pink);
   font-size: 17px;
   line-height: 1;
-  text-shadow: 0 0 3px rgba(239, 208, 222, .88), 0 1px 3px rgba(173, 107, 137, .24);
+  text-shadow: 0 0 3px rgba(255, 215, 230, .92), 0 1px 3px rgba(152, 16, 69, .20);
   pointer-events: none;
 }
 /* Remove the city availability text and city labels from the Talabat card */
