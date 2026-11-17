@@ -286,6 +286,54 @@
   }
 </style>
 
+
+<style id="dc-mobile-images-left-final-fix">
+  /* Deterministic mobile columns: photos LEFT, branch/payment cards RIGHT. */
+  @media (max-width: 760px) {
+    .dc-visit-layout {
+      display: grid !important;
+      direction: ltr !important;
+      grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr) !important;
+      grid-template-areas: "photos branches" !important;
+      grid-template-rows: auto !important;
+      gap: 8px !important;
+      align-items: start !important;
+      width: 100% !important;
+    }
+    .dc-visit-layout > .dc-best-sellers {
+      grid-area: photos !important;
+      grid-column: auto !important;
+      grid-row: auto !important;
+      order: 0 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      align-self: start !important;
+    }
+    .dc-visit-layout > .dc-branches-panel {
+      grid-area: branches !important;
+      grid-column: auto !important;
+      grid-row: auto !important;
+      order: 0 !important;
+      direction: rtl !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      align-self: start !important;
+    }
+    .dc-branches-panel .dc-branch-cards,
+    .dc-branches-panel .dc-payment-grid {
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+  }
+  @media (max-width: 360px) {
+    .dc-visit-layout {
+      grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr) !important;
+      gap: 6px !important;
+    }
+  }
+</style>
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
