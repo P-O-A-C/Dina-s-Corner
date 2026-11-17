@@ -416,9 +416,15 @@ function resolvePoacProjectLogin(profile, user, expectedProject) {
   return { allowed: false, message: "نوع صفحة الدخول غير محدد." };
 }
 async function getCurrentPoacAuthUser() {
-  const { data, error } = await poacWithTimeout(sb.auth.getUser(), 10000, "تأكيد هوية المستخدم");
-  if (error) throw error;
-  return data?.user || null;
+  // The signed-in session already contains the authenticated user. Prefer it to
+  // an additional network round-trip so the Dina dashboard is not delayed by getUser().
+  const sessionResult = await poacWithTimeout(sb.auth.getSession(), 6000, "استعادة هوية المستخدم");
+  if (sessionResult.error) throw sessionResult.error;
+  const sessionUser = sessionResult.data?.session?.user;
+  if (sessionUser?.id) return sessionUser;
+  const result = await poacWithTimeout(sb.auth.getUser(), 8000, "تأكيد هوية المستخدم");
+  if (result.error) throw result.error;
+  return result.data?.user || null;
 }
 function routeForRoleFromRoot(role) {
   const normalized = String(role || "").toLowerCase();
