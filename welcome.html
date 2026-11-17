@@ -304,6 +304,62 @@
 @media (max-width:360px) { .dc-visit-layout { grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr)!important; gap:6px!important; } }
 </style>
 
+
+<style id="dc-gold-card-finish">
+:root { --dc-gold-frame: #c9a24e; --dc-gold-soft: #e5cc8e; }
+/* A consistent slim gold frame across the welcome-page cards */
+.dc-action-card,
+.dc-branch-card,
+.dc-payment-card,
+.dc-talabat-card,
+.dc-instagram-link,
+.dc-facebook-link,
+.dc-contact-grid > *,
+.dc-best-sellers {
+  border: 1.5px solid var(--dc-gold-frame) !important;
+  box-shadow: 0 3px 10px rgba(111,31,55,.07), inset 0 0 0 1px rgba(229,204,142,.28) !important;
+}
+/* Decorative gold detail on the menu card */
+.dc-action-card--menu {
+  position: relative !important;
+  overflow: hidden !important;
+  border-width: 2px !important;
+}
+.dc-action-card--menu::after {
+  content: "✦";
+  position: absolute;
+  inset-inline-end: 13px;
+  top: 7px;
+  color: var(--dc-gold-frame);
+  font-size: 17px;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(201,162,78,.25);
+  pointer-events: none;
+}
+/* Remove the city availability text and city labels from the Talabat card */
+.dc-talabat-copy > span,
+.dc-talabat-cities { display: none !important; }
+/* Shorter Talabat card while keeping the illustration and order title */
+.dc-talabat-card {
+  min-height: 0 !important;
+  padding: 7px 12px !important;
+  margin-block: 10px !important;
+  gap: 8px !important;
+}
+.dc-talabat-illustration { min-height: 54px !important; }
+.dc-talabat-box { height: 49px !important; }
+.dc-talabat-scooter { font-size: 43px !important; }
+.dc-talabat-copy { gap: 0 !important; }
+.dc-talabat-copy > strong { padding: 7px 9px !important; line-height: 1.25 !important; }
+@media (max-width: 760px) {
+  .dc-talabat-card { padding: 5px 8px !important; margin-block: 8px !important; }
+  .dc-talabat-illustration { min-height: 48px !important; }
+  .dc-talabat-box { height: 43px !important; }
+  .dc-talabat-scooter { font-size: 38px !important; }
+  .dc-talabat-copy > strong { padding: 6px 6px !important; }
+}
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -363,7 +419,7 @@
 
   <a class="dc-talabat-card" href="https://www.talabat.com/egypt/dinas-corner" target="_blank" rel="noopener noreferrer" aria-label="Order Dina’s Corner on Talabat">
     <div class="dc-talabat-illustration" aria-hidden="true"><span class="dc-talabat-box">talabat</span><span class="dc-talabat-scooter">🛵</span></div>
-    <div class="dc-talabat-copy"><strong>اطلب من Dina’s Corner عبر تطبيق طلبات</strong><span>متاح في طنطا والقاهرة</span><div class="dc-talabat-cities"><span>طنطا</span><span>القاهرة</span></div></div>
+    <div class="dc-talabat-copy"><strong>اطلب من Dina’s Corner عبر تطبيق طلبات</strong></div>
   </a>
 
 
