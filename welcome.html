@@ -138,6 +138,75 @@
   }
 </style>
 
+
+<style id="dc-mobile-vertical-card-spacing">
+  /* Mobile only: branch and payment cards in one tidy vertical stack */
+  @media (max-width: 760px) {
+    .dc-branches-panel .dc-branch-cards {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      gap: 4px !important;
+      row-gap: 4px !important;
+      margin: 0 !important;
+    }
+
+    .dc-branches-panel .dc-branch-card {
+      box-sizing: border-box !important;
+      width: 100% !important;
+      height: 48px !important;
+      min-height: 48px !important;
+      max-height: 48px !important;
+      margin: 0 !important;
+    }
+
+    .dc-branches-panel .dc-payment-section {
+      width: 100% !important;
+      margin: 5px 0 0 !important;
+      padding: 0 !important;
+    }
+
+    .dc-branches-panel .dc-payment-section .dc-section-heading {
+      margin: 0 auto 5px !important;
+      gap: 6px !important;
+      font-size: 16px !important;
+    }
+
+    .dc-branches-panel .dc-payment-section .dc-section-heading > span {
+      padding: 5px 16px !important;
+    }
+
+    .dc-branches-panel .dc-payment-grid {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      gap: 4px !important;
+      row-gap: 4px !important;
+      width: 100% !important;
+      margin: 0 !important;
+    }
+
+    .dc-branches-panel .dc-payment-grid > .dc-payment-card {
+      box-sizing: border-box !important;
+      display: flex !important;
+      width: 100% !important;
+      height: 48px !important;
+      min-height: 48px !important;
+      max-height: 48px !important;
+      margin: 0 !important;
+      padding: 6px 10px !important;
+    }
+
+    .dc-branches-panel .dc-payment-brand.dc-instapay {
+      font-size: 19px !important;
+      line-height: 1.1 !important;
+    }
+
+    .dc-branches-panel .dc-payment-brand.dc-vodafone {
+      font-size: 15px !important;
+      line-height: 1.1 !important;
+    }
+  }
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
