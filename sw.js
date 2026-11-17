@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v25-dynamic-gm-branch-cards";
+const CACHE = "dinas-corner-gm-v26-approved-floral-logo";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
@@ -6,7 +6,7 @@ const SHELL = [
   "./GM/gm-locations.html",
   "./assets/style.css", "./assets/gm-login.css", "./assets/app.js", "./assets/config.js", "./assets/dina-branch-maps.js",
   "./assets/tenant-config.js", "./assets/tenant-branding.js",
-  "./assets/dina-corner-logo.png", "./assets/dina-corner-logo-transparent.png", "./assets/dina-corner-icon.png",
+  "./assets/dina-corner-logo.png", "./assets/dina-corner-logo-transparent.png", "./assets/dina-corner-logo-approved.png", "./assets/dina-corner-icon.png",
   "./assets/dina-corner-icon-192.png", "./assets/dina-corner-icon-512.png",
   "./assets/dina-floral-tl.png", "./assets/dina-floral-tr.png",
   "./assets/dina-floral-bl.png", "./assets/dina-floral-br.png",
