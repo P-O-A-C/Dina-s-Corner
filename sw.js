@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v5-dryclean-guard-fix";
+const CACHE = "poac-unified-v6-dryclean-order";
 const SHELL = [
   "./index.html",
   "./login.html",
@@ -32,14 +32,17 @@ const SHELL = [
   "./Dina'sCorner/locations.html",
   "./Dina'sCorner/menu.html",
   "./GrandDryClean/index.html",
+  "./GrandDryClean/order.html",
   "./GrandDryClean/login.html",
   "./GrandDryClean/dashboard.html",
   "./GrandDryClean/gm.html",
   "./GrandDryClean/css/customer.css",
+  "./GrandDryClean/css/order.css",
   "./GrandDryClean/css/login.css",
   "./GrandDryClean/css/poac.css",
   "./GrandDryClean/css/gm.css",
   "./GrandDryClean/js/customer.js",
+  "./GrandDryClean/js/order.js",
   "./GrandDryClean/js/dashboard.js",
   "./GrandDryClean/js/gm.js",
   "./GrandDryClean/js/session-guard.js",

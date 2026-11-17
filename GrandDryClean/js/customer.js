@@ -45,7 +45,7 @@ function renderCart(){
 function openDrawer(){document.body.classList.add("drawer-open");$("orderDrawer").setAttribute("aria-hidden","false")}
 function closeDrawer(){document.body.classList.remove("drawer-open");$("orderDrawer").setAttribute("aria-hidden","true")}
 $("floatingOrder").addEventListener("click",openDrawer);
-$("openOrderFromBanner").addEventListener("click",openDrawer);
+$("openOrderFromBanner").addEventListener("click",()=>{ window.location.href="order.html"; });
 $("closeDrawer").addEventListener("click",closeDrawer);
 $("drawerBackdrop").addEventListener("click",closeDrawer);
 $("orderForm").addEventListener("submit",e=>{
