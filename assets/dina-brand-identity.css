@@ -6,8 +6,8 @@
   --dc-coral:#D65370;
   --dc-coral-deep:#B93F5D;
   --dc-coral-soft:#F8E1E4;
-  --dc-ivory:#FFF7F3;
-  --dc-paper:#FFFCFA;
+  --dc-ivory:#FFF1F3;
+  --dc-paper:#FFFCFB;
   --dc-sage:#D5D8D4;
   --dc-ink:#3D5D59;
   --dc-muted:#7C8984;
@@ -20,8 +20,9 @@
   --menu-cream:var(--dc-ivory);--menu-gold:var(--dc-sage);--menu-green:var(--dc-teal);
   --pickup-navy:var(--dc-teal);--pickup-gold:var(--dc-sage);--pickup-cream:var(--dc-ivory);--pickup-paper:var(--dc-paper);--text:var(--dc-ink);
 }
-html,body{background-color:#FFF7F3!important;color:var(--dc-ink)!important}
-body{background-image:none!important}
+html,body{background-color:#FFF1F3!important;color:var(--dc-ink)!important}
+/* A soft rose-tinted ivory page background, consistent across all app sections. */
+body[class]{background-image:linear-gradient(145deg,#FFF8F6 0%,#FFF1F3 58%,#FCEEF1 100%)!important}
 body::before{border-color:rgba(87,153,148,.30)!important;box-shadow:inset 0 0 0 3px rgba(255,252,250,.8),inset 0 0 0 4px rgba(213,216,212,.6)!important}
 h1,h2,h3,.title,.menu-head h2,.dc-best-sellers__header h2,.dc-branches-title{color:var(--dc-teal)!important}
 .sub,.muted,.dc-action-copy,.dc-best-sellers__header>p:last-child{color:var(--dc-muted)!important}
@@ -64,8 +65,8 @@ h1,h2,h3,.title,.menu-head h2,.dc-best-sellers__header h2,.dc-branches-title{col
 .gm-hour-bar.has-registrations{background:linear-gradient(180deg,#E99AAA 0%,var(--dc-coral) 100%)!important}
 /* Welcome page */
 :root{--dc-wine:var(--dc-teal);--dc-wine-deep:var(--dc-teal-deep);--dc-wine-soft:var(--dc-coral);--dc-pink:var(--dc-coral);--dc-pink-pale:var(--dc-coral-soft);--dc-cream:var(--dc-ivory);--dc-paper:var(--dc-paper);--dc-ink:var(--dc-ink);--dc-muted:var(--dc-muted);--dc-line:var(--dc-line);--dc-shadow:var(--dc-shadow)}
-body.dc-welcome-page{background:#FFF7F3!important;color:var(--dc-ink)!important}
-.dc-welcome-shell{border-color:rgba(87,153,148,.34)!important;background:#FFF7F3!important;box-shadow:0 12px 34px rgba(63,127,123,.07)!important}
+body.dc-welcome-page{background:linear-gradient(145deg,#FFF8F6 0%,#FFF1F3 58%,#FCEEF1 100%)!important;color:var(--dc-ink)!important}
+.dc-welcome-shell{border-color:rgba(87,153,148,.34)!important;background:linear-gradient(145deg,#FFF8F6 0%,#FFF1F3 100%)!important;box-shadow:0 12px 34px rgba(63,127,123,.07)!important}
 .dc-action-card,.dc-best-sellers,.dc-branches-panel,.dc-talabat-card,.dc-payment-card,.dc-instagram-link{border-color:#B8D4CF!important;background:linear-gradient(145deg,#FFFCFA 0%,#F9F2EE 100%)!important;box-shadow:0 8px 22px rgba(63,127,123,.065)!important}
 .dc-action-title,.dc-best-sellers__header h2,.dc-branches-title,.dc-branch-card,.dc-payment-number{color:var(--dc-teal-deep)!important}
 .dc-action-icon{background:radial-gradient(circle,#E6F0ED 0%,#FBF7F4 74%)!important;color:var(--dc-teal)!important}

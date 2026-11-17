@@ -1,4 +1,4 @@
-const CACHE = "dinas-corner-gm-v26-approved-floral-logo";
+const CACHE = "dinas-corner-gm-v28-soft-rose-background";
 const SHELL = [
   "./", "./index.html", "./login.html", "./menu.html", "./welcome.html", "./manifest.webmanifest",
   "./GM/index.html", "./GM/gm-login.html", "./GM/gm-dashboard.html",
@@ -10,7 +10,7 @@ const SHELL = [
   "./assets/dina-corner-icon-192.png", "./assets/dina-corner-icon-512.png",
   "./assets/dina-floral-tl.png", "./assets/dina-floral-tr.png",
   "./assets/dina-floral-bl.png", "./assets/dina-floral-br.png",
-  "./assets/dina-theme.css", "./assets/dina-welcome.css", "./assets/dina-welcome.js",
+  "./assets/dina-theme.css", "./assets/dina-welcome.css", "./assets/dina-brand-identity.css", "./assets/dina-welcome.js",
   "./assets/dina-welcome-approved-artwork.jpg", "./assets/dina-best-sellers.js", "./assets/menu-display.css",
   "./assets/menu-display.js", "./assets/public-menu-client.js",
   "./assets/public-menu-premium.css", "./assets/public-menu-review-link.js"
