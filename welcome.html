@@ -360,6 +360,56 @@
 }
 </style>
 
+
+<style id="dc-header-logo-florals-cleanup">
+/* Header-only refinement: remove the strip and divider below the logo. */
+.dc-welcome-eyebrow,
+.dc-welcome-rule { display: none !important; }
+.dc-welcome-header {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 2px 8px 14px !important;
+  margin: 0 auto !important;
+  background: transparent !important;
+}
+.dc-corner-logo {
+  display: block !important;
+  width: clamp(158px, 20vw, 190px) !important;
+  max-width: 52vw !important;
+  height: auto !important;
+  margin: 0 auto 5px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  mix-blend-mode: normal !important;
+}
+/* Balanced floral corners frame the centered logo without covering it. */
+.dc-welcome-shell {
+  background-image:
+    url("assets/dina-floral-tl.png"),
+    url("assets/dina-floral-tr.png"),
+    linear-gradient(180deg,#fff8f7 0%,#ffeff2 100%) !important;
+  background-repeat: no-repeat,no-repeat,no-repeat !important;
+  background-position: left 4px top 3px,right 4px top 3px,center !important;
+  background-size: clamp(78px,10vw,118px) auto,clamp(78px,10vw,118px) auto,100% 100% !important;
+}
+@media (max-width: 760px) {
+  .dc-welcome-shell {
+    background-position: left 2px top 2px,right 2px top 2px,center !important;
+    background-size: clamp(76px,23vw,96px) auto,clamp(76px,23vw,96px) auto,100% 100% !important;
+  }
+  .dc-welcome-header { padding: 0 4px 11px !important; }
+  .dc-corner-logo { width: min(158px,43vw) !important; max-width: 43vw !important; margin-bottom: 3px !important; }
+}
+</style>
+
 </head>
 <body class="dc-welcome-page dc-welcome-html-mode">
 <img class="dc-floral dc-floral--tl" src="assets/dina-floral-tl.png" alt="" aria-hidden="true">
@@ -369,8 +419,6 @@
 <main class="dc-welcome-shell" aria-label="Dina’s Corner welcome page">
   <header class="dc-welcome-header">
     <img class="dc-corner-logo" src="assets/dina-corner-logo-transparent.png" alt="Dina’s Corner Healthy Bakery">
-    <p class="dc-welcome-eyebrow">A LITTLE MOMENT, A LOT OF JOY</p>
-    <div class="dc-welcome-rule" aria-hidden="true">♥</div>
     <h1><span class="dc-welcome-line">Welcome to</span><span class="dc-welcome-brand">Dina’s Corner</span></h1>
   </header>
 
