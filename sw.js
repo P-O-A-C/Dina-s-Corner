@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v13-single-auth-guard";
+const CACHE = "poac-unified-v14-gdc-final-auth-v5";
 const SHELL = [
   "./index.html",
   "./login.html",
@@ -34,7 +34,6 @@ const SHELL = [
   "./GrandDryClean/index.html",
   "./GrandDryClean/order.html",
   "./GrandDryClean/login.html",
-  "./GrandDryClean/dashboard.html",
   "./GrandDryClean/gm.html",
   "./GrandDryClean/css/customer.css",
   "./GrandDryClean/css/order.css",
@@ -45,7 +44,6 @@ const SHELL = [
   "./GrandDryClean/js/order.js",
   "./GrandDryClean/js/dashboard.js",
   "./GrandDryClean/js/gm.js",
-  "./GrandDryClean/js/session-guard.js",
   "./POAC-Admin/index.html",
   "./POAC-Admin/login.html",
   "./POAC-Admin/poac-admin.css",
@@ -78,6 +76,16 @@ self.addEventListener("fetch", event => {
   const url = new URL(request.url);
   const scope = new URL(self.registration.scope);
   if (url.origin !== scope.origin || !url.pathname.startsWith(scope.pathname)) return;
+
+  // Always fetch the protected dashboard and its auth guard from GitHub Pages.
+  // Never let a stale service-worker cache keep the authorization overlay alive.
+  const protectedAuthAsset =
+    url.pathname.endsWith("/GrandDryClean/dashboard.html") ||
+    url.pathname.endsWith("/GrandDryClean/js/session-guard.js");
+  if (protectedAuthAsset) {
+    event.respondWith(fetch(request, { cache: "no-store" }));
+    return;
+  }
 
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
