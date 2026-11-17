@@ -1,13 +1,18 @@
 (async function () {
   "use strict";
 
+  // Prevent a second copy of this guard from starting another auth flow.
+  if (window.__GRAND_DRY_CLEAN_GUARD_RUNNING) return;
+  window.__GRAND_DRY_CLEAN_GUARD_RUNNING = true;
+
   const gate = document.getElementById("authGate");
   const centralLogin = "../index.html";
-  const PROFILE_TIMEOUT = 9000;
+  const EXPECTED_EMAIL = "granddryclean@poac.com";
+  const TIMEOUT_MS = 12000;
 
-  function withTimeout(promise, milliseconds, label) {
+  function withTimeout(promise, label) {
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error("انتهت مهلة " + label)), milliseconds);
+      const timer = setTimeout(() => reject(new Error("انتهت مهلة " + label)), TIMEOUT_MS);
       Promise.resolve(promise).then(
         value => { clearTimeout(timer); resolve(value); },
         error => { clearTimeout(timer); reject(error); }
@@ -15,8 +20,9 @@
     });
   }
 
-  function renderGate(message, actions = false) {
+  function renderGate(message, showActions = false) {
     if (!gate) return;
+    gate.hidden = false;
     gate.replaceChildren();
     const card = document.createElement("div");
     card.className = "auth-gate-card";
@@ -31,9 +37,9 @@
     text.setAttribute("aria-live", "polite");
     card.append(mark, brand, text);
 
-    if (actions) {
-      const row = document.createElement("div");
-      row.className = "auth-gate-actions";
+    if (showActions) {
+      const actions = document.createElement("div");
+      actions.className = "auth-gate-actions";
       const retry = document.createElement("button");
       retry.type = "button";
       retry.textContent = "إعادة المحاولة";
@@ -41,8 +47,8 @@
       const login = document.createElement("a");
       login.href = centralLogin;
       login.textContent = "العودة إلى تسجيل POAC";
-      row.append(retry, login);
-      card.append(row);
+      actions.append(retry, login);
+      card.append(actions);
     } else {
       const loader = document.createElement("span");
       loader.className = "auth-loader";
@@ -52,43 +58,17 @@
     gate.append(card);
   }
 
-  function showError(message) {
+  function revealDashboard() {
+    // Remove the hiding class first, then hide the gate.
+    document.body.classList.remove("auth-pending");
+    if (gate) gate.hidden = true;
+    document.documentElement.dataset.grandDryCleanAuthorized = "true";
+    window.dispatchEvent(new CustomEvent("granddryclean:authorized"));
+  }
+
+  function showFailure(message) {
+    console.error("GRAND DRY CLEAN access check:", message);
     renderGate(message, true);
-  }
-
-  async function readProfile(client, userId) {
-    let rpcProblem = "";
-    try {
-      const rpc = await withTimeout(client.rpc("get_my_profile"), PROFILE_TIMEOUT, "تحميل صلاحيات الحساب");
-      if (!rpc.error) {
-        const row = Array.isArray(rpc.data) ? rpc.data[0] : rpc.data;
-        if (row) return row;
-        rpcProblem = "دالة get_my_profile لم تُرجع سجلًا للحساب";
-      } else {
-        rpcProblem = rpc.error.message || "تعذر تشغيل get_my_profile";
-      }
-    } catch (error) {
-      rpcProblem = error?.message || "تعذر تحميل صلاحيات الحساب";
-    }
-
-    try {
-      const direct = await withTimeout(
-        client.from("profiles").select("id,email,role,is_active").eq("id", userId).maybeSingle(),
-        PROFILE_TIMEOUT,
-        "قراءة ملف الحساب"
-      );
-      if (direct.error) throw direct.error;
-      if (!direct.data) throw new Error("لا يوجد سجل مطابق للمستخدم في جدول profiles");
-      return direct.data;
-    } catch (error) {
-      throw new Error("تعذر تحميل ملف الحساب. RPC: " + rpcProblem + " | profiles: " + (error?.message || "خطأ غير معروف"));
-    }
-  }
-
-  async function rejectAccount(client, message) {
-    showError(message);
-    // Sign out in the background; do not block the visible error or navigation.
-    client.auth.signOut().catch(error => console.warn("Sign-out after denied GRAND DRY CLEAN access failed:", error));
   }
 
   try {
@@ -96,15 +76,19 @@
 
     const cfg = window.POA_CONFIG || {};
     if (!window.supabase?.createClient || !cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY) {
-      showError("إعدادات Supabase أو مكتبة الاتصال غير محمّلة. راجع assets/config.js واتصال الإنترنت.");
-      return;
+      throw new Error("إعدادات Supabase أو مكتبة الاتصال غير محمّلة.");
     }
 
-    const client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_PUBLISHABLE_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-    });
+    // This page has one auth client. Do not create a second client or call getUser()
+    // after getSession(); the profile RPC is the authoritative role check.
+    const client = window.__POAC_GRAND_DRY_CLEAN_CLIENT__ || window.supabase.createClient(
+      cfg.SUPABASE_URL,
+      cfg.SUPABASE_PUBLISHABLE_KEY,
+      { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+    );
+    window.__POAC_GRAND_DRY_CLEAN_CLIENT__ = client;
 
-    const sessionResult = await withTimeout(client.auth.getSession(), PROFILE_TIMEOUT, "استعادة جلسة الدخول");
+    const sessionResult = await withTimeout(client.auth.getSession(), "استعادة جلسة الدخول");
     if (sessionResult.error) throw sessionResult.error;
     const user = sessionResult.data?.session?.user;
     if (!user?.id) {
@@ -112,42 +96,48 @@
       return;
     }
 
-    const profile = await readProfile(client, user.id);
-    const email = String(user.email || profile.email || "").trim().toLowerCase();
+    const profileResult = await withTimeout(client.rpc("get_my_profile"), "تحميل ملف الحساب");
+    if (profileResult.error) throw profileResult.error;
+    const profile = Array.isArray(profileResult.data) ? profileResult.data[0] : profileResult.data;
+    if (!profile) throw new Error("Supabase لم يُرجع سجل الحساب من profiles.");
+
+    const authEmail = String(user.email || "").trim().toLowerCase();
+    const profileEmail = String(profile.email || "").trim().toLowerCase();
+    const email = authEmail || profileEmail;
     const role = String(profile.role || "").trim().toLowerCase();
-    const active = profile.is_active !== false && String(profile.is_active).toLowerCase() !== "false";
+    const isActive = profile.is_active === true || String(profile.is_active).toLowerCase() === "true";
 
-    const problems = [];
-    if (email !== "granddryclean@poac.com") problems.push("البريد المسجل ليس granddryclean@poac.com");
-    if (role !== "gm" && role !== "dryclean") problems.push("الدور المسجل هو " + (role || "غير محدد") + " بدل gm");
-    if (!active) problems.push("الحساب غير نشط في profiles");
-
-    if (problems.length) {
-      await rejectAccount(client, "لم يتم فتح لوحة المغسلة: " + problems.join("؛ ") + ". راجع بيانات الحساب في Supabase ثم أعد المحاولة.");
-      return;
+    if (profile.id && profile.id !== user.id) throw new Error("معرّف ملف الحساب لا يطابق جلسة الدخول.");
+    if (email !== EXPECTED_EMAIL || (profileEmail && profileEmail !== EXPECTED_EMAIL)) {
+      throw new Error("هذا الحساب ليس حساب GRAND DRY CLEAN المخصص.");
     }
+    if (role !== "gm" && role !== "dryclean") {
+      throw new Error("الدور الحالي غير مصرح به لإدارة المغسلة: " + (role || "غير محدد"));
+    }
+    if (!isActive) throw new Error("حساب GRAND DRY CLEAN غير نشط في profiles.");
 
-    // Authorized: reveal the existing dashboard without changing its design.
-    document.body.classList.remove("auth-pending");
-    if (gate) gate.hidden = true;
+    revealDashboard();
 
     const logout = document.getElementById("logoutBtn");
-    logout?.addEventListener("click", async event => {
-      event.preventDefault();
-      logout.setAttribute("aria-disabled", "true");
-      logout.disabled = true;
-      try {
-        await Promise.race([
-          client.auth.signOut(),
-          new Promise(resolve => setTimeout(resolve, 1000))
-        ]);
-      } catch (error) {
-        console.warn("GRAND DRY CLEAN sign-out did not finish:", error);
-      }
-      location.replace(centralLogin);
-    }, { once: true });
+    if (logout && !logout.dataset.logoutBound) {
+      logout.dataset.logoutBound = "true";
+      logout.addEventListener("click", async event => {
+        event.preventDefault();
+        logout.disabled = true;
+        try {
+          await Promise.race([
+            client.auth.signOut(),
+            new Promise(resolve => setTimeout(resolve, 1200))
+          ]);
+        } catch (error) {
+          console.warn("GRAND DRY CLEAN sign-out:", error);
+        }
+        location.replace(centralLogin);
+      });
+    }
   } catch (error) {
-    console.error("GRAND DRY CLEAN authorization check failed:", error);
-    showError("تعذر إكمال التحقق: " + (error?.message || "خطأ غير معروف") + ". تحقق من الاتصال وإعدادات الحساب ثم اضغط إعادة المحاولة.");
+    showFailure("تعذر فتح لوحة المغسلة: " + (error?.message || "خطأ غير معروف") + ". أعد المحاولة أو ارجع إلى تسجيل POAC.");
+  } finally {
+    window.__GRAND_DRY_CLEAN_GUARD_RUNNING = false;
   }
 })();

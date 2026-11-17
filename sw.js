@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v13-single-auth-status";
+const CACHE = "poac-unified-v13-single-auth-guard";
 const SHELL = [
   "./index.html",
   "./login.html",
