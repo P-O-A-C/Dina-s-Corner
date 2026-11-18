@@ -121,6 +121,19 @@ $("orderForm").addEventListener("submit",event=>{
     "",
     "برجاء تأكيد السعر والتفاصيل."
   ].filter(Boolean).join("\n");
+  // Save a local demo order so the customer account can show its order history on this device.
+  try {
+    const savedOrders = JSON.parse(localStorage.getItem("gdc_customer_orders_v1") || "[]");
+    savedOrders.push({
+      id: Date.now().toString().slice(-6),
+      phone,
+      name,
+      date: new Date().toLocaleString("ar-EG"),
+      items: [...cart.values()].map(item => `${item.name} × ${item.qty}`).join("، "),
+      status: "تم تجهيز رسالة الطلب عبر واتساب"
+    });
+    localStorage.setItem("gdc_customer_orders_v1", JSON.stringify(savedOrders));
+  } catch (_) {}
   const url=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.location.href=url;
 });
