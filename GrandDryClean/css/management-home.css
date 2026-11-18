@@ -291,3 +291,12 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+
+
+/* Fixed brand background only — keeps all existing layout and controls unchanged */
+body.management-home {
+  background-attachment: fixed;
+}
+.page-decor {
+  position: fixed;
+}
