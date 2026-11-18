@@ -86,13 +86,15 @@
         <div class="form-title"><span class="eyebrow">CONTACT DETAILS</span><strong>بيانات التواصل</strong></div>
         <label>الاسم بالكامل<input id="customerName" name="name" type="text" autocomplete="name" placeholder="اكتب اسمك" required maxlength="80"></label>
         <label>رقم الموبايل<input id="customerPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="01xxxxxxxxx" pattern="[0-9+()\-\s]{8,20}" required></label>
-        <label>العنوان أو المنطقة <small>اختياري</small><input id="customerAddress" name="address" type="text" autocomplete="street-address" placeholder="المنطقة أو العنوان"></label>
+        <div class="location-field"><label>موقع الاستلام <small>اختياري</small></label><button type="button" class="location-picker-button" id="openLocationPicker"><span class="location-pin">⌖</span><span id="locationLabel">اختار مكانك من الخريطة</span><b>اختيار</b></button><input type="hidden" id="customerAddress" name="address"><input type="hidden" id="customerLat" name="latitude"><input type="hidden" id="customerLng" name="longitude"><a id="googleMapsLink" class="google-maps-link" target="_blank" rel="noopener" hidden>فتح الموقع على Google Maps ↗</a></div>
         <label>ملاحظات على الطلب <small>اختياري</small><textarea id="customerNotes" name="notes" rows="3" placeholder="أي تفاصيل تحب تبلغنا بيها عن القطع..."></textarea></label>
         <button class="send-order" type="submit">إرسال الطلب عبر واتساب <span>↗</span></button>
         <p class="privacy-note">لن يتم حفظ بياناتك على الموقع. سيتم فتح واتساب برسالة بالطلب، وتضغط إرسال بنفسك.</p>
       </form>
     </div>
   </aside>
-  <script src="js/order.js?v=20261117-order1"></script>
+  <div class="location-modal" id="locationModal" aria-hidden="true"><div class="location-modal-backdrop" id="locationBackdrop"></div><section class="location-modal-panel" role="dialog" aria-modal="true" aria-labelledby="locationModalTitle"><header><div><strong id="locationModalTitle">اختار موقعك</strong><small>اضغط على الخريطة لتحديد مكان الاستلام</small></div><button type="button" id="closeLocationPicker" aria-label="إغلاق">×</button></header><div class="location-map-actions"><button type="button" id="useMyLocation">استخدم موقعي الحالي</button><a id="searchOnGoogle" target="_blank" rel="noopener">البحث على Google Maps ↗</a></div><div id="locationMap"></div><div class="location-modal-footer"><p id="pickedLocationText">لم يتم اختيار موقع بعد</p><button type="button" id="confirmLocation" disabled>تأكيد الموقع</button></div></section></div>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/order.js?v=20261118-location1"></script>
 </body>
 </html>

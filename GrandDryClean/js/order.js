@@ -105,6 +105,8 @@ $("orderForm").addEventListener("submit",event=>{
   const name=$("customerName").value.trim();
   const phone=$("customerPhone").value.trim();
   const address=$("customerAddress").value.trim();
+  const latitude=$("customerLat").value.trim();
+  const longitude=$("customerLng").value.trim();
   const notes=$("customerNotes").value.trim();
   if(!name||!phone){alert("اكتب الاسم ورقم الموبايل لإكمال الطلب.");return;}
   const items=[...cart.values()].map(item=>`- ${item.name} × ${item.qty} (${item.category})`).join("\n");
@@ -116,27 +118,28 @@ $("orderForm").addEventListener("submit",event=>{
     "",
     `الاسم: ${name}`,
     `رقم الموبايل: ${phone}`,
-    address?`العنوان / المنطقة: ${address}`:"",
+    address?`العنوان: ${address}`:"",
+    latitude && longitude?`موقع Google Maps: https://www.google.com/maps?q=${latitude},${longitude}`:"",
     notes?`ملاحظات: ${notes}`:"",
     "",
     "برجاء تأكيد السعر والتفاصيل."
   ].filter(Boolean).join("\n");
-  // Save a local demo order so the customer account can show its order history on this device.
-  try {
-    const savedOrders = JSON.parse(localStorage.getItem("gdc_customer_orders_v1") || "[]");
-    savedOrders.push({
-      id: Date.now().toString().slice(-6),
-      phone,
-      name,
-      date: new Date().toLocaleString("ar-EG"),
-      items: [...cart.values()].map(item => `${item.name} × ${item.qty}`).join("، "),
-      status: "تم تجهيز رسالة الطلب عبر واتساب"
-    });
-    localStorage.setItem("gdc_customer_orders_v1", JSON.stringify(savedOrders));
-  } catch (_) {}
   const url=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.location.href=url;
 });
 
 renderCategories();
 renderAll();
+
+// Location picker: map pin selection, reverse-geocoded address, and Google Maps link.
+(()=>{
+  const modal=document.getElementById("locationModal"); if(!modal||!window.L)return;
+  let map,marker,picked=null;
+  const label=document.getElementById("locationLabel"), addressInput=document.getElementById("customerAddress"), latInput=document.getElementById("customerLat"), lngInput=document.getElementById("customerLng"), googleLink=document.getElementById("googleMapsLink"), pickedText=document.getElementById("pickedLocationText"), confirmBtn=document.getElementById("confirmLocation");
+  const setPicked=async(lat,lng)=>{picked={lat,lng};marker.setLatLng([lat,lng]);confirmBtn.disabled=false;pickedText.textContent=`${lat.toFixed(6)}, ${lng.toFixed(6)} — جاري تحديد العنوان...`;document.getElementById("searchOnGoogle").href=`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`,{headers:{"Accept-Language":"ar"}});const j=await r.json();picked.address=j.display_name||`${lat}, ${lng}`;pickedText.textContent=picked.address;}catch{picked.address=`${lat}, ${lng}`;pickedText.textContent=picked.address;}};
+  const open=()=>{modal.classList.add("open");modal.setAttribute("aria-hidden","false");if(!map){map=L.map("locationMap").setView([30.7865,31.0000],13);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);marker=L.marker(map.getCenter(),{draggable:true}).addTo(map);map.on("click",e=>setPicked(e.latlng.lat,e.latlng.lng));marker.on("dragend",e=>{const p=e.target.getLatLng();setPicked(p.lat,p.lng);});setPicked(map.getCenter().lat,map.getCenter().lng);}setTimeout(()=>map.invalidateSize(),120);};
+  const close=()=>{modal.classList.remove("open");modal.setAttribute("aria-hidden","true");};
+  document.getElementById("openLocationPicker").addEventListener("click",open);document.getElementById("closeLocationPicker").addEventListener("click",close);document.getElementById("locationBackdrop").addEventListener("click",close);
+  document.getElementById("useMyLocation").addEventListener("click",()=>{if(!navigator.geolocation){alert("المتصفح لا يدعم تحديد الموقع.");return;}navigator.geolocation.getCurrentPosition(pos=>{const {latitude,longitude}=pos.coords;map.setView([latitude,longitude],17);setPicked(latitude,longitude);},()=>alert("لم نتمكن من الوصول لموقعك. اسمح للموقع باستخدام GPS أو اختار المكان على الخريطة."),{enableHighAccuracy:true,timeout:12000});});
+  confirmBtn.addEventListener("click",()=>{if(!picked)return;addressInput.value=picked.address||`${picked.lat}, ${picked.lng}`;latInput.value=picked.lat;lngInput.value=picked.lng;label.textContent=picked.address||`${picked.lat.toFixed(5)}, ${picked.lng.toFixed(5)}`;googleLink.href=`https://www.google.com/maps?q=${picked.lat},${picked.lng}`;googleLink.hidden=false;close();});
+})();
