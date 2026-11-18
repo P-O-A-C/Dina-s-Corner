@@ -92,3 +92,9 @@ $("categoryForm").addEventListener("submit",e=>{
 });
 $("profileForm").addEventListener("submit",e=>{e.preventDefault();$("profileMessage").textContent="تم حفظ التعديلات للمعاينة الحالية فقط. لم يتم إرسالها إلى قاعدة البيانات.";toast("حُفظت المعاينة")});
 renderAll();
+
+// Open the selected GM section when a management-home tile is used.
+const requestedView = new URLSearchParams(window.location.search).get("view");
+if (["overview", "products", "categories", "profile"].includes(requestedView)) {
+  showView(requestedView);
+}

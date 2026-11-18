@@ -2,55 +2,105 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07513A">
-  <title>GRAND DRY CLEAN | لوحة الإدارة</title>
-  <link rel="stylesheet" href="css/poac.css?v=20261118-mobile-v2">
+  <title>GRAND DRY CLEAN | إدارة الأقسام</title>
+  <link rel="stylesheet" href="css/management-home.css?v=20261118-sections-v1">
 </head>
-<body class="dashboard-page auth-pending">
-  <div id="authGate" class="auth-gate">
+<body class="management-home auth-pending">
+  <div id="authGate" class="auth-gate" role="status" aria-live="polite">
     <div class="auth-gate-card">
-      <span class="auth-gate-mark">G</span>
-      <span class="auth-gate-brand">GRAND DRY CLEAN</span>
-      <p>جارٍ التحقق من حساب GRAND DRY CLEAN. قد يستغرق الاتصال بقاعدة البيانات بضع ثوانٍ…</p>
+      <span class="auth-gate-mark" aria-hidden="true">G</span>
+      <strong>GRAND DRY CLEAN</strong>
+      <p>جارٍ التحقق من صلاحيات حساب المغسلة…</p>
       <span class="auth-loader" aria-hidden="true"></span>
     </div>
   </div>
-  <header class="dash-header">
-    <a class="dash-brand" href="index.html"><span class="mini-mark"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 15.5c0-3.2 2.3-5.4 5-5.4 2.6 0 4.6 1.8 4.6 4.2 0 2-1.1 3.3-3 4.7l-2.5 1.8L8.4 32.1c-1.5 1.1-.8 3.4 1 3.4h29.2c1.8 0 2.5-2.3 1-3.4L24 21.1"/></svg></span><span><b>GRAND DRY CLEAN</b><small>PREMIUM LAUNDRY CARE</small></span></a>
-    <div class="header-user"><span class="user-dot"></span><span class="workspace-name">DryClean</span><button id="logoutBtn" class="logout-button">تسجيل الخروج</button></div>
-  </header>
-  <main class="dash-main">
-    <div class="page-title"><div><span class="eyebrow">BUSINESS DASHBOARD</span><h1>GRAND DRY CLEAN</h1><p>إدارة محتوى المغسلة وخدماتها</p></div><span class="status-pill">واجهة تجريبية</span></div>
-    <section class="stats-grid">
-      <article class="stat-card"><span>الأصناف</span><strong id="itemsCount">6</strong><small>أصناف تجريبية</small></article>
-      <article class="stat-card"><span>الأقسام</span><strong>3</strong><small>غسيل وكي · تنظيف جاف · مفروشات</small></article>
-      <article class="stat-card"><span>العملة</span><strong>EGP</strong><small>الجنيه المصري</small></article>
-    </section>
-    <section class="content-card">
-      <div class="card-heading"><div><span class="eyebrow">CATALOG MANAGEMENT</span><h2>الأصناف والأسعار</h2></div><button class="gold-button" id="addItemBtn">＋ إضافة صنف</button></div>
-      <p class="muted">هذه قائمة عرض تجريبية فقط. حفظ التعديلات وربطها بـ Supabase سيتم بعد مراجعة مشروع Dina’s Corner وإعداد الصلاحيات.</p>
-      <div class="table-wrap"><table><thead><tr><th>الصنف</th><th>القسم</th><th>السعر</th><th>الحالة</th></tr></thead><tbody id="itemsTable"></tbody></table></div>
-    </section>
-    <section class="content-card settings-card">
-      <div class="card-heading"><div><span class="eyebrow">BUSINESS PROFILE</span><h2>بيانات المغسلة</h2></div></div>
-      <div class="settings-grid"><div><small>اسم النشاط</small><b>GRAND DRY CLEAN</b></div><div><small>واتساب</small><b dir="ltr">+20 100 585 4115</b></div><div><small>العملة</small><b>EGP</b></div><div><small>الطلبات</small><b>عبر واتساب</b></div></div>
-    </section>
-  </main>
-  <div class="modal-backdrop" id="modalBackdrop">
-    <form class="item-modal" id="itemForm">
-      <button type="button" id="closeModal" class="close-modal">×</button>
-      <span class="eyebrow">NEW CATALOG ITEM</span><h2>إضافة صنف تجريبي</h2>
-      <label>اسم الصنف<input id="itemName" required placeholder="مثال: قميص"></label>
-      <label>القسم<input id="itemCategory" required placeholder="مثال: غسيل وكي"></label>
-      <label>السعر بالجنيه<input id="itemPrice" type="number" min="0" step="0.01" required placeholder="0"></label>
-      <button class="login-button" type="submit">إضافة للمعاينة</button>
-      <small class="muted">لن يتم حفظ البيانات بعد إغلاق الصفحة.</small>
-    </form>
+
+  <div class="page-decor top-left" aria-hidden="true">
+    <svg viewBox="0 0 320 170"><path class="decor-fill" d="M0 0H320C277 3 255 30 219 65C164 119 91 143 0 126Z"/><path class="decor-line" d="M0 128C92 145 164 121 222 68C262 31 285 5 320 0"/></svg>
+    <svg class="decor-hanger" viewBox="0 0 70 70"><path d="M35 17c0-6 4-10 9-10s9 4 9 9c0 4-2 6-6 9L8 52c-3 2-2 7 2 7h50c4 0 5-5 2-7L39 40"/></svg>
   </div>
+  <div class="page-decor top-right" aria-hidden="true">
+    <svg viewBox="0 0 320 170"><path class="decor-fill" d="M0 0H320V126C229 143 156 119 101 65C64 30 43 3 0 0Z"/><path class="decor-line" d="M0 0C35 5 58 31 99 68C156 121 228 145 320 128"/></svg>
+  </div>
+  <div class="page-decor bottom-left" aria-hidden="true">
+    <svg viewBox="0 0 320 115"><path class="decor-fill" d="M0 0C83 16 156 5 211 45C255 78 279 110 320 115H0Z"/><path class="decor-line" d="M0 0C84 18 157 8 214 48C260 82 282 110 320 115"/></svg>
+  </div>
+  <div class="page-decor bottom-right" aria-hidden="true">
+    <svg viewBox="0 0 320 115"><path class="decor-fill" d="M320 0C237 16 164 5 109 45C65 78 41 110 0 115H320Z"/><path class="decor-line" d="M320 0C236 18 163 8 106 48C60 82 38 110 0 115"/></svg>
+  </div>
+
+  <div class="language-pill" aria-label="لغة الصفحة">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9S9.5 5.5 12 3Z"/></svg>
+    <span>العربية</span>
+  </div>
+
+  <main class="management-container">
+    <header class="brand-header" aria-label="GRAND DRY CLEAN">
+      <div class="brand-emblem" aria-hidden="true">
+        <svg viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="51"/>
+          <path d="M60 30c0-8 5-14 13-14s13 6 13 13c0 6-3 9-9 13L17 82c-5 4-2 11 4 11h78c6 0 9-7 4-11L56 59"/>
+          <path class="emblem-leaf" d="M20 91c9 12 23 18 40 19M24 98l-2-12m12 21-5-12m18 15-1-13"/>
+          <path class="emblem-spark" d="M94 17v12m-6-6h12M20 26v8m-4-4h8"/>
+        </svg>
+      </div>
+      <div class="brand-wordmark">
+        <strong>GRAND</strong>
+        <span>DRY CLEAN</span>
+        <small>المغسلة الفاخرة</small>
+      </div>
+    </header>
+
+    <section class="profile-actions" aria-label="إعدادات الحساب">
+      <div class="profile-avatar" id="gmAvatar" aria-label="الصورة الشخصية">
+        <svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="35"/><path d="M40 24c0-5 3-8 8-8s8 4 8 8c0 4-2 6-6 9L17 51c-3 2-2 6 2 6h42c4 0 5-4 2-6L38 39"/><path d="M18 61c7 8 15 11 24 11"/></svg>
+      </div>
+      <input id="gmAvatarInput" type="file" accept="image/*" hidden>
+      <div class="profile-buttons">
+        <button id="gmAvatarBtn" class="photo-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l1.5-2h8L18 7h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          <span>إضافة / تغيير الصورة</span>
+        </button>
+        <button id="logoutBtn" class="logout-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/></svg>
+          <span>تسجيل الخروج</span>
+        </button>
+      </div>
+    </section>
+    <p id="gmPhotoMsg" class="photo-message" role="status" aria-live="polite"></p>
+
+    <div class="gold-divider" aria-hidden="true"></div>
+    <h1 class="sections-heading">إدارة الأقسام</h1>
+
+    <nav class="sections-grid" aria-label="أقسام الإدارة">
+      <a class="section-tile" href="gm.html?view=products">
+        <span class="tile-green"></span><span class="tile-wave"></span>
+        <svg class="tile-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 12h32M8 24h32M8 36h32"/></svg>
+        <strong>القائمة</strong>
+      </a>
+      <a class="section-tile" href="gm.html?view=categories">
+        <span class="tile-green"></span><span class="tile-wave"></span>
+        <svg class="tile-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="1"/><rect x="20" y="7" width="9" height="9" rx="1"/><rect x="33" y="7" width="9" height="9" rx="1"/><rect x="7" y="20" width="9" height="9" rx="1"/><rect x="20" y="20" width="9" height="9" rx="1"/><rect x="33" y="20" width="9" height="9" rx="1"/><rect x="7" y="33" width="9" height="9" rx="1"/><rect x="20" y="33" width="9" height="9" rx="1"/><rect x="33" y="33" width="9" height="9" rx="1"/></svg>
+        <strong>التصنيفات</strong>
+      </a>
+      <a class="section-tile" href="gm.html?view=profile">
+        <span class="tile-green"></span><span class="tile-wave"></span>
+        <svg class="tile-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M39 20c0 11-15 24-15 24S9 31 9 20a15 15 0 1 1 30 0Z"/><circle cx="24" cy="20" r="5"/></svg>
+        <strong>الفروع</strong>
+      </a>
+      <a class="section-tile" href="index.html#services">
+        <span class="tile-green"></span><span class="tile-wave"></span>
+        <svg class="tile-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 17 13 8h22l5 9-5 7-5-5-6 6-6-6-5 5Z"/><path d="m8 17 4 24h24l4-24M16 8l8 11L32 8"/></svg>
+        <strong>الأكثر طلبًا</strong>
+      </a>
+    </nav>
+  </main>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
-<script src="../assets/config.js"></script>
-<script src="js/session-guard.js?v=20261118-gdc-final-v5"></script>
-<script src="js/dashboard.js?v=20261118-gdc-final-v5"></script>
+  <script src="../assets/config.js"></script>
+  <script src="js/session-guard.js?v=20261118-sections-v1"></script>
+  <script src="js/management-home.js?v=20261118-sections-v1"></script>
 </body>
 </html>
