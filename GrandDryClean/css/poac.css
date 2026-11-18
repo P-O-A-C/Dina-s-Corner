@@ -38,3 +38,57 @@ body{background:#F7F1E7;color:#2E2922}
 .auth-gate{background:linear-gradient(135deg,#F7F1E7,#EAF0E8);color:#07513A}
 
 .mini-mark svg{width:25px;height:25px;display:block;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* MOBILE REFINEMENT — GRAND DRY CLEAN DASHBOARD */
+@media (max-width: 680px) {
+  html, body { max-width:100%; overflow-x:hidden; }
+  .dash-header { min-height:64px; height:auto; padding:9px 13px; gap:10px; }
+  .dash-brand { min-width:0; gap:8px; }
+  .mini-mark { width:35px; height:35px; flex:0 0 35px; font-size:22px; }
+  .dash-brand b { font-size:12px; letter-spacing:1px; }
+  .dash-brand small { font-size:7px; letter-spacing:.5px; }
+  .header-user { gap:7px; }
+  .header-user .workspace-name { display:none; }
+  .logout-button { min-height:38px; padding:6px 9px; font-size:9px; white-space:nowrap; }
+  .dash-main { width:calc(100% - 24px); margin:20px auto 28px; }
+  .page-title { align-items:flex-start; gap:8px; margin-bottom:15px; }
+  .page-title h1 { font-size:20px; line-height:1.45; }
+  .page-title p { font-size:10px; line-height:1.8; }
+  .status-pill { padding:6px 8px; font-size:8px; white-space:nowrap; }
+  .stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:12px; }
+  .stat-card { min-width:0; padding:12px; border-radius:10px; }
+  .stat-card span { font-size:10px; }
+  .stat-card strong { font-size:22px; }
+  .stat-card small { font-size:8px; line-height:1.6; }
+  .stat-card:last-child { grid-column:span 2; }
+  .content-card { padding:13px; margin-bottom:12px; border-radius:10px; }
+  .card-heading { align-items:flex-start; gap:8px; flex-wrap:wrap; }
+  .card-heading h2 { font-size:15px; }
+  .muted { font-size:10px; line-height:1.8; }
+  .gold-button { min-height:40px; padding:8px 11px; font-size:9px; }
+  .table-wrap { max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table { min-width:520px; }
+  th, td { padding:10px 8px; font-size:10px; white-space:nowrap; }
+  .settings-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .settings-grid div { min-width:0; padding:10px; overflow-wrap:anywhere; }
+  .settings-grid small { font-size:9px; }
+  .settings-grid b { font-size:10px; line-height:1.6; }
+  .modal-backdrop { padding:10px; align-items:end; }
+  .item-modal { width:100%; max-width:460px; max-height:90dvh; overflow:auto; padding:22px 16px calc(16px + env(safe-area-inset-bottom)); border-radius:15px; }
+  .item-modal h2 { font-size:18px; }
+  .item-modal label { font-size:11px; }
+  .item-modal input { min-height:42px; font-size:12px; }
+  .login-button { min-height:44px; }
+}
+@media (max-width: 380px) {
+  .dash-header { padding-inline:9px; }
+  .dash-brand b { font-size:10px; letter-spacing:.5px; }
+  .mini-mark { width:32px; height:32px; flex-basis:32px; }
+  .logout-button { font-size:8px; padding-inline:7px; }
+  .dash-main { width:calc(100% - 20px); }
+  .page-title { flex-direction:column; }
+  .status-pill { align-self:flex-start; }
+  .stats-grid { gap:7px; }
+  .stat-card { padding:10px; }
+}
+

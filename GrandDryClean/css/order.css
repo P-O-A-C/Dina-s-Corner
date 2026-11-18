@@ -50,3 +50,71 @@
 .close-drawer{background:#EAF0E8;color:#07513A;border-color:#E8DFD2}
 .qty-control button{background:#EAF0E8;color:#07513A}
 @media(max-width:700px){.order-header{height:65px;padding-inline:14px}.brand-mark{width:36px;height:36px}.brand-type strong{font-size:13px}.brand-type small{font-size:8px}.order-hero{background:linear-gradient(145deg,#302119 0%,#07513A 100%)}}
+
+/* MOBILE REFINEMENT — CUSTOMER ORDER PAGE */
+@media (max-width: 700px) {
+  html, body { max-width:100%; overflow-x:hidden; }
+  .order-header { min-height:64px; height:auto; padding:7px 12px; gap:8px; }
+  .brand { gap:7px; min-width:0; }
+  .brand-mark { width:34px; height:34px; flex:0 0 34px; }
+  .brand-type strong { font-size:11px; letter-spacing:1.2px; }
+  .brand-type small { font-size:7px; letter-spacing:1.2px; margin-top:3px; }
+  .header-right { gap:6px; min-width:0; }
+  .customer-only-label { font-size:8px; white-space:nowrap; }
+  .header-contact { min-height:36px; padding:7px 9px; font-size:9px; white-space:nowrap; }
+  .page-wrap { width:calc(100% - 24px); }
+  .order-hero { padding:22px 16px 25px; }
+  .hero-copy h1 { font-size:clamp(32px, 9vw, 37px); line-height:1.3; }
+  .hero-copy>p { font-size:11px; line-height:1.9; }
+  .hero-points { gap:8px 11px; }
+  .hero-points span { font-size:9px; }
+  .order-content { padding-top:23px; }
+  .section-intro { gap:8px; }
+  .section-intro h2 { font-size:18px; }
+  .section-intro p { font-size:9px; max-width:230px; }
+  .no-login { font-size:8px; padding:6px 8px; }
+  .category-tabs { gap:7px; padding-bottom:12px; }
+  .category-tab { min-height:36px; padding:7px 12px; font-size:9px; }
+  .products-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  .service-card { min-width:0; border-radius:11px; }
+  .service-art { height:108px; font-size:40px; }
+  .service-art:after { width:68px; height:68px; }
+  .service-info { padding:10px; gap:6px; }
+  .service-info h3 { font-size:12px; }
+  .service-info p { min-height:32px; font-size:9px; line-height:1.7; }
+  .service-bottom { margin-top:5px; gap:8px; }
+  .price-hint { font-size:9px; }
+  .add-button { min-height:40px; padding:8px 9px; font-size:10px; }
+  .catalog-note { padding:10px; }
+  .catalog-note p { font-size:9px; line-height:1.8; }
+  .mobile-order-bar { min-height:72px; padding:9px 13px calc(9px + env(safe-area-inset-bottom)); }
+  .mobile-order-bar b { font-size:14px; }
+  .mobile-order-bar span { font-size:9px; }
+  .mobile-order-bar button { min-height:44px; padding:10px 14px; font-size:10px; }
+  .order-drawer { top:auto; bottom:0; left:0; right:0; width:100%; height:min(90dvh,780px); max-height:calc(100dvh - 12px); border-radius:17px 17px 0 0; padding-bottom:env(safe-area-inset-bottom); }
+  .drawer-header { padding:15px 15px 12px; }
+  .drawer-header h2 { font-size:18px; }
+  .drawer-scroll { padding:0 15px calc(16px + env(safe-area-inset-bottom)); }
+  .drawer-line { padding:10px; gap:8px; }
+  .drawer-line strong { font-size:11px; }
+  .customer-form { gap:10px; }
+  .customer-form label { font-size:10px; }
+  .customer-form input, .customer-form textarea { min-height:43px; padding:10px; font-size:12px; }
+  .send-order { min-height:46px; font-size:11px; }
+  .privacy-note { font-size:9px; }
+}
+@media (max-width: 380px) {
+  .order-header { padding-inline:9px; }
+  .brand-mark { width:30px; height:30px; flex-basis:30px; }
+  .brand-type strong { font-size:10px; letter-spacing:.7px; }
+  .brand-type small { font-size:6px; letter-spacing:.7px; }
+  .customer-only-label { display:none; }
+  .header-contact { padding-inline:8px; }
+  .page-wrap { width:calc(100% - 20px); }
+  .products-grid { gap:7px; }
+  .service-art { height:96px; }
+  .service-info { padding:8px; }
+  .service-info h3 { font-size:11px; }
+  .mobile-order-bar { padding-inline:10px; }
+}
+

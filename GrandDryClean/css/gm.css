@@ -44,3 +44,76 @@ td{color:#302119}
 .toast{background:#302119;border:1px solid #D3A13D}
 .auth-gate{background:linear-gradient(135deg,#F7F1E7,#EAF0E8);color:#07513A}
 @media(max-width:650px){.sidebar{border-left:0;border-right:2px solid #D3A13D}.gm-topbar{background:#FFFCF7}}
+
+/* MOBILE REFINEMENT — GRAND DRY CLEAN */
+@media (max-width: 650px) {
+  html, body { max-width:100%; overflow-x:hidden; }
+  .sidebar { width:min(292px, 88vw); padding:18px 14px calc(18px + env(safe-area-inset-bottom)); }
+  .side-brand { gap:9px; padding:0 6px 18px; }
+  .side-mark { width:39px; height:39px; flex:0 0 39px; }
+  .side-brand b { font-size:15px; letter-spacing:2px; }
+  .business-chip { margin:15px 0; padding:10px; }
+  .side-nav { gap:5px; }
+  .nav-link { min-height:44px; padding:10px 12px; font-size:12px; }
+  .main-area { width:100%; margin-right:0; overflow-x:clip; }
+  .gm-topbar { min-height:64px; height:auto; padding:9px 12px; gap:9px; }
+  .gm-topbar > div:first-of-type { min-width:0; line-height:1.35; }
+  .gm-topbar b { font-size:11px; display:block; }
+  .top-eyebrow { font-size:8px; }
+  .menu-toggle { min-width:40px; min-height:40px; padding:7px 10px; flex:0 0 40px; }
+  .top-actions { gap:5px; margin-inline-start:auto; }
+  .demo-label { font-size:8px; padding:4px 7px; }
+  .role-name { min-height:29px; padding:0 8px; font-size:8px; max-width:112px; overflow:hidden; text-overflow:ellipsis; }
+  .view { width:calc(100% - 24px); margin:17px auto 24px; }
+  .welcome-row, .page-heading { align-items:flex-start; gap:10px; margin-bottom:16px; }
+  .welcome-row h1, .page-heading h1 { font-size:18px; line-height:1.55; }
+  .welcome-row p, .page-heading p { font-size:10px; line-height:1.8; }
+  .eyebrow { font-size:8px; letter-spacing:1px; }
+  .date-label { display:none; }
+  .metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:13px; }
+  .metric { min-width:0; padding:12px; border-radius:10px; }
+  .metric > span, .metric small { font-size:9px; line-height:1.6; }
+  .metric strong { font-size:23px; margin:3px 0; }
+  .metric i { width:30px; height:30px; margin-top:6px; font-size:12px; }
+  .metric:last-child { grid-column:span 2; }
+  .panel-card { padding:13px; margin-bottom:12px; border-radius:10px; }
+  .panel-title h2, .card-heading h2 { font-size:15px; }
+  .card-heading { gap:8px; flex-wrap:wrap; }
+  .quick-actions { grid-template-columns:1fr; gap:8px; margin-top:11px; }
+  .quick-action { min-height:58px; grid-template-columns:34px minmax(0,1fr); padding:10px; gap:2px 9px; }
+  .quick-action > span { grid-row:span 2; width:32px; height:32px; }
+  .quick-action b { font-size:10px; }
+  .quick-action small { grid-column:2; font-size:9px; }
+  .page-heading .primary-action { white-space:nowrap; min-height:40px; font-size:9px; }
+  .category-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .category-card { min-width:0; padding:11px 9px; gap:7px; }
+  .category-card b { font-size:10px; }
+  .category-card small { font-size:8px; }
+  .category-card button { padding:7px 8px; }
+  .toolbar { gap:8px; }
+  .toolbar input, .toolbar select, .profile-form input, .profile-form select, .edit-modal input, .edit-modal select { min-height:42px; width:100%; font-size:12px; }
+  .form-grid { grid-template-columns:1fr; gap:12px; }
+  .profile-form { padding:14px; }
+  .profile-form label, .edit-modal label { font-size:11px; }
+  .form-footer { flex-direction:column; align-items:stretch; gap:8px; }
+  .form-footer .primary-action, .modal-actions button { min-height:42px; }
+  .table-wrap { max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:7px; }
+  table { min-width:560px; }
+  th, td { padding:10px 8px; font-size:10px; white-space:nowrap; }
+  .modal-shade { padding:10px; align-items:end; }
+  .edit-modal { width:100%; max-width:480px; max-height:90dvh; padding:21px 16px calc(16px + env(safe-area-inset-bottom)); border-radius:15px; overflow:auto; }
+  .edit-modal h2 { font-size:18px; }
+  .modal-actions { flex-wrap:wrap; }
+  .toast { left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom)); text-align:center; }
+}
+@media (max-width:380px) {
+  .gm-topbar { padding-inline:9px; gap:7px; }
+  .top-actions .role-name { display:none; }
+  .view { width:calc(100% - 20px); }
+  .metric { padding:10px; }
+  .metric > span, .metric small { font-size:8px; }
+  .category-card { align-items:flex-start; flex-direction:column; }
+  .category-card button { align-self:flex-start; }
+  .welcome-row h1, .page-heading h1 { font-size:16px; }
+}
+
