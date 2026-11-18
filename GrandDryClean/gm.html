@@ -3,19 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07513A">
-  <title>GRAND DRY CLEAN | لوحة الإدارة</title>
-  <link rel="stylesheet" href="css/gm.css?v=20261118-mobile-v2">
+  <meta name="theme-color" content="#172f42">
+  <title>POAC | GRAND DRY CLEAN - DryClean</title>
+  <link rel="stylesheet" href="css/gm.css?v=20261118-single-auth-status-v4">
 </head>
 <body class="auth-pending">
   <div id="authGate" class="auth-gate">جارٍ التحقق من صلاحيات حساب GRAND DRY CLEAN…</div>
   <aside class="sidebar" id="sidebar">
-    <a class="side-brand" href="../index.html" aria-label="العودة إلى بوابة POAC"><span class="side-mark"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 15.5c0-3.2 2.3-5.4 5-5.4 2.6 0 4.6 1.8 4.6 4.2 0 2-1.1 3.3-3 4.7l-2.5 1.8L8.4 32.1c-1.5 1.1-.8 3.4 1 3.4h29.2c1.8 0 2.5-2.3 1-3.4L24 21.1"/></svg></span><span><b>GRAND DRY CLEAN</b><small>PREMIUM LAUNDRY CARE</small></span></a>
-    <div class="business-chip"><span class="chip-icon">✦</span><span><b>المغسلة الفاخرة</b><small>CARE IN EVERY FIBER</small></span></div>
+    <a class="side-brand" href="../index.html"><span class="side-mark">P</span><span><b>POAC</b><small>BUSINESS WORKSPACE</small></span></a>
+    <div class="business-chip"><span class="chip-icon">♧</span><span><b>GRAND DRY CLEAN</b><small>DryClean</small></span></div>
     <nav class="side-nav">
       <a class="nav-link active" href="#overview" data-view="overview">▦ <span>نظرة عامة</span></a>
       <a class="nav-link" href="#products" data-view="products">▤ <span>الأصناف والأسعار</span></a>
       <a class="nav-link" href="#categories" data-view="categories">▦ <span>الأقسام</span></a>
+      <a class="nav-link" href="#branches" data-view="branches">⌖ <span>الفروع</span></a>
+      <a class="nav-link" href="#popular" data-view="popular">★ <span>الأكثر طلبًا</span></a>
       <a class="nav-link" href="#profile" data-view="profile">⚙ <span>بيانات المغسلة</span></a>
     </nav>
     <div class="side-bottom"><span class="demo-dot"></span> نسخة تصميم تجريبية <a id="logoutBtn" href="../index.html">تسجيل الخروج ←</a></div>
@@ -24,8 +26,8 @@
   <main class="main-area">
     <header class="gm-topbar">
       <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
-      <div><span class="top-eyebrow">GRAND DRY CLEAN</span><b>لوحة إدارة المغسلة</b></div>
-      <div class="top-actions"><span class="demo-label">DEMO</span><span class="role-name">GRAND DRY CLEAN</span></div>
+      <div><span class="top-eyebrow">DryClean</span><b>لوحة إدارة المغسلة</b></div>
+      <div class="top-actions"><span class="demo-label">DEMO</span><span class="role-name">DryClean</span></div>
     </header>
 
     <section class="view active" id="overview">
@@ -60,6 +62,33 @@
     <section class="view" id="categories">
       <div class="page-heading"><div><span class="eyebrow">SERVICE GROUPS</span><h1>إدارة الأقسام</h1><p>الأقسام التي تظهر للعملاء في قائمة الخدمات.</p></div><button class="primary-action" id="newCategoryBtn">＋ إضافة قسم</button></div>
       <div class="category-grid" id="categoryCards"></div>
+    </section>
+
+    <section class="view" id="branches">
+      <div class="page-heading"><div><span class="eyebrow">BRANCH MANAGEMENT</span><h1>إدارة الفروع</h1><p>أضف فروع المغسلة وبيانات التواصل والموقع لكل فرع.</p></div></div>
+      <form class="panel-card branch-form" id="branchForm">
+        <div class="panel-title"><div><span class="eyebrow">NEW BRANCH</span><h2>إضافة فرع</h2></div></div>
+        <div class="form-grid">
+          <label>اسم الفرع<input id="branchName" required maxlength="80" placeholder="مثال: فرع وسط البلد"></label>
+          <label>رقم الهاتف<input id="branchPhone" inputmode="tel" maxlength="25" placeholder="رقم التواصل"></label>
+          <label class="full-field">العنوان<input id="branchAddress" required maxlength="180" placeholder="عنوان الفرع بالتفصيل"></label>
+          <label class="full-field">رابط الموقع على الخريطة<input id="branchMap" type="url" maxlength="500" dir="ltr" placeholder="https://maps.app.goo.gl/..."></label>
+        </div>
+        <div class="form-footer"><p>تُحفظ هذه البيانات محليًا في هذا المتصفح ضمن النسخة التجريبية.</p><button class="primary-action" type="submit">＋ إضافة الفرع</button></div>
+      </form>
+      <div class="panel-card">
+        <div class="panel-title"><div><span class="eyebrow">SAVED BRANCHES</span><h2>الفروع المسجلة</h2></div><span class="date-label" id="branchCount">0 فرع</span></div>
+        <div id="branchCards" class="branch-grid"></div>
+      </div>
+    </section>
+
+    <section class="view" id="popular">
+      <div class="page-heading"><div><span class="eyebrow">FEATURED SERVICES</span><h1>الأكثر طلبًا</h1><p>حدد الأصناف التي تريد إبرازها للعملاء في قسم الأكثر طلبًا.</p></div></div>
+      <div class="panel-card">
+        <div class="panel-title"><div><span class="eyebrow">POPULAR ITEMS</span><h2>اختيار الأصناف</h2></div><span class="date-label" id="popularCount">0 صنف محدد</span></div>
+        <p class="muted-note">لا يوجد ربط حالي بإحصائيات الطلبات؛ يمكنك تحديد الأصناف يدويًا. الاختيارات محفوظة محليًا في هذا المتصفح فقط.</p>
+        <div id="popularCards" class="popular-grid"></div>
+      </div>
     </section>
 
     <section class="view" id="profile">
