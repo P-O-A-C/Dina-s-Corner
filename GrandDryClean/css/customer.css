@@ -344,7 +344,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .mobile-menu > a { padding: 13px 8px; border-bottom: 1px solid rgba(255,255,255,.12); font-size: 15px; font-weight: 700; }
 
 @media (min-width: 700px) {
-  .page-shell { max-width: 860px; margin: 0 auto; padding-bottom: 30px; background: var(--cream); box-shadow: 0 0 35px rgba(42,24,15,.08); }
+  .page-shell { max-width: 860px; margin: 0 auto; padding-bottom: calc(112px + env(safe-area-inset-bottom)); background: var(--cream); box-shadow: 0 0 35px rgba(42,24,15,.08); }
   body { background: #eee4d8; }
   .brand-header { height: 175px; }
   .brand-lockup { top: 12px; }
@@ -365,7 +365,19 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
   .service-info strong { font-size: 21px; }
   .service-info small { font-size: 13px; }
   .main-order-button { min-height: 88px; }
-  .bottom-navigation { position: relative; max-width: 860px; margin: 18px auto 0; border-radius: 24px; }
+  /* Keep the customer navigation pinned to the viewport on desktop and tablet too. */
+  .bottom-navigation {
+    position: fixed;
+    z-index: 30;
+    right: auto;
+    left: 50%;
+    bottom: 0;
+    width: min(860px, 100vw);
+    max-width: 860px;
+    margin: 0;
+    transform: translateX(-50%);
+    border-radius: 24px 24px 0 0;
+  }
   .bottom-tab.home-tab { min-height: 90px; }
   .mobile-menu { position: fixed; }
 }
