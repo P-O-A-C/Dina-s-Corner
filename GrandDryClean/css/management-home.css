@@ -296,6 +296,11 @@ button { cursor: pointer; }
 /* Fixed brand background only — keeps all existing layout and controls unchanged */
 body.management-home {
   background-attachment: fixed;
+  /* Soft botanical texture in the same cream / green / gold identity */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%2307513a' stroke-opacity='.075' stroke-width='1.4'%3E%3Cpath d='M18 116c17-16 21-35 16-54m0 20c-13-1-19-10-18-19 11 1 17 8 18 19Zm2-14c12-4 17-14 14-23-10 4-14 12-14 23Z'/%3E%3Cpath d='M118 32c-9 13-10 26-4 38m0-18c-10 0-15-6-15-13 9 1 14 5 15 13Zm2 5c9-3 13-10 11-17-8 3-11 9-11 17Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23d4a441' stroke-opacity='.11' stroke-width='1.2'%3E%3Ccircle cx='76' cy='75' r='5'/%3E%3Cpath d='M76 62c5-9 11-6 11 0s-6 8-11 13c-5-5-11-7-11-13s6-9 11 0Zm13 13c9 5 6 11 0 11s-8-6-13-11c5-5 7-11 13-11s9 6 0 11Zm-13 13c-5 9-11 6-11 0s6-8 11-13c5 5 11 7 11 13s-6 9-11 0Zm-13-13c-9-5-6-11 0-11s8 6 13 11c-5 5-7 11-13 11s-9-6 0-11Z'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 50% 12%, rgba(255,255,255,.98) 0%, rgba(255,251,243,.95) 34%, transparent 70%),
+    linear-gradient(145deg, #fdf8ef 0%, var(--gdc-cream) 52%, #f2e8d8 100%);
 }
 .page-decor {
   position: fixed;
