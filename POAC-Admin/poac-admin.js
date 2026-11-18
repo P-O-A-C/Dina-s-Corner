@@ -2,9 +2,9 @@
   const state = document.getElementById("accessState");
   const shell = document.getElementById("adminShell");
   const cfg = window.POA_CONFIG || {};
-  const configured = /^https:\/\/[^/]+\.supabase\.co\/?$/i.test(String(cfg.SUPABASE_URL || "")) &&
+  const configured = /^https:\/\/[^/]+\.supabase\.co\/?$/i.test(String(cfg.SUPABASE_URL || "https://nbwqoknkpkqgorxtyjnm.supabase.co")) &&
     !!String(cfg.SUPABASE_PUBLISHABLE_KEY || "") &&
-    !/YOUR[_-]|PLACEHOLDER|REPLACE_ME|POA_CONFIG_NOT_SET/i.test(String(cfg.SUPABASE_PUBLISHABLE_KEY || ""));
+    !/YOUR[_-]|PLACEHOLDER|REPLACE_ME|POA_CONFIG_NOT_SET/i.test(String(cfg.SUPABASE_PUBLISHABLE_KEY || "sb_publishable_ncPKXMFDGB6HI1lHs1kYmg_dB3hgaer"));
   const goLogin = () => location.replace("../index.html");
 
   if (!configured || !window.supabase?.createClient) {
