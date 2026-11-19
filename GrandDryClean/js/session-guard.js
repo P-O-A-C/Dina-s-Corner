@@ -115,7 +115,7 @@
     if (email !== EXPECTED_EMAIL || (profileEmail && profileEmail !== EXPECTED_EMAIL)) {
       throw new Error("الحساب المسجل ليس حساب GRAND DRY CLEAN المخصص.");
     }
-    if (role !== "gm" && role !== "dryclean") {
+    if (role !== "gm" && role !== "admin") {
       throw new Error("دور الحساب غير مصرح به لإدارة المغسلة: " + (role || "غير محدد") + ".");
     }
     if (!isActive) {
