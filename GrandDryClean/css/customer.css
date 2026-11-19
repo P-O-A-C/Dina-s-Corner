@@ -403,3 +403,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
   .home-media-column .promo-slider { min-height: 185px; aspect-ratio: 16 / 9; }
   .payment-stack { grid-template-columns: 1fr 1fr; }
 }
+
+/* Display-only services catalogue CTA */
+.main-order-button .services-arrow{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(140deg,#ffe59b,#dca632);color:var(--green);font-size:24px;font-weight:900;line-height:1}
