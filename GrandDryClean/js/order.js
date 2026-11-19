@@ -34,10 +34,10 @@ function renderProducts(){
   $("productsGrid").innerHTML = visible.map(product=>{
     const qty = cart.get(product.id)?.qty || 0;
     const visual = product.image
-      ? `<img class="service-product-image" src="${safe(product.image)}" alt="${safe(product.name)}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">`
+      ? `<img class="service-product-image" src="${safe(product.image)}" alt="${safe(product.name)}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('image-unavailable')">`
       : "";
     return `<article class="service-card">
-      <div class="service-art ${product.art}">${visual}<span ${product.image ? 'hidden' : ''}>${product.icon}</span>
+      <div class="service-art ${product.art}">${visual}
         <button class="image-order-button ${qty?"added":""}" type="button" data-add="${product.id}" aria-label="اطلب ${safe(product.name)}">${qty?`مضاف · ${qty}`:"اطلب +"}</button>
       </div>
       <div class="service-info"><h3>${safe(product.name)}</h3><p>${safe(product.description)}</p>
