@@ -358,7 +358,7 @@
 
   async function addHomeSlide(file) {
     if (!file || !file.type.startsWith('image/')) { toast('اختر ملف صورة صالحًا.', true); return; }
-    if (homeSlides.length >= 6) { toast('يمكن إضافة 6 صور كحد أقصى.', true); return; }
+    if (homeSlides.length >= 200) { toast('يمكن إضافة 200 صور كحد أقصى.', true); return; }
     const input = $('homeSlideUpload'); if (input) input.disabled = true;
     let uploaded = null;
     try {
