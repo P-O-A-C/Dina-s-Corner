@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07513A">
   <meta name="description" content="استعرض خدمات GRAND DRY CLEAN للغسيل والكي والتنظيف الجاف والعناية بالمفروشات.">
   <title>خدماتنا | GRAND DRY CLEAN</title>
-  <link rel="stylesheet" href="css/order.css?v=20261119-services-display-only-v1">
+  <link rel="stylesheet" href="css/order.css?v=20261120-ironing-prices-v1">
 </head>
 <body>
   <header class="order-header">
@@ -30,8 +30,20 @@
       <nav class="category-tabs" id="categoryTabs" aria-label="تصنيفات الخدمات"></nav>
       <p class="catalog-status" id="catalogStatus" role="status" aria-live="polite">جارٍ تحميل الخدمات…</p>
       <div class="products-grid" id="productsGrid" aria-live="polite"></div>
+
+      <section class="ironing-prices-section" id="ironingPricesSection" aria-labelledby="ironingPricesHeading" hidden>
+        <div class="ironing-prices-heading">
+          <span class="eyebrow">IRONING PRICE LIST</span>
+          <h2 id="ironingPricesHeading">أسعار الكي فقط</h2>
+          <p>الأسعار التالية خاصة بالكي فقط، ولا تشمل الغسيل أو التنظيف الجاف.</p>
+        </div>
+        <div class="ironing-prices-grid" id="ironingPricesGrid" aria-live="polite"></div>
+      </section>
+
       <div class="catalog-note">
         <span aria-hidden="true">✦</span>
+        <p>للاستفسار عن أي خدمة أو معرفة التفاصيل، تواصل معنا مباشرة عبر واتساب.</p>
+        <a href="https://wa.me/201005854115" target="_blank" rel="noopener">تواصل معنا ↗</a>
       </div>
     </section>
   </main>
@@ -44,6 +56,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
   <script src="../assets/config.js?v=20261119-services-display-only-v1"></script>
-  <script src="js/order.js?v=20261119-services-display-only-v1"></script>
+  <script src="js/order.js?v=20261120-ironing-prices-v1"></script>
 </body>
 </html>

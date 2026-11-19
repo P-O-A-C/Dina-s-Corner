@@ -23,6 +23,52 @@
     return ["الكل", ...new Set(products.map(product => product.category).filter(Boolean))];
   }
 
+  function formatEGP(value) {
+    return `${new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 2 }).format(Number(value))} ج.م`;
+  }
+
+  function renderIroningPrices(rows) {
+    const section = document.getElementById("ironingPricesSection");
+    const container = document.getElementById("ironingPricesGrid");
+    if (!section || !container) return;
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      section.hidden = true;
+      container.replaceChildren();
+      return;
+    }
+
+    container.innerHTML = rows.map(row => {
+      const priceLabel = row.price === null || row.price === undefined
+        ? safe(row.note || "السعر عند المعاينة")
+        : formatEGP(row.price);
+      return `
+        <article class="ironing-price-card">
+          <div class="ironing-price-item-name">${safe(row.item_name)}</div>
+          <strong class="ironing-price-value">${priceLabel}</strong>
+        </article>
+      `;
+    }).join("");
+    section.hidden = false;
+  }
+
+  async function loadIroningPrices(client) {
+    try {
+      const { data, error } = await client.from("gdc_ironing_prices")
+        .select("id,item_name,price,note,sort_order")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      renderIroningPrices(data || []);
+    } catch (error) {
+      // Keep the service catalog usable if the separate ironing-price setup
+      // has not yet been applied in Supabase.
+      console.warn("GRAND DRY CLEAN ironing prices could not be loaded:", error);
+      const section = document.getElementById("ironingPricesSection");
+      if (section) section.hidden = true;
+    }
+  }
+
   function renderCategories() {
     tabs.innerHTML = getCategories().map(category => `
       <button class="category-tab ${category === activeCategory ? "active" : ""}"
@@ -91,6 +137,9 @@
         { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
       );
       window.__GDC_PUBLIC_CATALOG_CLIENT__ = client;
+      // Load ironing prices separately so a missing pricing table never blocks
+      // the main service catalog from loading.
+      loadIroningPrices(client);
 
       const [categoryResult, itemResult] = await Promise.all([
         client.from("gdc_service_categories")
