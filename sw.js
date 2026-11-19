@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v16-gdc-database-persistence-v1";
+const CACHE = "poac-unified-v17-gdc-branches-header-fix-v1";
 const SHELL = [
   "./index.html",
   "./login.html",

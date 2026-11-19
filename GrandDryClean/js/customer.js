@@ -56,12 +56,102 @@
     }
   }
 
-  async function loadManagedSlides() {
+  function getPublicSupabaseClient() {
     const cfg = window.POA_CONFIG || {};
-    if (!window.supabase?.createClient || !cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY || !slider) return;
+    if (!window.supabase?.createClient || !cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY) {
+      throw new Error("إعدادات الاتصال بقاعدة البيانات غير متاحة.");
+    }
+    if (!window.__GDC_PUBLIC_CLIENT__) {
+      window.__GDC_PUBLIC_CLIENT__ = window.supabase.createClient(
+        cfg.SUPABASE_URL,
+        cfg.SUPABASE_PUBLISHABLE_KEY,
+        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
+      );
+    }
+    return window.__GDC_PUBLIC_CLIENT__;
+  }
+
+  function safeWebUrl(value) {
     try {
-      const client = window.__GDC_PUBLIC_CLIENT__ || window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_PUBLISHABLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
-      window.__GDC_PUBLIC_CLIENT__ = client;
+      const url = new URL(String(value || "").trim());
+      return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function renderPublicBranches(rows) {
+    const container = document.getElementById("publicBranches");
+    if (!container) return;
+    container.replaceChildren();
+
+    if (!rows.length) {
+      const empty = document.createElement("p");
+      empty.className = "branches-empty";
+      empty.textContent = "سيتم إضافة بيانات الفروع قريبًا.";
+      container.append(empty);
+      return;
+    }
+
+    rows.forEach((branch) => {
+      const card = document.createElement("article");
+      card.className = "branch-public-card";
+      const name = document.createElement("strong");
+      name.textContent = branch.name || "فرع GRAND DRY CLEAN";
+      card.append(name);
+
+      if (branch.address) {
+        const address = document.createElement("p");
+        address.textContent = branch.address;
+        card.append(address);
+      }
+      if (branch.phone) {
+        const phone = document.createElement("a");
+        phone.href = `tel:${String(branch.phone).replace(/[^+0-9]/g, "")}`;
+        phone.dir = "ltr";
+        phone.textContent = branch.phone;
+        card.append(phone);
+      }
+      const mapUrl = safeWebUrl(branch.map_url);
+      if (mapUrl) {
+        const map = document.createElement("a");
+        map.href = mapUrl;
+        map.target = "_blank";
+        map.rel = "noopener noreferrer";
+        map.textContent = "الموقع على الخريطة ↗";
+        card.append(map);
+      }
+      container.append(card);
+    });
+  }
+
+  async function loadPublicBranches() {
+    const container = document.getElementById("publicBranches");
+    if (!container) return;
+    try {
+      const client = getPublicSupabaseClient();
+      const { data, error } = await client
+        .from("gdc_branches")
+        .select("id,name,phone,address,map_url,is_active,sort_order")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      renderPublicBranches(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("GRAND DRY CLEAN public branches could not be loaded:", error);
+      container.replaceChildren();
+      const message = document.createElement("p");
+      message.className = "branches-empty";
+      message.textContent = "تعذر تحميل الفروع حاليًا. يرجى المحاولة لاحقًا.";
+      container.append(message);
+    }
+  }
+
+  async function loadManagedSlides() {
+    if (!slider) return;
+    try {
+      const client = getPublicSupabaseClient();
       const { data, error } = await client.from("gdc_home_slides").select("id,image_url,alt_text,sort_order,is_active").eq("is_active", true).order("sort_order", { ascending: true });
       if (error) throw error;
       if (!Array.isArray(data) || !data.length) return;
@@ -116,4 +206,5 @@
   showSlide(0);
   startRotation();
   loadManagedSlides();
+  loadPublicBranches();
 })();
