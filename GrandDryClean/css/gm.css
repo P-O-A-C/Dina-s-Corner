@@ -75,3 +75,25 @@ body { background: linear-gradient(145deg,#f8fcff 0%,#f1f7fb 100%); color:var(--
 .db-status[data-kind="error"]{background:#fff2f1;border-color:#f2ceca;color:#a51f26}
 @media(max-width:650px){.db-status{width:calc(100% - 28px);margin:12px auto -10px;font-size:10px}}
 .toast[data-kind="error"]{background:#a51f26}
+
+
+/* Homepage slider controls inside the Popular admin view */
+.home-slides-panel{margin-bottom:18px}
+.home-slide-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 16px}
+.home-slide-toolbar small{color:var(--muted);font-size:10px}
+.home-slide-add{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.home-slide-add input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.home-slides-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.home-slide-card{min-width:0;border:1px solid var(--line);border-radius:11px;padding:10px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.home-slide-card>img{width:100%;height:125px;object-fit:cover;border-radius:8px;background:#f3f6f8}
+.home-slide-card.is-disabled{opacity:.65}
+.home-slide-meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.home-slide-meta b{font-size:11px;color:var(--navy)}
+.home-slide-meta small{font-size:9px;color:var(--muted)}
+.home-slide-actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.home-slide-actions button{border:1px solid var(--line);background:#f7fafc;color:var(--navy);border-radius:6px;padding:5px 8px;font-size:9px;cursor:pointer}
+.home-slide-actions button.delete{color:#b4232c;background:#fff7f7;border-color:#f0d5d5}
+.home-slide-actions button:disabled{opacity:.4;cursor:not-allowed}
+.home-slide-actions .popular-image-upload{margin-top:0}
+@media(max-width:850px){.home-slides-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.home-slides-grid{grid-template-columns:1fr}.home-slide-card{display:grid;grid-template-columns:100px 1fr;align-items:center}.home-slide-card>img{grid-row:span 2;height:82px}.home-slide-actions{grid-column:2}}

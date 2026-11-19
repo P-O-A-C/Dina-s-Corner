@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07509B">
   <title>POAC | GRAND DRY CLEAN - DryClean</title>
-  <link rel="stylesheet" href="css/gm.css?v=20261119-popular-image-upload-v1?v=20261119-grand-brand-v1">
+  <link rel="stylesheet" href="css/gm.css?v=20261119-home-slider-admin-v2">
 </head>
 <body class="auth-pending">
   <div id="authGate" class="auth-gate">جارٍ التحقق من صلاحيات حساب GRAND DRY CLEAN…</div>
@@ -86,6 +86,13 @@
 
     <section class="view" id="popular">
       <div class="page-heading"><div><span class="eyebrow">FEATURED SERVICES</span><h1>الأكثر طلبًا</h1><p>اختر الأصناف المميزة، وارفع صورة لكل صنف لتظهر مباشرة في كارت الصنف بصفحة العملاء.</p></div></div>
+      <div class="panel-card home-slides-panel">
+        <div class="panel-title"><div><span class="eyebrow">HOMEPAGE SLIDER</span><h2>صور الصفحة الرئيسية المتحركة</h2></div><span class="date-label" id="homeSlidesCount">0 صورة</span></div>
+        <p class="muted-note">من هنا تتحكم في الصور التي تظهر في السلايدر أعلى صفحة العملاء. أضف صورة أو احذفها، وسيتم تحديث الصفحة الرئيسية تلقائيًا.</p>
+        <div class="home-slide-toolbar"><label class="primary-action home-slide-add">＋ إضافة صورة للسلايدر<input id="homeSlideUpload" type="file" accept="image/*"></label><small>يمكنك إضافة حتى 6 صور. يفضّل استخدام صور أفقية.</small></div>
+        <div id="homeSlidesCards" class="home-slides-grid"><div class="empty-state">جارٍ تحميل صور الصفحة الرئيسية…</div></div>
+        <p id="homeSlidesMessage" class="feedback" role="status"></p>
+      </div>
       <div class="panel-card">
         <div class="panel-title"><div><span class="eyebrow">POPULAR ITEMS</span><h2>اختيار الأصناف</h2></div><span class="date-label" id="popularCount">0 صنف محدد</span></div>
         <p class="muted-note">ارفع صورة لكل خدمة من زر «إضافة صورة»، ثم حدد الخدمات التي تريد إبرازها. الصور والاختيارات تُحفظ في قاعدة بيانات المغسلة وتظهر للعملاء.</p>
@@ -138,6 +145,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="../assets/config.js"></script>
 <script src="js/session-guard.js?v=20261119-grand-brand-v1"></script>
-<script src="js/gm.js?v=20261119-gdc-persistence-v1"></script>
+<script src="js/gm.js?v=20261119-home-slider-admin-v2"></script>
 </body>
 </html>

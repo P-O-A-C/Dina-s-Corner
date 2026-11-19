@@ -6,7 +6,8 @@
     categories: "gdc_service_categories",
     products: "gdc_service_items",
     branches: "gdc_branches",
-    settings: "gdc_settings"
+    settings: "gdc_settings",
+    homeSlides: "gdc_home_slides"
   };
   const IMAGE_BUCKET = "gdc-service-images";
   const $ = id => document.getElementById(id);
@@ -20,6 +21,9 @@
   let products = [];
   let categories = [];
   let branches = [];
+  let homeSlides = [];
+  let homeSlidesReady = false;
+  let homeSlidesLoadError = "";
   let currentImageUrl = "";
   let currentImagePath = "";
   let initialized = false;
@@ -56,7 +60,7 @@
     if (selected === "products") renderProducts();
     if (selected === "categories") renderCategories();
     if (selected === "branches") renderBranches();
-    if (selected === "popular") renderPopular();
+    if (selected === "popular") { renderPopular(); renderHomeSlides(); }
     if (updateUrl) {
       const url = new URL(window.location.href);
       url.searchParams.set("view", selected);
@@ -232,6 +236,143 @@
         }
       };
     });
+  }
+
+  async function loadHomeSlides() {
+    homeSlidesReady = false;
+    try {
+      const { data, error } = await client.from(TABLES.homeSlides)
+        .select("id,image_url,image_path,alt_text,sort_order,is_active")
+        .order("sort_order", { ascending: true }).order("created_at", { ascending: true });
+      if (error) throw error;
+      homeSlides = (data || []).map(row => ({
+        id: String(row.id), image: row.image_url || "", path: row.image_path || "",
+        alt: row.alt_text || "صورة من GRAND DRY CLEAN", order: Number(row.sort_order || 0), active: row.is_active !== false
+      }));
+      homeSlidesReady = true;
+      homeSlidesLoadError = "";
+      renderHomeSlides();
+    } catch (error) {
+      console.error("GDC homepage slides load failed:", error);
+      homeSlidesLoadError = error.message || "تعذر تحميل الجدول.";
+      const box = $("homeSlidesCards");
+      if (box) box.innerHTML = '<div class="empty-state">لم يتم إعداد جدول صور الصفحة الرئيسية بعد. نفّذ ملف GDC-HOMEPAGE-SLIDES-SETUP.sql مرة واحدة في Supabase ثم أعد تحميل لوحة الإدارة.</div>';
+      if ($("homeSlidesMessage")) $("homeSlidesMessage").textContent = error.message || "تعذر تحميل صور الصفحة الرئيسية.";
+    }
+  }
+
+  function renderHomeSlides() {
+    const box = $("homeSlidesCards");
+    if (!box) return;
+    if (!homeSlidesReady) {
+      box.innerHTML = '<div class="empty-state">نفّذ ملف GDC-HOMEPAGE-SLIDES-SETUP.sql في Supabase لتفعيل التحكم في صور السلايدر.</div>';
+      return;
+    }
+    if ($("homeSlidesCount")) $("homeSlidesCount").textContent = `${homeSlides.length} صورة`;
+    if (!homeSlides.length) {
+      box.innerHTML = '<div class="empty-state">لا توجد صور مخصصة بعد. أضف أول صورة للسلايدر؛ وستظل الصور الافتراضية ظاهرة للعملاء حتى تضيف صورك.</div>';
+      return;
+    }
+    box.innerHTML = homeSlides.map((slide, index) => `
+      <article class="home-slide-card ${slide.active ? '' : 'is-disabled'}">
+        <img src="${safe(slide.image)}" alt="${safe(slide.alt)}" loading="lazy">
+        <div class="home-slide-meta"><b>الصورة ${index + 1}</b><small>${slide.active ? 'ظاهرة للعملاء' : 'مخفية عن العملاء'}</small></div>
+        <div class="home-slide-actions">
+          <label class="popular-image-upload">تغيير الصورة<input type="file" accept="image/*" data-replace-home-slide="${safe(slide.id)}"></label>
+          <button type="button" data-toggle-home-slide="${safe(slide.id)}">${slide.active ? 'إخفاء' : 'إظهار'}</button>
+          <button type="button" data-move-home-slide="up" data-id="${safe(slide.id)}" ${index === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" data-move-home-slide="down" data-id="${safe(slide.id)}" ${index === homeSlides.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="delete" data-delete-home-slide="${safe(slide.id)}">حذف</button>
+        </div>
+      </article>`).join("");
+
+    box.querySelectorAll('[data-replace-home-slide]').forEach(input => input.addEventListener('change', async () => {
+      const slide = homeSlides.find(item => item.id === input.dataset.replaceHomeSlide);
+      const file = input.files?.[0];
+      if (!slide || !file) return;
+      if (!file.type.startsWith('image/')) { toast('اختر ملف صورة صالحًا.', true); return; }
+      input.disabled = true;
+      let uploaded = null;
+      try {
+        uploaded = await uploadProductImage(file);
+        const { error } = await client.from(TABLES.homeSlides).update({ image_url: uploaded.url, image_path: uploaded.path, updated_at: new Date().toISOString() }).eq('id', slide.id);
+        if (error) throw error;
+        const oldPath = slide.path;
+        slide.image = uploaded.url; slide.path = uploaded.path;
+        if (oldPath) await client.storage.from(IMAGE_BUCKET).remove([oldPath]);
+        renderHomeSlides(); toast('تم تحديث صورة السلايدر.');
+      } catch (error) {
+        if (uploaded?.path) await client.storage.from(IMAGE_BUCKET).remove([uploaded.path]).catch(() => {});
+        console.error('GDC homepage slide replace failed:', error);
+        toast(`تعذر تغيير الصورة: ${error.message || 'خطأ غير معروف'}`, true);
+        input.disabled = false;
+      }
+    }));
+
+    box.querySelectorAll('[data-toggle-home-slide]').forEach(button => button.addEventListener('click', async () => {
+      const slide = homeSlides.find(item => item.id === button.dataset.toggleHomeSlide);
+      if (!slide) return;
+      button.disabled = true;
+      try {
+        const next = !slide.active;
+        const { error } = await client.from(TABLES.homeSlides).update({ is_active: next, updated_at: new Date().toISOString() }).eq('id', slide.id);
+        if (error) throw error;
+        slide.active = next; renderHomeSlides(); toast(next ? 'تم إظهار الصورة للعملاء.' : 'تم إخفاء الصورة عن العملاء.');
+      } catch (error) { toast(`تعذر تحديث الحالة: ${error.message || 'خطأ غير معروف'}`, true); button.disabled = false; }
+    }));
+
+    box.querySelectorAll('[data-move-home-slide]').forEach(button => button.addEventListener('click', async () => {
+      const index = homeSlides.findIndex(item => item.id === button.dataset.id);
+      const target = button.dataset.moveHomeSlide === 'up' ? index - 1 : index + 1;
+      if (index < 0 || target < 0 || target >= homeSlides.length) return;
+      const first = homeSlides[index], second = homeSlides[target];
+      try {
+        const updates = await Promise.all([
+          client.from(TABLES.homeSlides).update({ sort_order: second.order, updated_at: new Date().toISOString() }).eq('id', first.id),
+          client.from(TABLES.homeSlides).update({ sort_order: first.order, updated_at: new Date().toISOString() }).eq('id', second.id)
+        ]);
+        const failure = updates.find(result => result.error); if (failure) throw failure.error;
+        [first.order, second.order] = [second.order, first.order];
+        homeSlides.sort((a,b) => a.order - b.order); renderHomeSlides();
+      } catch (error) { toast(`تعذر تغيير الترتيب: ${error.message || 'خطأ غير معروف'}`, true); }
+    }));
+
+    box.querySelectorAll('[data-delete-home-slide]').forEach(button => button.addEventListener('click', async () => {
+      const slide = homeSlides.find(item => item.id === button.dataset.deleteHomeSlide);
+      if (!slide || !confirm('حذف هذه الصورة من سلايدر صفحة العملاء؟')) return;
+      button.disabled = true;
+      try {
+        const { error } = await client.from(TABLES.homeSlides).delete().eq('id', slide.id);
+        if (error) throw error;
+        if (slide.path) { const removed = await client.storage.from(IMAGE_BUCKET).remove([slide.path]); if (removed.error) console.warn('Slide image cleanup failed:', removed.error.message); }
+        homeSlides = homeSlides.filter(item => item.id !== slide.id);
+        homeSlides.forEach((item, i) => item.order = (i + 1) * 10);
+        await Promise.all(homeSlides.map(item => client.from(TABLES.homeSlides).update({ sort_order: item.order }).eq('id', item.id)));
+        renderHomeSlides(); toast('تم حذف الصورة من السلايدر.');
+      } catch (error) { toast(`تعذر حذف الصورة: ${error.message || 'خطأ غير معروف'}`, true); button.disabled = false; }
+    }));
+  }
+
+  async function addHomeSlide(file) {
+    if (!file || !file.type.startsWith('image/')) { toast('اختر ملف صورة صالحًا.', true); return; }
+    if (homeSlides.length >= 6) { toast('يمكن إضافة 6 صور كحد أقصى.', true); return; }
+    const input = $('homeSlideUpload'); if (input) input.disabled = true;
+    let uploaded = null;
+    try {
+      uploaded = await uploadProductImage(file);
+      const nextOrder = homeSlides.length ? Math.max(...homeSlides.map(item => item.order)) + 10 : 10;
+      const { data, error } = await client.from(TABLES.homeSlides).insert({
+        image_url: uploaded.url, image_path: uploaded.path, alt_text: 'صورة من GRAND DRY CLEAN',
+        sort_order: nextOrder, is_active: true
+      }).select('id,image_url,image_path,alt_text,sort_order,is_active').single();
+      if (error) throw error;
+      homeSlides.push({ id: String(data.id), image: data.image_url, path: data.image_path, alt: data.alt_text, order: Number(data.sort_order), active: data.is_active !== false });
+      renderHomeSlides(); toast('تمت إضافة الصورة إلى سلايدر صفحة العملاء.');
+    } catch (error) {
+      if (uploaded?.path) await client.storage.from(IMAGE_BUCKET).remove([uploaded.path]).catch(() => {});
+      console.error('GDC homepage slide add failed:', error);
+      toast(`تعذرت إضافة الصورة: ${error.message || 'خطأ غير معروف'}`, true);
+    } finally { if (input) { input.disabled = false; input.value = ''; } }
   }
 
   function renderPopular() {
@@ -546,6 +687,7 @@
     if ($("categoryForm")) $("categoryForm").addEventListener("submit", saveCategory);
     if ($("branchForm")) $("branchForm").addEventListener("submit", saveBranch);
     if ($("profileForm")) $("profileForm").addEventListener("submit", saveSettings);
+    if ($("homeSlideUpload")) $("homeSlideUpload").addEventListener("change", event => addHomeSlide(event.target.files?.[0]));
   }
 
   async function initialize() {
@@ -561,6 +703,7 @@
     bindForms();
     try {
       await loadDatabase();
+      await loadHomeSlides();
       const requestedView = new URLSearchParams(window.location.search).get("view");
       showView(validViews.includes(requestedView) ? requestedView : "overview", false);
     } catch (error) {

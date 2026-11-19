@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const slides = Array.from(document.querySelectorAll(".promo-slide"));
-  const dots = Array.from(document.querySelectorAll(".slider-dot"));
+  let slides = Array.from(document.querySelectorAll(".promo-slide"));
+  let dots = Array.from(document.querySelectorAll(".slider-dot"));
   const previous = document.getElementById("slidePrev");
   const next = document.getElementById("slideNext");
   const slider = document.querySelector(".promo-slider");
@@ -51,15 +51,62 @@
     startRotation();
   }
 
-  previous?.addEventListener("click", () => goToSlide(activeSlide - 1));
-  next?.addEventListener("click", () => goToSlide(activeSlide + 1));
-  dots.forEach((dot, index) => dot.addEventListener("click", () => goToSlide(index)));
+  function bindCarouselControls() {
+    if (previous && !previous.dataset.carouselBound) { previous.addEventListener("click", () => goToSlide(activeSlide - 1)); previous.dataset.carouselBound = "true"; }
+    if (next && !next.dataset.carouselBound) { next.addEventListener("click", () => goToSlide(activeSlide + 1)); next.dataset.carouselBound = "true"; }
+    dots.forEach((dot, index) => { if (!dot.dataset.carouselBound) { dot.addEventListener("click", () => goToSlide(index)); dot.dataset.carouselBound = "true"; } });
+    if (!slider?.dataset.carouselEventsBound) {
+      slider?.addEventListener("mouseenter", stopRotation);
+      slider?.addEventListener("mouseleave", startRotation);
+      slider?.addEventListener("focusin", stopRotation);
+      slider?.addEventListener("focusout", startRotation);
+      document.addEventListener("visibilitychange", () => document.hidden ? stopRotation() : startRotation());
+      if (slider) slider.dataset.carouselEventsBound = "true";
+    }
+  }
 
-  slider?.addEventListener("mouseenter", stopRotation);
-  slider?.addEventListener("mouseleave", startRotation);
-  slider?.addEventListener("focusin", stopRotation);
-  slider?.addEventListener("focusout", startRotation);
-  document.addEventListener("visibilitychange", () => document.hidden ? stopRotation() : startRotation());
+  async function loadManagedSlides() {
+    const cfg = window.POA_CONFIG || {};
+    if (!window.supabase?.createClient || !cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY || !slider) return;
+    try {
+      const client = window.__GDC_PUBLIC_CLIENT__ || window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_PUBLISHABLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+      window.__GDC_PUBLIC_CLIENT__ = client;
+      const { data, error } = await client.from("gdc_home_slides").select("id,image_url,alt_text,sort_order,is_active").eq("is_active", true).order("sort_order", { ascending: true });
+      if (error) throw error;
+      if (!Array.isArray(data) || !data.length) return;
+      const oldSlides = Array.from(slider.querySelectorAll(".promo-slide"));
+      const templateCopies = oldSlides.map(slide => slide.querySelector(".slide-copy")?.cloneNode(true)).filter(Boolean);
+      const slidesMarkup = data.map((row, index) => {
+        const article = document.createElement("article");
+        article.className = "promo-slide" + (index === 0 ? " is-active" : "");
+        article.setAttribute("aria-hidden", String(index !== 0));
+        const img = document.createElement("img");
+        img.src = row.image_url; img.alt = row.alt_text || "صورة من GRAND DRY CLEAN"; img.loading = index === 0 ? "eager" : "lazy";
+        if (index === 0) img.fetchPriority = "high";
+        const shade = document.createElement("div"); shade.className = "slide-shade";
+        article.append(img, shade);
+        const copy = templateCopies[index] || templateCopies[0];
+        if (copy) article.append(copy.cloneNode(true));
+        return article;
+      });
+      const container = slider.querySelector(".slides");
+      container.replaceChildren(...slidesMarkup);
+      const dotsContainer = slider.querySelector("#sliderDots");
+      if (dotsContainer) {
+        dotsContainer.replaceChildren(...data.map((_, index) => {
+          const dot = document.createElement("button"); dot.type = "button"; dot.className = "slider-dot" + (index === 0 ? " is-active" : "");
+          dot.setAttribute("aria-label", `الصورة ${index + 1}`); dot.setAttribute("aria-current", String(index === 0)); return dot;
+        }));
+      }
+      slides = Array.from(slider.querySelectorAll(".promo-slide"));
+      dots = Array.from(slider.querySelectorAll(".slider-dot"));
+      activeSlide = 0; bindCarouselControls(); showSlide(0); startRotation();
+    } catch (error) {
+      console.warn("GDC managed homepage slides unavailable; using built-in slides.", error);
+    }
+  }
+
+  bindCarouselControls();
 
   function setMenuOpen(open) {
     if (!menu || !menuTrigger || !menuScrim) return;
@@ -80,49 +127,7 @@
     if (event.key === "Escape" && menu?.classList.contains("is-open")) setMenuOpen(false);
   });
 
-
-  // Public active branches are read from the existing GDC table (RLS allows active public rows).
-  async function loadPublicBranches() {
-    const target = document.getElementById("publicBranches");
-    const cfg = window.POA_CONFIG || {};
-    if (!target) return;
-    if (!window.supabase?.createClient || !cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY) {
-      target.innerHTML = '<p class="branches-empty">يمكنك التواصل معنا لمعرفة أقرب فرع.</p>';
-      return;
-    }
-    try {
-      const db = window.__GDC_PUBLIC_CLIENT__ || window.supabase.createClient(
-        cfg.SUPABASE_URL,
-        cfg.SUPABASE_PUBLISHABLE_KEY,
-        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
-      );
-      window.__GDC_PUBLIC_CLIENT__ = db;
-      const { data, error } = await db.from("gdc_branches")
-        .select("id,name,phone,address,map_url")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      if (!data?.length) {
-        target.innerHTML = '<p class="branches-empty">سيتم إضافة بيانات الفروع قريبًا.</p>';
-        return;
-      }
-      const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, ch => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
-      const safeUrl = value => {
-        try { const url = new URL(String(value || "")); return ["https:", "http:"].includes(url.protocol) ? url.href : ""; }
-        catch (_) { return ""; }
-      };
-      target.innerHTML = data.map(branch => {
-        const map = safeUrl(branch.map_url);
-        return `<article class="branch-public-card"><strong>${escapeHtml(branch.name)}</strong><p>${escapeHtml(branch.address)}</p>${branch.phone ? `<p dir="ltr">${escapeHtml(branch.phone)}</p>` : ""}${map ? `<a href="${escapeHtml(map)}" target="_blank" rel="noopener noreferrer">الموقع على الخريطة ↗</a>` : ""}</article>`;
-      }).join("");
-    } catch (error) {
-      console.warn("GDC public branches could not be loaded:", error);
-      target.innerHTML = '<p class="branches-empty">تعذر تحميل الفروع حاليًا. يرجى المحاولة لاحقًا.</p>';
-    }
-  }
-
-  loadPublicBranches();
-
   showSlide(0);
   startRotation();
+  loadManagedSlides();
 })();
