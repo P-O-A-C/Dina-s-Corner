@@ -5,13 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07509B">
   <title>POAC | GRAND DRY CLEAN - DryClean</title>
-  <link rel="stylesheet" href="css/gm.css?v=20261119-home-slider-admin-v2">
+  <link rel="stylesheet" href="css/gm.css?v=20261119-admin-back-v1">
 </head>
 <body class="auth-pending">
   <div id="authGate" class="auth-gate">جارٍ التحقق من صلاحيات حساب GRAND DRY CLEAN…</div>
   <aside class="sidebar" id="sidebar">
     <a class="side-brand" href="../index.html"><span class="side-mark">P</span><span><b>POAC</b><small>BUSINESS WORKSPACE</small></span></a>
     <div class="business-chip"><img class="chip-logo" src="assets/grand-dry-clean-logo.png" alt=""><span><b>GRAND DRY CLEAN</b><small>إدارة المغسلة</small></span></div>
+    <nav class="side-nav">
+      <a class="nav-link active" href="#overview" data-view="overview">▦ <span>نظرة عامة</span></a>
+      <a class="nav-link" href="#products" data-view="products">▤ <span>الأصناف والأسعار</span></a>
+      <a class="nav-link" href="#categories" data-view="categories">▦ <span>الأقسام</span></a>
+      <a class="nav-link" href="#branches" data-view="branches">⌖ <span>الفروع</span></a>
+      <a class="nav-link" href="#popular" data-view="popular">★ <span>الأكثر طلبًا</span></a>
+      <a class="nav-link" href="#profile" data-view="profile">⚙ <span>بيانات المغسلة</span></a>
+    </nav>
     <div class="side-bottom"><span class="side-status-dot"></span> إدارة المغسلة <a id="logoutBtn" href="../index.html">تسجيل الخروج ←</a></div>
   </aside>
 
@@ -19,6 +27,7 @@
     <header class="gm-topbar">
       <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
       <div><span class="top-eyebrow">DryClean</span><b>لوحة إدارة المغسلة</b></div>
+      <button class="back-button" id="backToOverview" type="button" hidden aria-label="الرجوع إلى الصفحة الرئيسية للإدارة"><span aria-hidden="true">↩</span> رجوع</button>
       <div class="top-actions"><span class="role-name">GRAND DRY CLEAN</span></div>
     </header>
 
@@ -34,13 +43,13 @@
       <div class="panel-card quick-panel">
         <div class="panel-title"><div><span class="eyebrow">QUICK ACTIONS</span><h2>إجراءات سريعة</h2></div></div>
         <div class="quick-actions">
-          <button class="quick-action" data-goto="products"><span>＋</span><b>إضافة صنف جديد</b><small>أضف خدمة وسعر وصورة</small></button>
-          <button class="quick-action" data-goto="categories"><span>▦</span><b>إدارة الأقسام</b><small>تنظيم خدمات المغسلة</small></button>
-          <button class="quick-action" data-goto="profile"><span>⚙</span><b>بيانات المغسلة</b><small>مراجعة التواصل واللوكيشن</small></button>
+          <a class="quick-action" href="gm.html?view=products&amp;action=add"><span>＋</span><b>إضافة صنف جديد</b><small>أضف خدمة وسعر وصورة</small></a>
+          <a class="quick-action" href="gm.html?view=categories"><span>▦</span><b>إدارة الأقسام</b><small>تنظيم خدمات المغسلة</small></a>
+          <a class="quick-action" href="gm.html?view=profile"><span>⚙</span><b>بيانات المغسلة</b><small>مراجعة التواصل واللوكيشن</small></a>
         </div>
       </div>
       <div class="panel-card">
-        <div class="panel-title"><div><span class="eyebrow">LATEST CATALOG</span><h2>الأصناف الحالية</h2></div><button class="text-button" data-goto="products">عرض الكل ←</button></div>
+        <div class="panel-title"><div><span class="eyebrow">LATEST CATALOG</span><h2>الأصناف الحالية</h2></div><a class="text-button" href="gm.html?view=products">عرض الكل ←</a></div>
         <div class="table-wrap"><table><thead><tr><th>الصنف</th><th>القسم</th><th>السعر</th><th>الحالة</th></tr></thead><tbody id="overviewRows"></tbody></table></div>
       </div>
     </section>

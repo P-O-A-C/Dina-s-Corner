@@ -57,6 +57,8 @@
     const selected = validViews.includes(id) ? id : "overview";
     document.querySelectorAll(".view").forEach(view => view.classList.toggle("active", view.id === selected));
     document.querySelectorAll(".nav-link").forEach(link => link.classList.toggle("active", link.dataset.view === selected));
+    const backButton = $("backToOverview");
+    if (backButton) backButton.hidden = selected === "overview";
     if (selected === "products") renderProducts();
     if (selected === "categories") renderCategories();
     if (selected === "branches") renderBranches();
@@ -76,6 +78,7 @@
       showView(link.dataset.view);
     }));
     document.querySelectorAll("[data-goto]").forEach(button => button.addEventListener("click", () => showView(button.dataset.goto)));
+    if ($("backToOverview")) $("backToOverview").addEventListener("click", () => showView("overview"));
     if ($("menuToggle") && $("sidebar")) $("menuToggle").onclick = () => $("sidebar").classList.toggle("open");
     if ($("todayLabel")) $("todayLabel").textContent = new Intl.DateTimeFormat("ar-EG", { dateStyle: "long" }).format(new Date());
   }
@@ -103,6 +106,8 @@
     };
   }
 
+  async function loadDatabase() {
+    setDbStatus("جارٍ تحميل بيانات المغسلة من Supabase…", "info");
     const results = await Promise.all([
       client.from(TABLES.categories).select("id,name,sort_order,is_active").order("sort_order", { ascending: true }),
       client.from(TABLES.products).select("id,name,category_name,price,description,is_active,is_featured,icon,image_url,image_path,sort_order").order("sort_order", { ascending: true }).order("created_at", { ascending: true }),
@@ -124,6 +129,8 @@
     if ($("businessCurrency")) $("businessCurrency").value = settings?.currency || "EGP";
     if ($("businessLocation")) $("businessLocation").value = settings?.location_url || "";
 
+    renderAll();
+    setDbStatus("تم تحميل البيانات المحفوظة من قاعدة البيانات. أي تعديل ناجح سيظهر بعد إعادة فتح الصفحة ومن الأجهزة الأخرى.", "success");
   }
 
   function updateMetrics() {
@@ -689,23 +696,40 @@
   async function initialize() {
     if (initialized) return;
     initialized = true;
-    client = window.__GDC_SUPABASE_CLIENT__;
-    if (!client) {
-      initialized = false;
-      setDbStatus("تعذر بدء الاتصال بقاعدة البيانات. أعد تحميل الصفحة بعد تسجيل الدخول.", "error");
-      return;
-    }
+
+    // Bind navigation independently of database readiness so dashboard links
+    // still work even when the Supabase client is delayed or unavailable.
     bindNavigation();
     bindForms();
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedView = params.get("view");
+    const selectedView = validViews.includes(requestedView) ? requestedView : "overview";
+    showView(selectedView, false);
+
+    client = window.__GDC_SUPABASE_CLIENT__;
+    if (!client) {
+      setDbStatus("تعذر بدء الاتصال بقاعدة البيانات. يمكنك التنقل بين أقسام الإدارة، لكن الحفظ يحتاج إلى جلسة دخول نشطة.", "error");
+      initialized = false;
+      return;
+    }
+
     try {
       await loadDatabase();
       await loadHomeSlides();
-      const requestedView = new URLSearchParams(window.location.search).get("view");
-      showView(validViews.includes(requestedView) ? requestedView : "overview", false);
+      showView(selectedView, false);
+
+      // The overview's “Add new item” shortcut opens the creation form directly.
+      if (selectedView === "products" && params.get("action") === "add") {
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete("action");
+        history.replaceState(null, "", cleanUrl);
+        openProductModal();
+      }
     } catch (error) {
       console.error("GDC management data load failed:", error);
       setDbStatus(`تعذر تحميل بيانات الإدارة من Supabase: ${error.message || "خطأ غير معروف"}. تأكد من تنفيذ ملف GDC-MANAGEMENT-SUPABASE-SETUP.sql في SQL Editor.`, "error");
-      toast("لم يتم تشغيل نظام الحفظ بعد. راجع رسالة الاتصال أعلى الصفحة.", true);
+      toast("تعذر تحميل بعض البيانات. راجع رسالة الاتصال أعلى الصفحة.", true);
     }
   }
 
