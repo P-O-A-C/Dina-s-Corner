@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#172f42">
+  <meta name="theme-color" content="#07509B">
   <title>POAC | GRAND DRY CLEAN - DryClean</title>
-  <link rel="stylesheet" href="css/gm.css?v=20261118-single-auth-status-v4">
+  <link rel="stylesheet" href="css/gm.css?v=20261119-grand-brand-v1">
 </head>
 <body class="auth-pending">
   <div id="authGate" class="auth-gate">جارٍ التحقق من صلاحيات حساب GRAND DRY CLEAN…</div>
   <aside class="sidebar" id="sidebar">
     <a class="side-brand" href="../index.html"><span class="side-mark">P</span><span><b>POAC</b><small>BUSINESS WORKSPACE</small></span></a>
-    <div class="business-chip"><span class="chip-icon">♧</span><span><b>GRAND DRY CLEAN</b><small>DryClean</small></span></div>
+    <div class="business-chip"><img class="chip-logo" src="assets/grand-dry-clean-logo.png" alt=""><span><b>GRAND DRY CLEAN</b><small>إدارة المغسلة</small></span></div>
     <nav class="side-nav">
       <a class="nav-link active" href="#overview" data-view="overview">▦ <span>نظرة عامة</span></a>
       <a class="nav-link" href="#products" data-view="products">▤ <span>الأصناف والأسعار</span></a>
@@ -20,14 +20,14 @@
       <a class="nav-link" href="#popular" data-view="popular">★ <span>الأكثر طلبًا</span></a>
       <a class="nav-link" href="#profile" data-view="profile">⚙ <span>بيانات المغسلة</span></a>
     </nav>
-    <div class="side-bottom"><span class="demo-dot"></span> نسخة تصميم تجريبية <a id="logoutBtn" href="../index.html">تسجيل الخروج ←</a></div>
+    <div class="side-bottom"><span class="side-status-dot"></span> إدارة المغسلة <a id="logoutBtn" href="../index.html">تسجيل الخروج ←</a></div>
   </aside>
 
   <main class="main-area">
     <header class="gm-topbar">
       <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
       <div><span class="top-eyebrow">DryClean</span><b>لوحة إدارة المغسلة</b></div>
-      <div class="top-actions"><span class="demo-label">DEMO</span><span class="role-name">DryClean</span></div>
+      <div class="top-actions"><span class="role-name">GRAND DRY CLEAN</span></div>
     </header>
 
     <section class="view active" id="overview">
@@ -74,7 +74,7 @@
           <label class="full-field">العنوان<input id="branchAddress" required maxlength="180" placeholder="عنوان الفرع بالتفصيل"></label>
           <label class="full-field">رابط الموقع على الخريطة<input id="branchMap" type="url" maxlength="500" dir="ltr" placeholder="https://maps.app.goo.gl/..."></label>
         </div>
-        <div class="form-footer"><p>تُحفظ هذه البيانات محليًا في هذا المتصفح ضمن النسخة التجريبية.</p><button class="primary-action" type="submit">＋ إضافة الفرع</button></div>
+        <div class="form-footer"><p>يتم حفظ بيانات الفرع على هذا الجهاز فقط حاليًا، دون مزامنتها مع قاعدة البيانات.</p><button class="primary-action" type="submit">＋ إضافة الفرع</button></div>
       </form>
       <div class="panel-card">
         <div class="panel-title"><div><span class="eyebrow">SAVED BRANCHES</span><h2>الفروع المسجلة</h2></div><span class="date-label" id="branchCount">0 فرع</span></div>
@@ -86,7 +86,7 @@
       <div class="page-heading"><div><span class="eyebrow">FEATURED SERVICES</span><h1>الأكثر طلبًا</h1><p>حدد الأصناف التي تريد إبرازها للعملاء في قسم الأكثر طلبًا.</p></div></div>
       <div class="panel-card">
         <div class="panel-title"><div><span class="eyebrow">POPULAR ITEMS</span><h2>اختيار الأصناف</h2></div><span class="date-label" id="popularCount">0 صنف محدد</span></div>
-        <p class="muted-note">لا يوجد ربط حالي بإحصائيات الطلبات؛ يمكنك تحديد الأصناف يدويًا. الاختيارات محفوظة محليًا في هذا المتصفح فقط.</p>
+        <p class="muted-note">القائمة غير مرتبطة بإحصائيات الطلبات حاليًا؛ ويتم حفظ اختياراتك على هذا الجهاز فقط.</p>
         <div id="popularCards" class="popular-grid"></div>
       </div>
     </section>
@@ -100,7 +100,7 @@
           <label>العملة<select id="businessCurrency"><option value="EGP">EGP - جنيه مصري</option></select></label>
           <label>رابط اللوكيشن<input id="businessLocation" value="https://maps.app.goo.gl/ZDPdcdtEioTkFLXa8?g_st=iwb" dir="ltr"></label>
         </div>
-        <div class="form-footer"><p>حفظ تجريبي داخل هذه الصفحة فقط، ولا يتم إرسال البيانات إلى خادم.</p><button class="primary-action" type="submit">حفظ المعاينة</button></div>
+        <div class="form-footer"><p>هذه الإعدادات لا تُرسل إلى قاعدة البيانات حاليًا.</p><button class="primary-action" type="submit">حفظ التعديلات</button></div>
         <p id="profileMessage" class="feedback" role="status"></p>
       </form>
     </section>
@@ -116,10 +116,10 @@
       <label>السعر بالجنيه المصري<input id="pPrice" type="number" min="0" step="0.01" required placeholder="مثال: 35"></label>
       <label>وصف مختصر<input id="pDescription" placeholder="مثال: غسيل وكي"></label>
       <label>صورة الصنف<input id="pImage" type="file" accept="image/*"></label>
-      <div class="image-preview" id="imagePreview">معاينة الصورة</div>
+      <div class="image-preview" id="imagePreview">عرض الصورة</div>
       <label class="switch-line"><input id="pActive" type="checkbox" checked> الصنف متاح للعرض</label>
       <div class="modal-actions"><button type="button" class="secondary-action" id="cancelProduct">إلغاء</button><button type="submit" class="primary-action">حفظ الصنف</button></div>
-      <small class="form-hint">التغييرات تجريبية في المتصفح فقط. الصورة للمعاينة ولا تُرفع إلى GitHub أو Supabase في هذه النسخة.</small>
+      <small class="form-hint">تعديلات الأصناف لا تُحفظ على الخادم حاليًا. الصورة للعرض فقط ولا يتم رفعها إلى GitHub أو Supabase.</small>
     </form>
   </div>
 
@@ -135,7 +135,7 @@
   <div class="toast" id="toast" role="status"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="../assets/config.js"></script>
-<script src="js/session-guard.js?v=20261118-single-auth-status-v4"></script>
-<script src="js/gm.js"></script>
+<script src="js/session-guard.js?v=20261119-grand-brand-v1"></script>
+<script src="js/gm.js?v=20261119-grand-brand-v1"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v14-gdc-final-auth-v5";
+const CACHE = "poac-unified-v15-grand-dry-clean-brand-v1";
 const SHELL = [
   "./index.html",
   "./login.html",
@@ -35,6 +35,11 @@ const SHELL = [
   "./GrandDryClean/order.html",
   "./GrandDryClean/login.html",
   "./GrandDryClean/gm.html",
+  "./GrandDryClean/dashboard.html",
+  "./GrandDryClean/css/management-home.css",
+  "./GrandDryClean/assets/grand-dry-clean-logo.png",
+  "./GrandDryClean/js/session-guard.js",
+  "./GrandDryClean/js/management-home.js",
   "./GrandDryClean/css/customer.css",
   "./GrandDryClean/css/order.css",
   "./GrandDryClean/css/login.css",

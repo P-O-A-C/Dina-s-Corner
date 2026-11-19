@@ -337,3 +337,143 @@ body.management-home::before {
 }
 .management-container { z-index: 1; }
 .language-pill { z-index: 2; }
+
+
+/* GRAND DRY CLEAN official identity: blue, cyan, red, green and orange */
+:root {
+  --gdc-blue: #07509b;
+  --gdc-blue-deep: #06366f;
+  --gdc-cyan: #1599cc;
+  --gdc-red: #ed1c24;
+  --gdc-green: #13843e;
+  --gdc-orange: #e88420;
+  --gdc-ink: #123458;
+  --gdc-muted: #647b91;
+  --gdc-white: #ffffff;
+  --gdc-cream: #f4f8fb;
+  --gdc-brown: #123458;
+  --gdc-brown-deep: #082c56;
+  --gdc-green-deep: #06366f;
+  --gdc-green-light: #1599cc;
+  --gdc-gold: #e88420;
+  --gdc-gold-light: #ffd39b;
+}
+body.management-home {
+  background-color: #f4f8fb;
+  background-image:
+    radial-gradient(ellipse at 12% 8%, rgba(21,153,204,.10) 0%, transparent 28%),
+    radial-gradient(ellipse at 91% 91%, rgba(7,80,155,.08) 0%, transparent 31%),
+    linear-gradient(145deg, #fbfdff 0%, #f2f7fb 55%, #edf4fa 100%);
+  color: var(--gdc-ink);
+}
+/* Replace the old leafy paper pattern with a quiet laundry-inspired bubble pattern. */
+body.management-home::before {
+  opacity: .16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%231599cc' stroke-width='1.25' opacity='.55'%3E%3Ccircle cx='30' cy='34' r='12'/%3E%3Ccircle cx='36' cy='28' r='3'/%3E%3Ccircle cx='137' cy='115' r='18'/%3E%3Ccircle cx='130' cy='108' r='4'/%3E%3Ccircle cx='90' cy='160' r='8'/%3E%3Cpath d='M70 25c8-8 18-8 26 0M20 104c7-6 14-6 21 0M111 42c6-6 13-6 19 0' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.26), #000 18%, #000 82%, rgba(0,0,0,.3));
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.26), #000 18%, #000 82%, rgba(0,0,0,.3));
+}
+.page-decor { display: none !important; }
+.language-pill {
+  top: 18px; right: clamp(16px, 2.2vw, 32px);
+  border: 1px solid rgba(21,153,204,.32);
+  background: rgba(255,255,255,.94);
+  color: var(--gdc-blue);
+  box-shadow: 0 7px 22px rgba(7,80,155,.10);
+}
+.language-pill svg { stroke: var(--gdc-cyan); }
+.management-container { max-width: 1240px; }
+.brand-header {
+  min-height: 180px;
+  padding: 12px 0 8px;
+  align-items: center;
+}
+.brand-logo {
+  display: block;
+  width: clamp(142px, 15vw, 184px);
+  height: clamp(142px, 15vw, 184px);
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 12px 32px rgba(7,80,155,.13), 0 0 0 5px rgba(255,255,255,.8);
+}
+.profile-avatar {
+  border: 5px solid #fff;
+  background: linear-gradient(145deg, #e5f5fb, #d8eafb);
+  box-shadow: 0 9px 24px rgba(7,80,155,.13), 0 0 0 2px rgba(21,153,204,.36);
+}
+.profile-avatar > svg { stroke: var(--gdc-blue); }
+.photo-button {
+  border-color: var(--gdc-blue);
+  background: linear-gradient(135deg, var(--gdc-blue-deep), var(--gdc-blue) 58%, var(--gdc-cyan));
+  box-shadow: 0 8px 19px rgba(7,80,155,.20), inset 0 1px 0 #ffffff35;
+}
+.logout-button {
+  border-color: rgba(237,28,36,.5);
+  background: #fff;
+  color: #b91f2a;
+  box-shadow: 0 7px 17px rgba(7,80,155,.08);
+}
+.logout-button:hover { border-color: var(--gdc-red); background: #fff7f7; }
+.photo-message { color: var(--gdc-green); }
+.photo-message.is-error { color: #c51e2a; }
+.gold-divider {
+  background: linear-gradient(90deg, transparent, var(--gdc-blue) 18%, var(--gdc-cyan) 50%, var(--gdc-orange) 84%, transparent);
+  box-shadow: 0 1px 0 #fff;
+}
+.sections-heading { color: var(--gdc-blue-deep); }
+.sections-heading::before, .sections-heading::after {
+  background: linear-gradient(90deg, transparent, var(--gdc-cyan) 35%, var(--gdc-blue));
+}
+.section-tile {
+  border-color: rgba(21,153,204,.56);
+  background: linear-gradient(145deg, #fff 0%, #f1f8fc 100%);
+  color: var(--gdc-blue-deep);
+  box-shadow: 0 12px 25px rgba(7,80,155,.10), inset 0 1px 0 #fff;
+}
+.section-tile:hover { box-shadow: 0 18px 30px rgba(7,80,155,.16), inset 0 1px 0 #fff; }
+.section-tile:focus-visible { outline-color: var(--gdc-cyan); }
+.tile-green {
+  background: linear-gradient(145deg, #06366f 0%, #07509b 62%, #1599cc 100%);
+  box-shadow: inset 0 1px 0 #ffffff30;
+}
+.tile-wave {
+  border-top-color: var(--gdc-orange);
+  filter: drop-shadow(0 2px 1px #fff9);
+}
+.tile-icon {
+  stroke: #fff;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,.25));
+}
+.section-tile strong { color: var(--gdc-blue-deep); }
+.auth-gate {
+  background: linear-gradient(145deg, #f8fcff, #eaf4fb);
+  color: var(--gdc-blue);
+}
+.auth-gate-card {
+  border-color: rgba(21,153,204,.35);
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(7,80,155,.12);
+}
+.auth-gate-mark {
+  border-color: var(--gdc-cyan);
+  background: var(--gdc-blue);
+  color: #fff;
+}
+.auth-gate-card strong { color: var(--gdc-blue-deep); }
+.auth-gate-card p { color: var(--gdc-muted); }
+.auth-loader { border-color: #cfe7f2; border-top-color: var(--gdc-blue); }
+@media (max-width: 900px) {
+  .brand-header { min-height: 160px; }
+  .brand-logo { width: 144px; height: 144px; }
+}
+@media (max-width: 680px) {
+  .language-pill { top: 8px; right: 10px; }
+  .brand-header { min-height: 132px; padding: 16px 0 8px; }
+  .brand-logo { width: clamp(106px, 29vw, 128px); height: clamp(106px, 29vw, 128px); }
+}
+@media (max-width: 360px) {
+  .brand-header { min-height: 120px; }
+  .brand-logo { width: 100px; height: 100px; }
+}
