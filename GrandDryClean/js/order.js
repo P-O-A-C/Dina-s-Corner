@@ -1,7 +1,7 @@
 // Public customer ordering page for GRAND DRY CLEAN.
 // No management access, no database writes, and no prices until the business approves them.
 const WHATSAPP_NUMBER = "201005854115";
-const PRODUCTS = [
+let PRODUCTS = [
   {id:"shirt",name:"قميص",category:"غسيل وكي",description:"غسيل وكي للقمصان",icon:"👔",art:"art-daily"},
   {id:"trousers",name:"بنطلون",category:"غسيل وكي",description:"غسيل وكي للبناطيل",icon:"👖",art:"art-daily"},
   {id:"tshirt",name:"تيشيرت",category:"غسيل وكي",description:"عناية بالملابس اليومية",icon:"👕",art:"art-daily"},
@@ -130,6 +130,39 @@ $("orderForm").addEventListener("submit",event=>{
 
 renderCategories();
 renderAll();
+
+// Load the active GRAND DRY CLEAN catalogue from its dedicated Supabase tables.
+// A local starter catalogue remains visible if the public network is unavailable.
+(async function loadManagedCatalog() {
+  const config = window.POA_CONFIG || {};
+  if (!window.supabase?.createClient || !config.SUPABASE_URL || !config.SUPABASE_PUBLISHABLE_KEY) return;
+  try {
+    const catalogClient = window.supabase.createClient(config.SUPABASE_URL, config.SUPABASE_PUBLISHABLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+    });
+    const [categoryResult, itemResult] = await Promise.all([
+      catalogClient.from("gdc_service_categories").select("name,is_active,sort_order").eq("is_active", true).order("sort_order", { ascending: true }),
+      catalogClient.from("gdc_service_items").select("id,name,category_name,description,icon,image_url,price,is_active,sort_order").eq("is_active", true).order("sort_order", { ascending: true }).order("created_at", { ascending: true })
+    ]);
+    if (categoryResult.error) throw categoryResult.error;
+    if (itemResult.error) throw itemResult.error;
+    const allowedCategories = new Set((categoryResult.data || []).map(row => row.name));
+    PRODUCTS = (itemResult.data || []).filter(row => allowedCategories.has(row.category_name)).map(row => ({
+      id: String(row.id),
+      name: row.name || "",
+      category: row.category_name || "",
+      description: row.description || "",
+      icon: row.icon || "♧",
+      art: /جاف|dry/i.test(row.category_name || "") ? "art-dry" : /مفروش|home/i.test(row.category_name || "") ? "art-home" : "art-daily",
+      image: row.image_url || "",
+      price: row.price
+    }));
+    renderCategories();
+    renderAll();
+  } catch (error) {
+    console.warn("GRAND DRY CLEAN public catalogue could not be loaded; the starter catalogue remains visible:", error?.message || error);
+  }
+})();
 
 // Location picker: map pin selection, reverse-geocoded address, and Google Maps link.
 (()=>{

@@ -63,3 +63,12 @@ body { background: linear-gradient(145deg,#f8fcff 0%,#f1f7fb 100%); color:var(--
 .auth-gate { background:linear-gradient(145deg,#f8fcff,#eaf4fb);color:#07509b; }
 .auth-pending .auth-gate { border-color:#cfe5f1; }
 @media(max-width:650px) { .role-name { font-size:9px; } }
+
+
+/* Database persistence status */
+.db-status{width:min(1120px,calc(100% - 60px));margin:16px auto -12px;padding:10px 14px;border:1px solid #cfe5f1;border-radius:9px;background:#eef8fd;color:#07509b;font-size:11px;line-height:1.8}
+.db-status[hidden]{display:none}
+.db-status[data-kind="success"]{background:#eff9f2;border-color:#ccebd5;color:#16723d}
+.db-status[data-kind="error"]{background:#fff2f1;border-color:#f2ceca;color:#a51f26}
+@media(max-width:650px){.db-status{width:calc(100% - 28px);margin:12px auto -10px;font-size:10px}}
+.toast[data-kind="error"]{background:#a51f26}

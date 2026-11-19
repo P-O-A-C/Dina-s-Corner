@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v15-grand-dry-clean-brand-v1";
+const CACHE = "poac-unified-v16-gdc-database-persistence-v1";
 const SHELL = [
   "./index.html",
   "./login.html",

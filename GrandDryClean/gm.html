@@ -30,6 +30,8 @@
       <div class="top-actions"><span class="role-name">GRAND DRY CLEAN</span></div>
     </header>
 
+    <div id="dbStatus" class="db-status" role="status" aria-live="polite">جارٍ الاتصال بقاعدة البيانات…</div>
+
     <section class="view active" id="overview">
       <div class="welcome-row"><div><span class="eyebrow">BUSINESS OVERVIEW</span><h1>أهلاً بك في GRAND DRY CLEAN</h1><p>من هنا تقدر تدير الخدمات والأقسام والأسعار.</p></div><span class="date-label" id="todayLabel"></span></div>
       <div class="metric-grid">
@@ -74,7 +76,7 @@
           <label class="full-field">العنوان<input id="branchAddress" required maxlength="180" placeholder="عنوان الفرع بالتفصيل"></label>
           <label class="full-field">رابط الموقع على الخريطة<input id="branchMap" type="url" maxlength="500" dir="ltr" placeholder="https://maps.app.goo.gl/..."></label>
         </div>
-        <div class="form-footer"><p>يتم حفظ بيانات الفرع على هذا الجهاز فقط حاليًا، دون مزامنتها مع قاعدة البيانات.</p><button class="primary-action" type="submit">＋ إضافة الفرع</button></div>
+        <div class="form-footer"><p>يتم حفظ بيانات الفرع في قاعدة بيانات المغسلة، وستظل متاحة بعد تسجيل الدخول من أي جهاز.</p><button class="primary-action" type="submit">＋ إضافة الفرع</button></div>
       </form>
       <div class="panel-card">
         <div class="panel-title"><div><span class="eyebrow">SAVED BRANCHES</span><h2>الفروع المسجلة</h2></div><span class="date-label" id="branchCount">0 فرع</span></div>
@@ -86,7 +88,7 @@
       <div class="page-heading"><div><span class="eyebrow">FEATURED SERVICES</span><h1>الأكثر طلبًا</h1><p>حدد الأصناف التي تريد إبرازها للعملاء في قسم الأكثر طلبًا.</p></div></div>
       <div class="panel-card">
         <div class="panel-title"><div><span class="eyebrow">POPULAR ITEMS</span><h2>اختيار الأصناف</h2></div><span class="date-label" id="popularCount">0 صنف محدد</span></div>
-        <p class="muted-note">القائمة غير مرتبطة بإحصائيات الطلبات حاليًا؛ ويتم حفظ اختياراتك على هذا الجهاز فقط.</p>
+        <p class="muted-note">اختر الخدمات التي تريد إبرازها. يتم حفظ اختياراتك في قاعدة بيانات المغسلة.</p>
         <div id="popularCards" class="popular-grid"></div>
       </div>
     </section>
@@ -100,7 +102,7 @@
           <label>العملة<select id="businessCurrency"><option value="EGP">EGP - جنيه مصري</option></select></label>
           <label>رابط اللوكيشن<input id="businessLocation" value="https://maps.app.goo.gl/ZDPdcdtEioTkFLXa8?g_st=iwb" dir="ltr"></label>
         </div>
-        <div class="form-footer"><p>هذه الإعدادات لا تُرسل إلى قاعدة البيانات حاليًا.</p><button class="primary-action" type="submit">حفظ التعديلات</button></div>
+        <div class="form-footer"><p>يتم حفظ هذه الإعدادات في قاعدة بيانات المغسلة.</p><button class="primary-action" type="submit">حفظ التعديلات</button></div>
         <p id="profileMessage" class="feedback" role="status"></p>
       </form>
     </section>
@@ -119,7 +121,7 @@
       <div class="image-preview" id="imagePreview">عرض الصورة</div>
       <label class="switch-line"><input id="pActive" type="checkbox" checked> الصنف متاح للعرض</label>
       <div class="modal-actions"><button type="button" class="secondary-action" id="cancelProduct">إلغاء</button><button type="submit" class="primary-action">حفظ الصنف</button></div>
-      <small class="form-hint">تعديلات الأصناف لا تُحفظ على الخادم حاليًا. الصورة للعرض فقط ولا يتم رفعها إلى GitHub أو Supabase.</small>
+      <small class="form-hint">يتم حفظ بيانات الصنف في Supabase، ورفع الصورة إلى مساحة تخزين المغسلة.</small>
     </form>
   </div>
 
@@ -136,6 +138,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="../assets/config.js"></script>
 <script src="js/session-guard.js?v=20261119-grand-brand-v1"></script>
-<script src="js/gm.js?v=20261119-grand-brand-v1"></script>
+<script src="js/gm.js?v=20261119-gdc-persistence-v1"></script>
 </body>
 </html>
