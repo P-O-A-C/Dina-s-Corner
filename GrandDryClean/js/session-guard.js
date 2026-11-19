@@ -109,17 +109,33 @@
     const role = String(profile.role || "").trim().toLowerCase();
     const isActive = profile.is_active === true || String(profile.is_active).trim().toLowerCase() === "true";
 
-    if (profile.id && profile.id !== user.id) {
+    if (profile.id && String(profile.id) !== String(user.id)) {
       throw new Error("ملف الحساب لا يطابق جلسة المستخدم الحالية.");
     }
-    if (email !== EXPECTED_EMAIL || (profileEmail && profileEmail !== EXPECTED_EMAIL)) {
-      throw new Error("الحساب المسجل ليس حساب GRAND DRY CLEAN المخصص.");
-    }
-    if (role !== "gm" && role !== "admin") {
+
+    // POAC company administrator: grant access by the exact trusted auth UID,
+    // the admin role, and an active profile. Do not rely on email alone.
+    const POAC_ADMIN_UID = "807cbd58-438d-40bc-9a04-62758e2f4562";
+    const isPoacAdmin = user.id === POAC_ADMIN_UID && role === "admin" && isActive;
+
+    // GRAND DRY CLEAN's own manager remains restricted to the laundry account.
+    const isLaundryAdmin =
+      email === EXPECTED_EMAIL &&
+      (!profileEmail || profileEmail === EXPECTED_EMAIL) &&
+      (role === "gm" || role === "dryclean") &&
+      isActive;
+
+    if (!isPoacAdmin && !isLaundryAdmin) {
+      if (!isActive) {
+        throw new Error("الحساب غير نشط في جدول profiles.");
+      }
+      if (email !== EXPECTED_EMAIL && user.id !== POAC_ADMIN_UID) {
+        throw new Error("الحساب المسجل ليس حساب GRAND DRY CLEAN أو مدير POAC المصرح به.");
+      }
+      if (user.id === POAC_ADMIN_UID && role !== "admin") {
+        throw new Error("حساب مدير POAC لا يحمل دور admin في جدول profiles.");
+      }
       throw new Error("دور الحساب غير مصرح به لإدارة المغسلة: " + (role || "غير محدد") + ".");
-    }
-    if (!isActive) {
-      throw new Error("حساب GRAND DRY CLEAN غير نشط في جدول profiles.");
     }
 
     revealDashboard();
