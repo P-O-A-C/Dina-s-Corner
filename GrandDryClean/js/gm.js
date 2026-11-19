@@ -415,6 +415,22 @@
     } finally { setBusy(false); }
   }
 
+  // Verify the real browser session against the same RLS function used by gdc_branches.
+  // This distinguishes a database policy problem from a stale/wrong browser session.
+  async function verifyBranchManagerSession() {
+    const { data: userData, error: userError } = await client.auth.getUser();
+    if (userError) throw new Error(`تعذر التحقق من جلسة الدخول: ${userError.message}`);
+    const user = userData?.user;
+    if (!user?.id) throw new Error("جلسة الدخول غير موجودة أو انتهت. سجّل الخروج ثم ادخل مرة أخرى.");
+
+    const { data: allowed, error: permissionError } = await client.rpc("gdc_can_manage");
+    if (permissionError) throw new Error(`تعذر فحص صلاحية إدارة المغسلة: ${permissionError.message}`);
+    if (allowed !== true) {
+      throw new Error(`الجلسة الحالية غير مصرح لها بإدارة الفروع. الحساب الحالي: ${user.email || user.id}. ادخل بحساب POAC أو مدير المغسلة ثم أعد المحاولة.`);
+    }
+    return user;
+  }
+
   async function saveBranch(event) {
     event.preventDefault();
     if (busy) return;
@@ -426,6 +442,8 @@
     if (map && !validMapUrl(map)) { toast("أدخل رابط موقع صحيحًا يبدأ بـ https:// أو http://", true); return; }
     setBusy(true);
     try {
+      // Check the real logged-in browser identity before attempting the RLS-protected insert.
+      await verifyBranchManagerSession();
       const { data, error } = await client.from(TABLES.branches).insert({ name, address, phone: phone || null, map_url: map || null, is_active: true, sort_order: branches.length * 10 }).select("id,name,phone,address,map_url,is_active,sort_order").single();
       if (error) throw error;
       branches.push({ id: String(data.id), name: data.name, address: data.address, phone: data.phone || "", map: data.map_url || "", active: data.is_active !== false });
