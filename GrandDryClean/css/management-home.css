@@ -296,12 +296,44 @@ button { cursor: pointer; }
 /* Fixed brand background only — keeps all existing layout and controls unchanged */
 body.management-home {
   background-attachment: fixed;
-  /* Soft botanical texture in the same cream / green / gold identity */
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%2307513a' stroke-opacity='.075' stroke-width='1.4'%3E%3Cpath d='M18 116c17-16 21-35 16-54m0 20c-13-1-19-10-18-19 11 1 17 8 18 19Zm2-14c12-4 17-14 14-23-10 4-14 12-14 23Z'/%3E%3Cpath d='M118 32c-9 13-10 26-4 38m0-18c-10 0-15-6-15-13 9 1 14 5 15 13Zm2 5c9-3 13-10 11-17-8 3-11 9-11 17Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23d4a441' stroke-opacity='.11' stroke-width='1.2'%3E%3Ccircle cx='76' cy='75' r='5'/%3E%3Cpath d='M76 62c5-9 11-6 11 0s-6 8-11 13c-5-5-11-7-11-13s6-9 11 0Zm13 13c9 5 6 11 0 11s-8-6-13-11c5-5 7-11 13-11s9 6 0 11Zm-13 13c-5 9-11 6-11 0s6-8 11-13c5 5 11 7 11 13s-6 9-11 0Zm-13-13c-9-5-6-11 0-11s8 6 13 11c-5 5-7 11-13 11s-9-6 0-11Z'/%3E%3C/g%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 50% 12%, rgba(255,255,255,.98) 0%, rgba(255,251,243,.95) 34%, transparent 70%),
-    linear-gradient(145deg, #fdf8ef 0%, var(--gdc-cream) 52%, #f2e8d8 100%);
 }
 .page-decor {
   position: fixed;
 }
+
+
+/* 2026-11-19 MANAGEMENT BACKGROUND REFINEMENT
+   Remove the oversized corner panels and replace them with a quiet botanical paper texture. */
+body.management-home {
+  background-color: #f8f3e9;
+  background-image:
+    radial-gradient(ellipse at 12% 8%, rgba(212,164,65,.095) 0%, transparent 27%),
+    radial-gradient(ellipse at 88% 92%, rgba(7,81,58,.065) 0%, transparent 30%),
+    linear-gradient(145deg, #fcf9f2 0%, #f7f1e6 52%, #f3ecdf 100%);
+  background-attachment: fixed;
+}
+/* The old green-and-gold corner ribbons felt too heavy around the wordmark and cards. */
+.page-decor {
+  display: none !important;
+}
+/* Fine, low-contrast leaf linework: a texture, not a competing decoration. */
+body.management-home::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .24;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='190' viewBox='0 0 220 190'%3E%3Cg fill='none' stroke='%23b7a77f' stroke-width='1.15' stroke-linecap='round' stroke-linejoin='round' opacity='.58'%3E%3Cpath d='M30 164c22-23 29-48 25-78m-1 47c-19-1-28-13-27-28 17 0 27 9 27 28m1-19c15-5 22-17 20-30-14 2-22 13-20 30'/%3E%3Cpath d='M158 167c-13-20-16-40-10-62m-2 39c-15-5-21-16-17-28 13 4 19 13 17 28m3-19c14-1 22-10 23-22-13-2-22 7-23 22'/%3E%3Cpath d='M105 42c0-8 7-14 14-14s14 6 14 14c0 7-7 13-14 13s-14-6-14-13Zm14-19v-7m0 52v-7m-25-19h-7m64 0h-7m-44-18-5-5m43 43-5-5m0-33 5-5m-43 43 5-5'/%3E%3Cpath d='M45 92c5-7 12-10 19-8-1 8-7 14-15 15m-4-7c-1 8 3 14 11 17 4-7 1-14-7-18'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 220px 190px;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.52), #000 18%, #000 82%, rgba(0,0,0,.58));
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.52), #000 18%, #000 82%, rgba(0,0,0,.58));
+}
+/* Keep the dashboard content cleanly above the texture. */
+.management-container,
+.language-pill {
+  position: relative;
+}
+.management-container { z-index: 1; }
+.language-pill { z-index: 2; }
