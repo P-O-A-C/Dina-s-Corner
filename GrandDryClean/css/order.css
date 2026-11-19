@@ -36,15 +36,20 @@ a{color:inherit;text-decoration:none}
 .service-info h2{font-size:15px;color:var(--green);margin:0;font-weight:900}
 .service-info p{font-size:10px;line-height:1.9;color:var(--muted);margin:0;min-height:19px}
 .catalog-empty{grid-column:1/-1;text-align:center;background:#fff;border:1px dashed #D9CEB8;border-radius:12px;padding:28px 16px;color:var(--muted);font-size:12px}
-.ironing-prices-section{margin-top:34px;padding:22px 20px 24px;background:linear-gradient(145deg,#fffdf8,#f1f6f0);border:1px solid #e4d6b8;border-radius:16px;box-shadow:0 8px 24px rgba(40,38,25,.045)}
+.ironing-prices-section{margin-top:0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none}
 .ironing-prices-section[hidden]{display:none}
-.ironing-prices-heading{margin-bottom:16px}
+.ironing-prices-heading{margin:0 0 18px;padding:18px 20px;background:linear-gradient(145deg,#fffdf8,#f1f6f0);border:1px solid #e4d6b8;border-radius:15px}
 .ironing-prices-heading h2{font-size:clamp(20px,2.6vw,27px);color:var(--green);margin:5px 0 4px;font-weight:900}
 .ironing-prices-heading p{font-size:11px;line-height:1.9;color:var(--muted);margin:0}
-.ironing-prices-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.ironing-price-card{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;background:#fff;border:1px solid var(--line);border-radius:11px}
-.ironing-price-item-name{font-size:12px;font-weight:800;color:var(--ink);line-height:1.7}
-.ironing-price-value{flex:0 0 auto;color:var(--green);font-size:12px;font-weight:900;white-space:nowrap;background:#eaf2eb;border:1px solid #d8e7d8;border-radius:8px;padding:6px 8px}
+.ironing-prices-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ironing-product-card{min-width:0;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;box-shadow:0 6px 20px rgba(40,38,30,.045);transition:transform .18s,border-color .18s,box-shadow .18s}
+.ironing-product-card:hover{transform:translateY(-2px);border-color:#D5B978;box-shadow:var(--shadow)}
+.ironing-product-image-wrap{height:210px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.ironing-product-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center;padding:8px;background:#fff}
+.ironing-product-image-empty{width:100%;height:100%;background:linear-gradient(145deg,#fff,#F9F6EF)}
+.ironing-product-info{padding:12px 14px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex:1}
+.ironing-product-info h3{min-width:0;margin:0;color:var(--green);font-size:13px;font-weight:900;line-height:1.7}
+.ironing-product-price{flex:0 0 auto;color:var(--green);font-size:12px;font-weight:900;white-space:nowrap;background:#eaf2eb;border:1px solid #d8e7d8;border-radius:8px;padding:6px 9px}
 .catalog-note{display:flex;align-items:center;gap:10px;background:#EAF0E8;border:1px solid #DCE6DB;border-radius:10px;padding:13px 15px;margin-top:20px}
 .catalog-note>span{color:#B58324}
 .catalog-note p{flex:1;margin:0;font-size:10px;line-height:1.8;color:#53665C}
@@ -54,5 +59,5 @@ a{color:inherit;text-decoration:none}
 .footer-brand img{width:34px;height:34px;object-fit:contain;background:#fff;border-radius:50%}
 .order-footer>a:last-child{color:#E2D8C8;font-weight:800}
 @media(max-width:800px){.products-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.ironing-prices-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.service-image-wrap{height:190px}.service-info{padding:12px}.service-info h2{font-size:13px}}
-@media(max-width:560px){.order-header{min-height:66px;padding:7px 11px;gap:8px}.brand-logo{width:45px;height:45px}.brand-type strong{font-size:12px;letter-spacing:.5px}.brand-type small{font-size:8px}.header-contact{padding:8px 10px;font-size:9px}.page-wrap{width:calc(100% - 24px)}.catalog-section{padding:26px 0 34px}.section-intro{margin-bottom:15px}.section-intro h1{font-size:23px}.section-intro p{font-size:9px}.category-tabs{gap:7px;padding-bottom:12px}.category-tab{padding:8px 12px;font-size:9px}.products-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ironing-prices-section{margin-top:24px;padding:16px 12px 18px;border-radius:12px}.ironing-prices-heading{margin-bottom:12px}.ironing-prices-heading p{font-size:9px}.ironing-prices-grid{grid-template-columns:1fr;gap:7px}.ironing-price-card{padding:9px 10px}.ironing-price-item-name,.ironing-price-value{font-size:11px}.service-card{border-radius:10px}.service-image-wrap{height:145px}.service-image{padding:4px}.service-info{padding:9px;gap:4px}.service-info h2{font-size:12px}.service-info p{font-size:9px;line-height:1.7}.catalog-note{align-items:flex-start;padding:10px;gap:7px}.catalog-note p{font-size:9px}.catalog-note a{font-size:9px}.order-footer{flex-wrap:wrap;justify-content:center;text-align:center;padding:12px;gap:8px 14px}.footer-brand{width:100%;justify-content:center}}
-@media(max-width:360px){.products-grid{gap:7px}.service-image-wrap{height:128px}.service-info h2{font-size:11px}}
+@media(max-width:560px){.order-header{min-height:66px;padding:7px 11px;gap:8px}.brand-logo{width:45px;height:45px}.brand-type strong{font-size:12px;letter-spacing:.5px}.brand-type small{font-size:8px}.header-contact{padding:8px 10px;font-size:9px}.page-wrap{width:calc(100% - 24px)}.catalog-section{padding:26px 0 34px}.section-intro{margin-bottom:15px}.section-intro h1{font-size:23px}.section-intro p{font-size:9px}.category-tabs{gap:7px;padding-bottom:12px}.category-tab{padding:8px 12px;font-size:9px}.products-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ironing-prices-heading{margin-bottom:12px;padding:14px 12px;border-radius:12px}.ironing-prices-heading p{font-size:9px}.ironing-prices-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ironing-product-card{border-radius:10px}.ironing-product-image-wrap{height:135px}.ironing-product-info{padding:9px;align-items:flex-start;flex-direction:column;gap:5px}.ironing-product-info h3,.ironing-product-price{font-size:11px}.ironing-product-price{padding:5px 7px}.service-card{border-radius:10px}.service-image-wrap{height:145px}.service-image{padding:4px}.service-info{padding:9px;gap:4px}.service-info h2{font-size:12px}.service-info p{font-size:9px;line-height:1.7}.catalog-note{align-items:flex-start;padding:10px;gap:7px}.catalog-note p{font-size:9px}.catalog-note a{font-size:9px}.order-footer{flex-wrap:wrap;justify-content:center;text-align:center;padding:12px;gap:8px 14px}.footer-brand{width:100%;justify-content:center}}
+@media(max-width:360px){.products-grid,.ironing-prices-grid{gap:7px}.service-image-wrap{height:128px}.ironing-product-image-wrap{height:118px}.service-info h2{font-size:11px}.ironing-product-info{padding:8px}.ironing-product-info h3,.ironing-product-price{font-size:10px}}

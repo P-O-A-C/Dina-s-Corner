@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v19-gdc-ironing-prices-v1";
+const CACHE = "poac-unified-v20-gdc-ironing-only-category-v1";
 const SHELL = [
   "./index.html",
   "./login.html",
