@@ -80,6 +80,49 @@
     if (event.key === "Escape" && menu?.classList.contains("is-open")) setMenuOpen(false);
   });
 
+
+  // Public active branches are read from the existing GDC table (RLS allows active public rows).
+  async function loadPublicBranches() {
+    const target = document.getElementById("publicBranches");
+    const cfg = window.POA_CONFIG || {};
+    if (!target) return;
+    if (!window.supabase?.createClient || !cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY) {
+      target.innerHTML = '<p class="branches-empty">يمكنك التواصل معنا لمعرفة أقرب فرع.</p>';
+      return;
+    }
+    try {
+      const db = window.__GDC_PUBLIC_CLIENT__ || window.supabase.createClient(
+        cfg.SUPABASE_URL,
+        cfg.SUPABASE_PUBLISHABLE_KEY,
+        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
+      );
+      window.__GDC_PUBLIC_CLIENT__ = db;
+      const { data, error } = await db.from("gdc_branches")
+        .select("id,name,phone,address,map_url")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      if (!data?.length) {
+        target.innerHTML = '<p class="branches-empty">سيتم إضافة بيانات الفروع قريبًا.</p>';
+        return;
+      }
+      const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, ch => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
+      const safeUrl = value => {
+        try { const url = new URL(String(value || "")); return ["https:", "http:"].includes(url.protocol) ? url.href : ""; }
+        catch (_) { return ""; }
+      };
+      target.innerHTML = data.map(branch => {
+        const map = safeUrl(branch.map_url);
+        return `<article class="branch-public-card"><strong>${escapeHtml(branch.name)}</strong><p>${escapeHtml(branch.address)}</p>${branch.phone ? `<p dir="ltr">${escapeHtml(branch.phone)}</p>` : ""}${map ? `<a href="${escapeHtml(map)}" target="_blank" rel="noopener noreferrer">الموقع على الخريطة ↗</a>` : ""}</article>`;
+      }).join("");
+    } catch (error) {
+      console.warn("GDC public branches could not be loaded:", error);
+      target.innerHTML = '<p class="branches-empty">تعذر تحميل الفروع حاليًا. يرجى المحاولة لاحقًا.</p>';
+    }
+  }
+
+  loadPublicBranches();
+
   showSlide(0);
   startRotation();
 })();

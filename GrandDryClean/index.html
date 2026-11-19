@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/customer.css?v=20261119-dina-order-v2">
+  <link rel="stylesheet" href="css/customer.css?v=20261119-layout-v3">
 </head>
 <body>
   <div class="page-shell" id="top">
@@ -30,6 +30,8 @@
     </header>
 
     <main>
+      <section class="home-feature-grid" aria-label="الفيديو والفروع ووسائل الدفع">
+        <div class="home-media-column">
       <section class="promo-slider" aria-label="عروض وخدمات GRAND DRY CLEAN" aria-roledescription="carousel">
         <div class="slides" id="promoSlides">
           <article class="promo-slide is-active" aria-hidden="false">
@@ -72,6 +74,37 @@
           <button class="slider-dot" type="button" aria-label="الصورة 2" aria-current="false"></button>
           <button class="slider-dot" type="button" aria-label="الصورة 3" aria-current="false"></button>
         </div>
+      </section>
+
+        </div>
+        <aside class="home-info-column" aria-label="الفروع ووسائل الدفع">
+          <section class="branches-panel" aria-labelledby="branchesHeading">
+            <div class="home-panel-heading"><span class="heading-mark">⌖</span><h2 id="branchesHeading">فروعنا</h2></div>
+            <div class="public-branches" id="publicBranches" aria-live="polite">
+              <p class="branches-loading">جارٍ تحميل الفروع…</p>
+            </div>
+          </section>
+          <section class="payment-panel" aria-label="وسائل الدفع">
+            <div class="home-panel-heading"><span class="heading-mark">◇</span><h2>وسائل الدفع</h2></div>
+            <div class="payment-stack">
+              <div class="payment-tile instapay-tile">
+                <span class="payment-symbol">iP</span>
+                <strong>InstaPay</strong>
+              </div>
+              <div class="payment-tile vodafone-tile">
+                <span class="payment-symbol">V</span>
+                <strong>Vodafone Cash</strong>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </section>
+
+      <section class="brand-slogan" aria-label="رسالة GRAND DRY CLEAN">
+        <span class="slogan-kicker">GRAND DRY CLEAN</span>
+        <h2>المكوى علينا</h2>
+        <p>سيب علينا النظافة والتفاصيل… واستمتع بإطلالة تليق بيك كل يوم</p>
+        <span class="slogan-ornament" aria-hidden="true">✦</span>
       </section>
 
       <section class="benefits-strip" aria-label="مميزات GRAND DRY CLEAN">
@@ -142,6 +175,8 @@
     <a href="https://maps.app.goo.gl/ZDPdcdtEioTkFLXa8?g_st=iwb" target="_blank" rel="noopener">موقع المغسلة</a>
   </aside>
 
-  <script src="js/customer.js?v=20261119-dina-order-v2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
+  <script src="../assets/config.js"></script>
+  <script src="js/customer.js?v=20261119-layout-v3"></script>
 </body>
 </html>
