@@ -103,8 +103,6 @@
     };
   }
 
-  async function loadDatabase() {
-    setDbStatus("جارٍ تحميل بيانات المغسلة من Supabase…", "info");
     const results = await Promise.all([
       client.from(TABLES.categories).select("id,name,sort_order,is_active").order("sort_order", { ascending: true }),
       client.from(TABLES.products).select("id,name,category_name,price,description,is_active,is_featured,icon,image_url,image_path,sort_order").order("sort_order", { ascending: true }).order("created_at", { ascending: true }),
