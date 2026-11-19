@@ -37,11 +37,11 @@ function renderProducts(){
       ? `<img class="service-product-image" src="${safe(product.image)}" alt="${safe(product.name)}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">`
       : "";
     return `<article class="service-card">
-      <div class="service-art ${product.art}">${visual}<span ${product.image ? 'hidden' : ''}>${product.icon}</span></div>
+      <div class="service-art ${product.art}">${visual}<span ${product.image ? 'hidden' : ''}>${product.icon}</span>
+        <button class="image-order-button ${qty?"added":""}" type="button" data-add="${product.id}" aria-label="اطلب ${safe(product.name)}">${qty?`مضاف · ${qty}`:"اطلب +"}</button>
+      </div>
       <div class="service-info"><h3>${safe(product.name)}</h3><p>${safe(product.description)}</p>
-        <div class="service-bottom"><span class="price-hint">السعر عند التأكيد</span>
-          <button class="add-button ${qty?"added":""}" type="button" data-add="${product.id}" aria-label="إضافة ${safe(product.name)} للطلب">${qty?`مضاف · ${qty}`:"أضف للطلب +"}</button>
-        </div>
+        <div class="service-bottom"><span class="price-hint">السعر عند التأكيد</span></div>
       </div>
     </article>`;
   }).join("");
