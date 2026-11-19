@@ -4,10 +4,6 @@
   let slides = Array.from(document.querySelectorAll(".promo-slide"));
   let dots = Array.from(document.querySelectorAll(".slider-dot"));
   const slider = document.querySelector(".promo-slider");
-  const menu = document.getElementById("mobileMenu");
-  const menuTrigger = document.getElementById("menuTrigger");
-  const closeMenuButton = document.getElementById("closeMenu");
-  const menuScrim = document.getElementById("menuScrim");
 
   let activeSlide = 0;
   let rotationTimer = null;
@@ -181,24 +177,6 @@
 
   bindCarouselControls();
 
-  function setMenuOpen(open) {
-    if (!menu || !menuTrigger || !menuScrim) return;
-    menu.classList.toggle("is-open", open);
-    menu.setAttribute("aria-hidden", String(!open));
-    menuTrigger.setAttribute("aria-expanded", String(open));
-    menuScrim.hidden = !open;
-    document.body.classList.toggle("menu-open", open);
-    if (open) closeMenuButton?.focus();
-    else menuTrigger.focus();
-  }
-
-  menuTrigger?.addEventListener("click", () => setMenuOpen(true));
-  closeMenuButton?.addEventListener("click", () => setMenuOpen(false));
-  menuScrim?.addEventListener("click", () => setMenuOpen(false));
-  menu?.querySelectorAll("a").forEach(link => link.addEventListener("click", () => setMenuOpen(false)));
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && menu?.classList.contains("is-open")) setMenuOpen(false);
-  });
 
   showSlide(0);
   startRotation();
