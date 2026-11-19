@@ -235,28 +235,72 @@
   }
 
   function renderPopular() {
-    if (!$("popularCards")) return;
+    if (!$('popularCards')) return;
     const selected = products.filter(product => product.featured);
-    if ($("popularCount")) $("popularCount").textContent = `${selected.length} صنف محدد`;
-    $("popularCards").innerHTML = products.map(product => {
-      const visual = product.image ? `<img src="${safe(product.image)}" alt="">` : safe(product.icon || "♧");
-      return `<article class="popular-card"><span class="product-thumb">${visual}</span><div class="popular-info"><b>${safe(product.name)}</b><small>${safe(product.category)} · ${money(product.price)}</small></div><button type="button" class="${product.featured ? "is-selected" : ""}" data-toggle-popular="${safe(product.id)}">${product.featured ? "محدد ✓" : "إضافة للقائمة"}</button></article>`;
-    }).join("") || '<div class="empty-state">أضف أصنافًا أولًا لاختيار الأكثر طلبًا.</div>';
-    document.querySelectorAll("[data-toggle-popular]").forEach(button => {
+    if ($('popularCount')) $('popularCount').textContent = `${selected.length} صنف محدد`;
+    $('popularCards').innerHTML = products.map(product => {
+      const visual = product.image
+        ? `<img src="${safe(product.image)}" alt="${safe(product.name)}" loading="lazy">`
+        : safe(product.icon || '♧');
+      return `<article class="popular-card">
+        <span class="product-thumb">${visual}</span>
+        <div class="popular-info"><b>${safe(product.name)}</b><small>${safe(product.category)} · ${money(product.price)}</small>
+          <label class="popular-image-upload">${product.image ? 'تغيير الصورة' : 'إضافة صورة'}<input type="file" accept="image/*" data-popular-image="${safe(product.id)}"></label>
+        </div>
+        <button type="button" class="${product.featured ? 'is-selected' : ''}" data-toggle-popular="${safe(product.id)}">${product.featured ? 'محدد ✓' : 'إضافة للقائمة'}</button>
+      </article>`;
+    }).join('') || '<div class="empty-state">أضف أصنافًا أولًا لاختيار الأكثر طلبًا.</div>';
+
+    document.querySelectorAll('[data-popular-image]').forEach(input => {
+      input.addEventListener('change', async () => {
+        const product = products.find(item => item.id === input.dataset.popularImage);
+        const file = input.files?.[0];
+        if (!product || !file) return;
+        if (!file.type.startsWith('image/')) { toast('اختار ملف صورة صالح.', true); input.value = ''; return; }
+        input.disabled = true;
+        let uploaded = null;
+        try {
+          uploaded = await uploadProductImage(file);
+          const oldPath = product.imagePath;
+          const { error } = await client.from(TABLES.products).update({
+            image_url: uploaded.url,
+            image_path: uploaded.path,
+            updated_at: new Date().toISOString()
+          }).eq('id', product.id);
+          if (error) throw error;
+          product.image = uploaded.url;
+          product.imagePath = uploaded.path;
+          if (oldPath && oldPath !== uploaded.path) {
+            const removed = await client.storage.from(IMAGE_BUCKET).remove([oldPath]);
+            if (removed.error) console.warn('Old GDC image was not removed:', removed.error.message);
+          }
+          renderPopular();
+          toast('تم حفظ الصورة، وستظهر في صفحة العملاء.');
+        } catch (error) {
+          if (uploaded?.path) await client.storage.from(IMAGE_BUCKET).remove([uploaded.path]).catch(() => {});
+          console.error('GDC popular image upload failed:', error);
+          toast(`تعذر رفع الصورة: ${error.message || 'خطأ غير معروف'}`, true);
+          input.disabled = false;
+          input.value = '';
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-toggle-popular]').forEach(button => {
       button.onclick = async () => {
         const product = products.find(item => item.id === button.dataset.togglePopular);
         if (!product) return;
         button.disabled = true;
         try {
           const nextValue = !product.featured;
-          const { error } = await client.from(TABLES.products).update({ is_featured: nextValue, updated_at: new Date().toISOString() }).eq("id", product.id);
+          const { error } = await client.from(TABLES.products).update({ is_featured: nextValue, updated_at: new Date().toISOString() }).eq('id', product.id);
           if (error) throw error;
           product.featured = nextValue;
           renderPopular();
-          toast("تم حفظ قائمة الأكثر طلبًا في قاعدة البيانات.");
+          toast('تم حفظ قائمة الأكثر طلبًا في قاعدة البيانات.');
         } catch (error) {
-          console.error("GDC featured service update failed:", error);
-          toast(`تعذر حفظ الاختيار: ${error.message || "خطأ غير معروف"}`, true);
+          console.error('GDC featured service update failed:', error);
+          toast(`تعذر حفظ الاختيار: ${error.message || 'خطأ غير معروف'}`, true);
           button.disabled = false;
         }
       };

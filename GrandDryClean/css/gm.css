@@ -22,6 +22,9 @@
 .popular-card{border:1px solid var(--line);border-radius:10px;background:#fff;padding:14px;display:flex;align-items:center;gap:10px;min-width:0}
 .popular-card .product-thumb{flex:0 0 40px}
 .popular-card .popular-info{min-width:0;flex:1}
+.popular-image-upload{display:inline-flex;align-items:center;justify-content:center;margin-top:7px;padding:5px 9px;border:1px dashed #c7d8e4;border-radius:6px;background:#f5f9fc;color:#07509b;font-size:9px;cursor:pointer}
+.popular-image-upload input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.popular-card .product-thumb img{width:100%;height:100%;object-fit:contain;background:#fff}
 .popular-card b{display:block;color:var(--navy);font-size:11px;overflow-wrap:anywhere}
 .popular-card small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
 .popular-card button{border:1px solid #dfe8e1;background:#f2f7f3;color:var(--green);border-radius:6px;padding:7px 9px;font-size:9px;white-space:nowrap}
