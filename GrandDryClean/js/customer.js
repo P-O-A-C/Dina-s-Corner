@@ -94,33 +94,30 @@
     }
 
     rows.forEach((branch) => {
-      const card = document.createElement("article");
-      card.className = "branch-public-card";
-      const name = document.createElement("strong");
-      name.textContent = branch.name || "فرع GRAND DRY CLEAN";
-      card.append(name);
+      const nameText = String(branch.name || "فرع GRAND DRY CLEAN").trim();
+      const mapUrl = safeWebUrl(branch.map_url) || (
+        branch.address
+          ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(String(branch.address))}`
+          : ""
+      );
 
-      if (branch.address) {
-        const address = document.createElement("p");
-        address.textContent = branch.address;
-        card.append(address);
-      }
-      if (branch.phone) {
-        const phone = document.createElement("a");
-        phone.href = `tel:${String(branch.phone).replace(/[^+0-9]/g, "")}`;
-        phone.dir = "ltr";
-        phone.textContent = branch.phone;
-        card.append(phone);
-      }
-      const mapUrl = safeWebUrl(branch.map_url);
+      // Compact branch button: show the branch name only; open its map on click.
+      const card = mapUrl ? document.createElement("a") : document.createElement("button");
+      card.className = "branch-public-card";
       if (mapUrl) {
-        const map = document.createElement("a");
-        map.href = mapUrl;
-        map.target = "_blank";
-        map.rel = "noopener noreferrer";
-        map.textContent = "الموقع على الخريطة ↗";
-        card.append(map);
+        card.href = mapUrl;
+        card.target = "_blank";
+        card.rel = "noopener noreferrer";
+        card.setAttribute("aria-label", `عرض موقع ${nameText} على الخريطة`);
+      } else {
+        card.type = "button";
+        card.disabled = true;
+        card.setAttribute("aria-label", `${nameText} - الموقع غير متاح`);
       }
+
+      const name = document.createElement("strong");
+      name.textContent = nameText;
+      card.append(name);
       container.append(card);
     });
   }

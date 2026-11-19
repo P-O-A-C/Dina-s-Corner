@@ -170,11 +170,19 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .home-panel-heading { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; color: var(--green); }
 .home-panel-heading h2 { margin: 0; font-size: 18px; font-weight: 900; }
 .heading-mark { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--gold); border-radius: 50%; color: #a87922; font-size: 22px; line-height: 1; }
-.public-branches { display: grid; gap: 8px; }
-.branch-public-card { padding: 10px 11px; border: 1px solid rgba(7,84,58,.14); border-radius: 12px; background: rgba(255,255,255,.76); }
-.branch-public-card strong { display: block; color: var(--brown); font-size: 13px; font-weight: 900; }
-.branch-public-card p { margin: 3px 0 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
-.branch-public-card a { display: inline-flex; margin-top: 5px; color: var(--green); font-size: 11px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.public-branches { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 7px; }
+.branch-public-card {
+  width: 100%; min-width: 0; min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
+  padding: 7px 10px; border: 1px solid rgba(7,84,58,.20); border-radius: 10px;
+  background: linear-gradient(180deg, #fff 0%, #f7f0e3 100%); color: var(--green);
+  box-shadow: 0 2px 6px rgba(39,31,20,.07); text-align: center; text-decoration: none;
+  cursor: pointer; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.branch-public-card:hover, .branch-public-card:focus-visible {
+  border-color: var(--gold); box-shadow: 0 4px 10px rgba(39,31,20,.12); transform: translateY(-1px); outline: none;
+}
+.branch-public-card strong { display: block; max-width: 100%; overflow: hidden; color: var(--green); font-size: 12px; font-weight: 900; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
+.branch-public-card:disabled { opacity: .62; cursor: default; box-shadow: none; }
 .branches-loading, .branches-empty { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .payment-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
 .payment-tile { min-height: 68px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px; border: 1px solid; border-radius: 14px; background: #fff; text-align: center; }
@@ -417,9 +425,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
   .home-panel-heading { gap: 6px; margin-bottom: 7px; }
   .home-panel-heading h2 { font-size: 14px; }
   .heading-mark { width: 24px; height: 24px; font-size: 17px; }
-  .branch-public-card { padding: 7px; border-radius: 9px; }
-  .branch-public-card strong { font-size: 11px; }
-  .branch-public-card p, .branch-public-card a { font-size: 9px; }
+  .public-branches { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 6px; }
+  .branch-public-card { min-height: 33px; padding: 6px 8px; border-radius: 9px; }
+  .branch-public-card strong { font-size: 10px; }
   .payment-stack { grid-template-columns: 1fr; gap: 6px; }
   .payment-tile { min-height: 44px; justify-content: flex-start; padding: 6px 8px; border-radius: 10px; }
   .payment-symbol { width: 24px; height: 24px; flex-basis: 24px; font-size: 9px; }
@@ -434,7 +442,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
   .home-media-column .promo-slider { min-height: 195px; }
   .branches-panel, .payment-panel { padding: 7px; }
   .home-panel-heading h2 { font-size: 12px; }
-  .branch-public-card p { font-size: 8px; }
   .payment-tile { gap: 5px; }
   .payment-tile strong { font-size: 9px; }
   .brand-slogan { width: calc(100% - 20px); }
