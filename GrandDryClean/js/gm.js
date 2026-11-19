@@ -126,8 +126,6 @@
     if ($("businessCurrency")) $("businessCurrency").value = settings?.currency || "EGP";
     if ($("businessLocation")) $("businessLocation").value = settings?.location_url || "";
 
-    renderAll();
-    setDbStatus("تم تحميل البيانات المحفوظة من قاعدة البيانات. أي تعديل ناجح سيظهر بعد إعادة فتح الصفحة ومن الأجهزة الأخرى.", "success");
   }
 
   function updateMetrics() {
