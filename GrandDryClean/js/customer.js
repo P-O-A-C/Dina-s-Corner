@@ -13,7 +13,7 @@
 
   let activeSlide = 0;
   let rotationTimer = null;
-  const rotationDelay = 5000;
+  const rotationDelay = 2000;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function showSlide(index) {
@@ -74,8 +74,6 @@
       const { data, error } = await client.from("gdc_home_slides").select("id,image_url,alt_text,sort_order,is_active").eq("is_active", true).order("sort_order", { ascending: true });
       if (error) throw error;
       if (!Array.isArray(data) || !data.length) return;
-      const oldSlides = Array.from(slider.querySelectorAll(".promo-slide"));
-      const templateCopies = oldSlides.map(slide => slide.querySelector(".slide-copy")?.cloneNode(true)).filter(Boolean);
       const slidesMarkup = data.map((row, index) => {
         const article = document.createElement("article");
         article.className = "promo-slide" + (index === 0 ? " is-active" : "");
@@ -83,10 +81,7 @@
         const img = document.createElement("img");
         img.src = row.image_url; img.alt = row.alt_text || "صورة من GRAND DRY CLEAN"; img.loading = index === 0 ? "eager" : "lazy";
         if (index === 0) img.fetchPriority = "high";
-        const shade = document.createElement("div"); shade.className = "slide-shade";
-        article.append(img, shade);
-        const copy = templateCopies[index] || templateCopies[0];
-        if (copy) article.append(copy.cloneNode(true));
+        article.append(img);
         return article;
       });
       const container = slider.querySelector(".slides");
