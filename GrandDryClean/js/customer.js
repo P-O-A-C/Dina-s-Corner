@@ -3,8 +3,6 @@
 
   let slides = Array.from(document.querySelectorAll(".promo-slide"));
   let dots = Array.from(document.querySelectorAll(".slider-dot"));
-  const previous = document.getElementById("slidePrev");
-  const next = document.getElementById("slideNext");
   const slider = document.querySelector(".promo-slider");
   const menu = document.getElementById("mobileMenu");
   const menuTrigger = document.getElementById("menuTrigger");
@@ -14,7 +12,6 @@
   let activeSlide = 0;
   let rotationTimer = null;
   const rotationDelay = 2000;
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function showSlide(index) {
     if (!slides.length) return;
@@ -42,7 +39,7 @@
 
   function startRotation() {
     stopRotation();
-    if (reducedMotion || slides.length < 2 || document.hidden) return;
+    if (slides.length < 2 || document.hidden) return;
     rotationTimer = window.setInterval(() => showSlide(activeSlide + 1), rotationDelay);
   }
 
@@ -52,14 +49,8 @@
   }
 
   function bindCarouselControls() {
-    if (previous && !previous.dataset.carouselBound) { previous.addEventListener("click", () => goToSlide(activeSlide - 1)); previous.dataset.carouselBound = "true"; }
-    if (next && !next.dataset.carouselBound) { next.addEventListener("click", () => goToSlide(activeSlide + 1)); next.dataset.carouselBound = "true"; }
     dots.forEach((dot, index) => { if (!dot.dataset.carouselBound) { dot.addEventListener("click", () => goToSlide(index)); dot.dataset.carouselBound = "true"; } });
     if (!slider?.dataset.carouselEventsBound) {
-      slider?.addEventListener("mouseenter", stopRotation);
-      slider?.addEventListener("mouseleave", startRotation);
-      slider?.addEventListener("focusin", stopRotation);
-      slider?.addEventListener("focusout", startRotation);
       document.addEventListener("visibilitychange", () => document.hidden ? stopRotation() : startRotation());
       if (slider) slider.dataset.carouselEventsBound = "true";
     }
