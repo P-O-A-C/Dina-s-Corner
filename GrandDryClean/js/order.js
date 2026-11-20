@@ -9,6 +9,8 @@
   if (!grid || !tabs) return;
 
   const IRONING_CATEGORY = "مكواة فقط";
+  const WASH_IRON_TAB = "غسيل ومكواة";
+  const WASH_IRON_CATEGORY = "غسيل وكي";
 
   const fallbackProducts = [
     { id: "service-wash", name: "غسيل وكي", category: "غسيل وكي", description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg" },
@@ -55,9 +57,9 @@
   }[char]));
 
   function getCategories() {
-    const visibleCategories = [...new Set(products.map(product => product.category).filter(Boolean))]
-      .filter(category => category !== "غسيل وكي");
-    return ["الكل", ...visibleCategories, IRONING_CATEGORY];
+    const categories = [...new Set(products.map(product => product.category).filter(Boolean))];
+    const withoutWashIron = categories.filter(category => category !== WASH_IRON_CATEGORY && category !== WASH_IRON_TAB);
+    return ["الكل", WASH_IRON_TAB, ...withoutWashIron, IRONING_CATEGORY];
   }
 
   function formatEGP(value) {
@@ -156,7 +158,9 @@
 
     const visible = activeCategory === "الكل"
       ? products
-      : products.filter(product => product.category === activeCategory);
+      : products.filter(product => activeCategory === WASH_IRON_TAB
+        ? (product.category === WASH_IRON_CATEGORY || product.category === WASH_IRON_TAB)
+        : product.category === activeCategory);
 
     if (!visible.length) {
       grid.innerHTML = '<div class="catalog-empty">لا توجد خدمات متاحة في هذا القسم حاليًا.</div>';

@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v22-gdc-remove-contact-box-wash-tab-v3";
+const CACHE = "poac-unified-v21-gdc-ironing-tab-cleanup-v2";
 const SHELL = [
   "./index.html",
   "./login.html",
