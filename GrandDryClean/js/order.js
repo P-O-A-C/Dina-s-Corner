@@ -55,7 +55,9 @@
   }[char]));
 
   function getCategories() {
-    return ["الكل", ...new Set(products.map(product => product.category).filter(Boolean)), IRONING_CATEGORY];
+    const visibleCategories = [...new Set(products.map(product => product.category).filter(Boolean))]
+      .filter(category => category !== "غسيل وكي");
+    return ["الكل", ...visibleCategories, IRONING_CATEGORY];
   }
 
   function formatEGP(value) {
