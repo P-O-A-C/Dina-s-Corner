@@ -4,133 +4,32 @@
   const grid = document.getElementById("productsGrid");
   const tabs = document.getElementById("categoryTabs");
   const status = document.getElementById("catalogStatus");
-  const ironingSection = document.getElementById("ironingPricesSection");
-  const ironingGrid = document.getElementById("ironingPricesGrid");
   if (!grid || !tabs) return;
 
-  let ironingCategoryName = "مكواة فقط";
-  let ironingCategoryActive = true;
-
+  const WASH_IRON_TAB = "غسيل ومكواة";
+  const WASH_IRON_CATEGORY = "غسيل وكي";
   const fallbackProducts = [
-    { id: "service-wash", name: "غسيل وكي", category: "غسيل وكي", description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg" },
-    { id: "service-dry", name: "تنظيف جاف", category: "تنظيف جاف", description: "تنظيف متخصص للبدل والقطع الحساسة.", image: "assets/gdc-service-dryclean.jpg" },
-    { id: "service-home", name: "مفروشات", category: "مفروشات", description: "تنظيف المفروشات والبطاطين والستائر.", image: "assets/gdc-service-furnishings.jpg" }
+    { id: "service-wash", name: "غسيل وكي", category: WASH_IRON_CATEGORY, description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg", price: null },
+    { id: "service-dry", name: "تنظيف جاف", category: "تنظيف جاف", description: "تنظيف متخصص للبدل والقطع الحساسة.", image: "assets/gdc-service-dryclean.jpg", price: null },
+    { id: "service-home", name: "مفروشات", category: "مفروشات", description: "تنظيف المفروشات والبطاطين والستائر.", image: "assets/gdc-service-furnishings.jpg", price: null }
   ];
 
-  // Reuse the garment photographs already included in this project.
-  const ironingImages = {
-    "قميص": "shirt.jpg",
-    "تيشيرت": "tshirt.jpg",
-    "بلوزة": "blouse.jpg",
-    "بنطلون جينز": "trousers-jeans.jpg",
-    "بنطلون جبردين": "trousers-gabardine.jpg",
-    "فستان كاجوال": "casual-dress.jpg",
-    "جيبة": "skirt.jpg",
-    "عباية حريمي": "womens-abaya.jpg",
-    "جلابية": "galabeya.jpg",
-    "سويت شيرت": "hoodie.jpg",
-    "بلوفر": "pullover.jpg",
-    "هودي": "hoodie.jpg",
-    "بيجامة (قطعتين)": "pajama-2-piece.jpg",
-    "ترينج رياضي (قطعتين)": "tracksuit-2-piece.jpg",
-    "بدلة (قطعتين)": "suit-2-piece.jpg",
-    "بدلة (3 قطع)": "suit-3-piece.jpg",
-    "جاكيت بدلة": "suit-jacket.jpg",
-    "جاكيت بامب": "jacket.jpg",
-    "جاكيت جوخ": "coat-wool.jpg",
-    "بالطو طويل": "coat-long.jpg",
-    "فستان سواريه": "evening-dress.jpg",
-    "فستان زفاف": "wedding-dress.jpg",
-    "كرافتة": "tie.jpg",
-    "شال": "shawl.jpg"
-  };
-
   let products = fallbackProducts;
-  let ironingPrices = [];
-  let ironingPricesLoading = true;
-  let ironingPricesError = false;
+  let serviceCategories = [WASH_IRON_CATEGORY, "تنظيف جاف", "مفروشات"];
   let activeCategory = "الكل";
 
-  const safe = (value) => String(value ?? "").replace(/[&<>"']/g, char => ({
+  const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[char]));
-
-  function getCategories() {
-    return ["الكل", ...new Set(products.map(product => product.category).filter(Boolean)), ...(ironingCategoryActive ? [ironingCategoryName] : [])];
-  }
 
   function formatEGP(value) {
     return `${new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 2 }).format(Number(value))} ج.م`;
   }
 
-  function renderIroningPrices() {
-    if (!ironingSection || !ironingGrid) return;
-
-    const showIroning = ironingCategoryActive && activeCategory === ironingCategoryName;
-    ironingSection.hidden = !showIroning;
-    const heading = document.getElementById("ironingPricesHeading");
-    if (heading) heading.textContent = ironingCategoryName;
-    if (!showIroning) return;
-
-    if (ironingPricesLoading) {
-      ironingGrid.innerHTML = '<div class="catalog-empty">جارٍ تحميل أصناف الكي…</div>';
-      return;
-    }
-
-    if (ironingPricesError) {
-      ironingGrid.innerHTML = '<div class="catalog-empty">تعذر تحميل أصناف الكي حاليًا. تأكد من إعداد جدول أسعار الكي في قاعدة البيانات.</div>';
-      return;
-    }
-
-    if (!ironingPrices.length) {
-      ironingGrid.innerHTML = '<div class="catalog-empty">لا توجد أصناف كي متاحة حاليًا.</div>';
-      return;
-    }
-
-    ironingGrid.innerHTML = ironingPrices.map(row => {
-      const itemName = String(row.item_name || "");
-      const imageFile = ironingImages[itemName];
-      const imageMarkup = imageFile
-        ? `<img class="ironing-product-image" src="assets/products/${safe(imageFile)}" alt="${safe(itemName)}" loading="lazy">`
-        : '<div class="ironing-product-image-empty" aria-hidden="true"></div>';
-      const priceLabel = row.price === null || row.price === undefined
-        ? safe(row.note || "السعر عند المعاينة")
-        : formatEGP(row.price);
-
-      return `
-        <article class="ironing-product-card">
-          <div class="ironing-product-image-wrap">${imageMarkup}</div>
-          <div class="ironing-product-info">
-            <h3>${safe(itemName)}</h3>
-            <strong class="ironing-product-price">${priceLabel}</strong>
-          </div>
-        </article>
-      `;
-    }).join("");
-  }
-
-  async function loadIroningPrices(client) {
-    ironingPricesLoading = true;
-    ironingPricesError = false;
-    renderIroningPrices();
-
-    try {
-      const { data, error } = await client.from("gdc_ironing_prices")
-        .select("id,item_name,price,note,sort_order")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      ironingPrices = Array.isArray(data) ? data : [];
-      ironingPricesLoading = false;
-      ironingPricesError = false;
-    } catch (error) {
-      console.warn("GRAND DRY CLEAN ironing prices could not be loaded:", error);
-      ironingPrices = [];
-      ironingPricesLoading = false;
-      ironingPricesError = true;
-    }
-
-    renderIroningPrices();
+  function getCategories() {
+    const available = serviceCategories.filter(Boolean);
+    const remaining = available.filter(category => category !== WASH_IRON_CATEGORY && category !== WASH_IRON_TAB);
+    return ["الكل", WASH_IRON_TAB, ...remaining];
   }
 
   function renderCategories() {
@@ -150,17 +49,14 @@
   }
 
   function renderProducts() {
-    const showIroning = ironingCategoryActive && activeCategory === ironingCategoryName;
-    grid.hidden = showIroning;
-    renderIroningPrices();
-    if (showIroning) return;
-
     const visible = activeCategory === "الكل"
       ? products
-      : products.filter(product => product.category === activeCategory);
+      : products.filter(product => activeCategory === WASH_IRON_TAB
+        ? (product.category === WASH_IRON_CATEGORY || product.category === WASH_IRON_TAB)
+        : product.category === activeCategory);
 
     if (!visible.length) {
-      grid.innerHTML = '<div class="catalog-empty">لا توجد خدمات متاحة في هذا القسم حاليًا.</div>';
+      grid.innerHTML = '<div class="catalog-empty">لا توجد أصناف متاحة في هذا القسم حاليًا.</div>';
       return;
     }
 
@@ -169,6 +65,11 @@
       const imageMarkup = image
         ? `<img class="service-image" src="${safe(image)}" alt="${safe(product.name)}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">`
         : "";
+      const description = String(product.description || "").trim();
+      const hasPrice = product.price !== null && product.price !== undefined && product.price !== "";
+      const detailsMarkup = hasPrice
+        ? `<strong class="service-price">${formatEGP(product.price)}</strong>`
+        : (description ? `<p>${safe(description)}</p>` : "");
       return `
         <article class="service-card">
           <div class="service-image-wrap">
@@ -177,7 +78,7 @@
           </div>
           <div class="service-info">
             <h2>${safe(product.name)}</h2>
-            <p>${safe(product.description || "")}</p>
+            ${detailsMarkup}
           </div>
         </article>
       `;
@@ -190,15 +91,12 @@
   }
 
   render();
-  status.textContent = "";
+  if (status) status.textContent = "";
 
   async function loadManagedCatalog() {
     const config = window.POA_CONFIG || {};
     if (!window.supabase?.createClient || !config.SUPABASE_URL || !config.SUPABASE_PUBLISHABLE_KEY) {
-      status.textContent = "تعذر الاتصال بالخدمات المحدثة؛ يتم عرض الخدمات المتاحة محليًا.";
-      ironingPricesLoading = false;
-      ironingPricesError = true;
-      renderIroningPrices();
+      if (status) status.textContent = "تعذر الاتصال بالخدمات المحدثة؛ يتم عرض الخدمات المتاحة محليًا.";
       return;
     }
 
@@ -209,20 +107,6 @@
         { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
       );
       window.__GDC_PUBLIC_CATALOG_CLIENT__ = client;
-      loadIroningPrices(client);
-
-      try {
-        const { data: ironingConfig, error: ironingConfigError } = await client
-          .from("gdc_ironing_category_config")
-          .select("id,category_name,is_active").eq("id", 1).maybeSingle();
-        if (ironingConfigError) throw ironingConfigError;
-        if (ironingConfig) {
-          ironingCategoryName = ironingConfig.category_name || "مكواة فقط";
-          ironingCategoryActive = ironingConfig.is_active !== false;
-        }
-      } catch (configError) {
-        console.warn("GRAND DRY CLEAN ironing category settings are unavailable; using defaults:", configError);
-      }
 
       const [categoryResult, itemResult] = await Promise.all([
         client.from("gdc_service_categories")
@@ -230,7 +114,7 @@
           .eq("is_active", true)
           .order("sort_order", { ascending: true }),
         client.from("gdc_service_items")
-          .select("id,name,category_name,description,image_url,is_active,sort_order")
+          .select("id,name,category_name,description,price,image_url,is_active,sort_order")
           .eq("is_active", true)
           .order("sort_order", { ascending: true })
           .order("created_at", { ascending: true })
@@ -239,26 +123,25 @@
       if (categoryResult.error) throw categoryResult.error;
       if (itemResult.error) throw itemResult.error;
 
-      const allowedCategories = new Set((categoryResult.data || []).map(row => row.name));
-      const managedProducts = (itemResult.data || [])
+      serviceCategories = (categoryResult.data || []).map(row => row.name).filter(Boolean);
+      const allowedCategories = new Set(serviceCategories);
+      products = (itemResult.data || [])
         .filter(row => allowedCategories.has(row.category_name))
         .map(row => ({
           id: String(row.id),
           name: row.name || "",
           category: row.category_name || "",
           description: row.description || "",
+          price: row.price,
           image: row.image_url || ""
         }));
 
-      products = managedProducts;
-      if (!ironingCategoryActive || (activeCategory !== ironingCategoryName && !getCategories().includes(activeCategory))) {
-        activeCategory = "الكل";
-      }
+      if (!getCategories().includes(activeCategory)) activeCategory = "الكل";
       render();
-      status.textContent = products.length ? "" : "لا توجد خدمات منشورة حاليًا.";
+      if (status) status.textContent = products.length ? "" : "لا توجد خدمات منشورة حاليًا.";
     } catch (error) {
       console.error("GRAND DRY CLEAN services could not be loaded:", error);
-      status.textContent = "تعذر تحميل الخدمات المحدثة حاليًا؛ يتم عرض الخدمات المتاحة محليًا.";
+      if (status) status.textContent = "تعذر تحميل الخدمات المحدثة حاليًا؛ يتم عرض الخدمات المتاحة محليًا.";
     }
   }
 

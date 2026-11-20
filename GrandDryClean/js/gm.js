@@ -7,7 +7,6 @@
     products: "gdc_service_items",
     branches: "gdc_branches",
     settings: "gdc_settings",
-    ironingCategory: "gdc_ironing_category_config",
     homeSlides: "gdc_home_slides"
   };
   const IMAGE_BUCKET = "gdc-service-images";
@@ -21,9 +20,6 @@
   let client = null;
   let products = [];
   let categories = [];
-  let ironingPriceCount = null;
-  let ironingCategoryName = "مكواة فقط";
-  let ironingCategoryActive = true;
   let branches = [];
   let homeSlides = [];
   let homeSlidesReady = false;
@@ -121,38 +117,12 @@
     const [categoryResult, productResult, branchResult, settingsResult] = results;
     for (const result of results) if (result.error) throw result.error;
 
-    // "مكواة فقط" is stored in its own prices table, not in the standard
-    // service-category table. Load its count separately so a missing table or
-    // policy does not prevent the rest of the management dashboard from loading.
-    try {
-      const { count, error } = await client
-        .from("gdc_ironing_prices")
-        .select("id", { count: "exact", head: true })
-        .eq("is_active", true);
-      if (error) throw error;
-      ironingPriceCount = Number.isFinite(count) ? count : 0;
-    } catch (ironingError) {
-      ironingPriceCount = null;
-      console.warn("GDC ironing category count is unavailable:", ironingError);
-    }
-    try {
-      const { data, error } = await client.from(TABLES.ironingCategory)
-        .select("id,category_name,is_active").eq("id", 1).maybeSingle();
-      if (error) throw error;
-      if (data) {
-        ironingCategoryName = data.category_name || "مكواة فقط";
-        ironingCategoryActive = data.is_active !== false;
-      }
-    } catch (ironingCategoryError) {
-      console.warn("GDC ironing category settings are unavailable; using defaults:", ironingCategoryError);
-    }
-
-    // Keep the independent ironing category out of normal service-product
-    // selectors and avoid showing it twice if someone added a duplicate row.
+    // All service groups, including "مكواة فقط", are normal editable rows
+    // in gdc_service_categories and are included in the regular item selectors.
     categories = (categoryResult.data || [])
       .filter(row => row.is_active !== false)
       .map(row => row.name)
-      .filter(name => Boolean(name) && name.trim() !== ironingCategoryName);
+      .filter(Boolean);
     products = (productResult.data || []).map(mapProduct);
     branches = (branchResult.data || []).map(row => ({
       id: String(row.id), name: row.name || "", phone: row.phone || "", address: row.address || "", map: row.map_url || "", active: row.is_active !== false
@@ -170,7 +140,7 @@
 
   function updateMetrics() {
     if ($("metricProducts")) $("metricProducts").textContent = products.length;
-    if ($("metricCategories")) $("metricCategories").textContent = categories.length + (ironingCategoryActive ? 1 : 0);
+    if ($("metricCategories")) $("metricCategories").textContent = categories.length;
     if ($("metricPriced")) $("metricPriced").textContent = products.filter(product => product.price !== "" && Number(product.price) > 0).length;
   }
 
@@ -234,66 +204,45 @@
   }
 
   function renderCategories() {
-    if (!$("categoryCards")) return;
-    const standardCards = categories.map(category => `<article class="category-card"><div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-category="${safe(category)}">تعديل</button><button type="button" class="category-delete-btn" data-remove-category="${safe(category)}">حذف</button></div></article>`).join("");
-    const ironingCountLabel = ironingPriceCount === null ? "قائمة أسعار مستقلة" : `${ironingPriceCount.toLocaleString("ar-EG")} صنف`;
-    const ironingCard = ironingCategoryActive ? `<article class="category-card category-card-ironing"><div><b>${safe(ironingCategoryName)}</b><small>${ironingCountLabel}</small></div><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-ironing-category>تعديل</button><button type="button" class="category-delete-btn" data-remove-ironing-category>حذف</button></div></article>` : "";
-    $("categoryCards").innerHTML = standardCards + ironingCard || '<div class="empty-state">لا توجد أقسام مسجلة بعد.</div>';
+    if (!$('categoryCards')) return;
+    const cards = categories.map(category => `
+      <article class="category-card">
+        <div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div>
+        <div class="category-card-actions">
+          <button type="button" class="category-edit-btn" data-edit-category="${safe(category)}">تعديل</button>
+          <button type="button" class="category-delete-btn" data-remove-category="${safe(category)}">حذف</button>
+        </div>
+      </article>
+    `).join('');
+    $('categoryCards').innerHTML = cards || '<div class="empty-state">لا توجد أقسام مسجلة بعد.</div>';
 
-    document.querySelectorAll("[data-edit-category]").forEach(button => {
-      button.onclick = () => openCategoryEditor("service", button.dataset.editCategory);
+    document.querySelectorAll('[data-edit-category]').forEach(button => {
+      button.onclick = () => openCategoryEditor('service', button.dataset.editCategory);
     });
-    document.querySelectorAll("[data-remove-category]").forEach(button => {
+
+    document.querySelectorAll('[data-remove-category]').forEach(button => {
       button.onclick = async () => {
         const name = button.dataset.removeCategory;
-        if (products.some(product => product.category === name)) {
-          toast("انقل الأصناف إلى قسم آخر قبل حذف هذا القسم.", true);
+        const linkedCount = products.filter(product => product.category === name).length;
+        if (linkedCount > 0) {
+          toast(`لا يمكن حذف القسم قبل نقل أو حذف الأصناف المرتبطة به (${linkedCount} صنف).`, true);
           return;
         }
         if (!confirm(`حذف القسم "${name}"؟`)) return;
         button.disabled = true;
         try {
-          const { error } = await client.from(TABLES.categories).delete().eq("name", name);
+          const { error } = await client.from(TABLES.categories).delete().eq('name', name);
           if (error) throw error;
           categories = categories.filter(category => category !== name);
           renderAll();
-          toast("تم حذف القسم وحفظ التغيير في قاعدة البيانات.");
+          toast('تم حذف القسم وحفظ التغيير في قاعدة البيانات.');
         } catch (error) {
-          console.error("GDC delete category failed:", error);
-          toast(`تعذر حذف القسم: ${error.message || "خطأ غير معروف"}`, true);
+          console.error('GDC delete category failed:', error);
+          toast(`تعذر حذف القسم: ${error.message || 'خطأ غير معروف'}`, true);
           button.disabled = false;
         }
       };
     });
-
-    const editIroningButton = document.querySelector("[data-edit-ironing-category]");
-    if (editIroningButton) editIroningButton.onclick = () => openCategoryEditor("ironing", ironingCategoryName);
-
-    const deleteIroningButton = document.querySelector("[data-remove-ironing-category]");
-    if (deleteIroningButton) deleteIroningButton.onclick = async () => {
-      if (!confirm(`حذف قسم "${ironingCategoryName}"؟ سيتم إخفاء القسم وأسعار الكي من صفحة العملاء، مع الاحتفاظ بالبيانات في قاعدة البيانات.`)) return;
-      deleteIroningButton.disabled = true;
-      try {
-        const { error: configError } = await client.from(TABLES.ironingCategory).upsert({
-          id: 1, category_name: ironingCategoryName, is_active: false, updated_at: new Date().toISOString()
-        }, { onConflict: "id" });
-        if (configError) throw configError;
-        const { error: pricesError } = await client.from("gdc_ironing_prices")
-          .update({ is_active: false, updated_at: new Date().toISOString() }).eq("is_active", true);
-        if (pricesError) {
-          await client.from(TABLES.ironingCategory).update({ is_active: true }).eq("id", 1);
-          throw pricesError;
-        }
-        ironingCategoryActive = false;
-        ironingPriceCount = 0;
-        renderAll();
-        toast("تم حذف قسم الكي من العرض مع الاحتفاظ ببياناته.");
-      } catch (error) {
-        console.error("GDC deactivate ironing category failed:", error);
-        toast(`تعذر حذف قسم الكي: ${error.message || "تأكد من تشغيل ملف إعداد القسم المستقل."}`, true);
-        deleteIroningButton.disabled = false;
-      }
-    };
   }
 
   function validMapUrl(value) {
@@ -677,44 +626,34 @@
     const editingType = $("categoryEditingType")?.value || "";
     if (!name) return;
 
-    const isIroningEdit = editingType === "ironing";
-    if (isIroningEdit) {
-      if (name !== originalName && categories.includes(name)) {
-        toast("اسم القسم مستخدم بالفعل.", true);
-        return;
-      }
-    } else {
-      if (name === ironingCategoryName) { toast("هذا الاسم مستخدم للقسم المستقل.", true); return; }
-      if (name !== originalName && categories.includes(name)) { toast("هذا القسم موجود بالفعل.", true); return; }
+    if (name !== originalName && categories.includes(name)) {
+      toast("هذا القسم موجود بالفعل.", true);
+      return;
     }
 
     setBusy(true);
     try {
-      if (isIroningEdit) {
+      if (originalName) {
         if (name !== originalName) {
-          const { error } = await client.from(TABLES.ironingCategory).upsert({
-            id: 1, category_name: name, is_active: true, updated_at: new Date().toISOString()
-          }, { onConflict: "id" });
-          if (error) throw error;
-          ironingCategoryName = name;
-          ironingCategoryActive = true;
-          toast("تم تعديل اسم قسم الكي وحفظه.");
-        }
-      } else if (originalName) {
-        if (name !== originalName) {
-          const { error: productError } = await client.from(TABLES.products).update({ category_name: name }).eq("category_name", originalName);
+          const { error: productError } = await client.from(TABLES.products)
+            .update({ category_name: name }).eq("category_name", originalName);
           if (productError) throw productError;
-          const { error: categoryError } = await client.from(TABLES.categories).update({ name }).eq("name", originalName);
+
+          const { error: categoryError } = await client.from(TABLES.categories)
+            .update({ name }).eq("name", originalName);
           if (categoryError) {
             await client.from(TABLES.products).update({ category_name: originalName }).eq("category_name", name);
             throw categoryError;
           }
+
           categories = categories.map(category => category === originalName ? name : category);
           products = products.map(product => product.category === originalName ? { ...product, category: name } : product);
           toast("تم تعديل اسم القسم وتحديث الأصناف المرتبطة به.");
         }
       } else {
-        const { data, error } = await client.from(TABLES.categories).insert({ name, sort_order: categories.length * 10, is_active: true }).select("id,name,sort_order,is_active").single();
+        const { data, error } = await client.from(TABLES.categories)
+          .insert({ name, sort_order: categories.length * 10, is_active: true })
+          .select("id,name,sort_order,is_active").single();
         if (error) throw error;
         categories.push(data.name);
         toast("تم حفظ القسم في Supabase.");
