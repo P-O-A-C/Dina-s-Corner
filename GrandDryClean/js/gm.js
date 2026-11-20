@@ -237,7 +237,7 @@
     if (!$("categoryCards")) return;
     const standardCards = categories.map(category => `<article class="category-card"><div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-category="${safe(category)}">تعديل</button><button type="button" class="category-delete-btn" data-remove-category="${safe(category)}">حذف</button></div></article>`).join("");
     const ironingCountLabel = ironingPriceCount === null ? "قائمة أسعار مستقلة" : `${ironingPriceCount.toLocaleString("ar-EG")} صنف`;
-    const ironingCard = ironingCategoryActive ? `<article class="category-card category-card-ironing"><div><b>${safe(ironingCategoryName)}</b><small>${ironingCountLabel}</small></div><span class="category-type-tag">قسم مستقل</span><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-ironing-category>تعديل</button><button type="button" class="category-delete-btn" data-remove-ironing-category>حذف</button></div></article>` : "";
+    const ironingCard = ironingCategoryActive ? `<article class="category-card category-card-ironing"><div><b>${safe(ironingCategoryName)}</b><small>${ironingCountLabel}</small></div><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-ironing-category>تعديل</button><button type="button" class="category-delete-btn" data-remove-ironing-category>حذف</button></div></article>` : "";
     $("categoryCards").innerHTML = standardCards + ironingCard || '<div class="empty-state">لا توجد أقسام مسجلة بعد.</div>';
 
     document.querySelectorAll("[data-edit-category]").forEach(button => {
