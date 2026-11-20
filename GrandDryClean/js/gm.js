@@ -208,10 +208,21 @@
 
   function renderCategories() {
     if (!$("categoryCards")) return;
-    const standardCards = categories.map(category => `<article class="category-card"><div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div><button type="button" data-remove-category="${safe(category)}">حذف القسم</button></article>`).join("");
+    const standardCards = categories.map(category => `<article class="category-card"><div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-category="${safe(category)}">تعديل</button><button type="button" class="category-delete-btn" data-remove-category="${safe(category)}">حذف</button></div></article>`).join("");
     const ironingCountLabel = ironingPriceCount === null ? "قائمة أسعار مستقلة" : `${ironingPriceCount.toLocaleString("ar-EG")} صنف`;
-    const ironingCard = `<article class="category-card category-card-ironing"><div><b>مكواة فقط</b><small>${ironingCountLabel}</small></div><span class="category-type-tag">قسم مستقل</span></article>`;
+    const ironingCard = `<article class="category-card category-card-ironing"><div><b>مكواة فقط</b><small>${ironingCountLabel}</small></div><span class="category-type-tag">قسم مستقل</span><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-ironing-category>تعديل</button><button type="button" class="category-delete-btn" data-remove-ironing-category>حذف</button></div></article>`;
     $("categoryCards").innerHTML = standardCards + ironingCard;
+    document.querySelectorAll("[data-edit-category]").forEach(button => {
+      button.onclick = () => {
+        const oldName = button.dataset.editCategory;
+        $("categoryForm").reset();
+        $("categoryEditingOriginal").value = oldName;
+        $("newCategoryName").value = oldName;
+        $("categoryForm").querySelector("h2").textContent = "تعديل القسم";
+        $("categoryForm").querySelector('button[type="submit"]').textContent = "حفظ التعديل";
+        $("categoryShade").classList.add("show");
+      };
+    });
     document.querySelectorAll("[data-remove-category]").forEach(button => {
       button.onclick = async () => {
         const name = button.dataset.removeCategory;
@@ -231,6 +242,25 @@
         }
       };
     });
+    const editIroningButton = document.querySelector("[data-edit-ironing-category]");
+    if (editIroningButton) editIroningButton.onclick = () => toast("اسم قسم مكواة فقط ثابت لأنه قسم مستقل مرتبط بجدول أسعار الكي.", true);
+    const deleteIroningButton = document.querySelector("[data-remove-ironing-category]");
+    if (deleteIroningButton) deleteIroningButton.onclick = async () => {
+      const count = ironingPriceCount || 0;
+      if (!confirm(`حذف قسم مكواة فقط؟ سيتم حذف ${count} سعرًا من جدول أسعار الكي نهائيًا.`)) return;
+      deleteIroningButton.disabled = true;
+      try {
+        const { error } = await client.from("gdc_ironing_prices").delete().not("id", "is", null);
+        if (error) throw error;
+        ironingPriceCount = 0;
+        renderCategories();
+        toast("تم حذف أسعار قسم مكواة فقط.");
+      } catch (error) {
+        console.error("GDC delete ironing prices failed:", error);
+        toast(`تعذر حذف أسعار الكي: ${error.message || "خطأ غير معروف"}`, true);
+        deleteIroningButton.disabled = false;
+      }
+    };
   }
 
   function validMapUrl(value) {
@@ -610,24 +640,44 @@
     event.preventDefault();
     if (busy) return;
     const name = $("newCategoryName").value.trim();
+    const originalName = $("categoryEditingOriginal")?.value || "";
     if (!name) return;
     if (name === "مكواة فقط") { toast("قسم مكواة فقط مستقل وتتم إدارة أسعاره في قائمته الخاصة.", true); return; }
-    if (categories.includes(name)) { toast("هذا القسم موجود بالفعل.", true); return; }
+    if (name !== originalName && categories.includes(name)) { toast("هذا القسم موجود بالفعل.", true); return; }
     setBusy(true);
     try {
-      const { data, error } = await client.from(TABLES.categories).insert({ name, sort_order: categories.length * 10, is_active: true }).select("id,name,sort_order,is_active").single();
-      if (error) throw error;
-      categories.push(data.name);
+      if (originalName) {
+        if (name === originalName) {
+          $("categoryShade").classList.remove("show");
+          return;
+        }
+        const { error: productError } = await client.from(TABLES.products).update({ category_name: name }).eq("category_name", originalName);
+        if (productError) throw productError;
+        const { error: categoryError } = await client.from(TABLES.categories).update({ name }).eq("name", originalName);
+        if (categoryError) {
+          await client.from(TABLES.products).update({ category_name: originalName }).eq("category_name", name);
+          throw categoryError;
+        }
+        categories = categories.map(category => category === originalName ? name : category);
+        products = products.map(product => product.category === originalName ? { ...product, category: name } : product);
+        toast("تم تعديل اسم القسم وتحديث الأصناف المرتبطة به.");
+      } else {
+        const { data, error } = await client.from(TABLES.categories).insert({ name, sort_order: categories.length * 10, is_active: true }).select("id,name,sort_order,is_active").single();
+        if (error) throw error;
+        categories.push(data.name);
+        toast("تم حفظ القسم في Supabase.");
+      }
       $("categoryShade").classList.remove("show");
       $("categoryForm").reset();
+      $("categoryEditingOriginal").value = "";
+      $("categoryForm").querySelector("h2").textContent = "إضافة قسم";
+      $("categoryForm").querySelector('button[type="submit"]').textContent = "إضافة القسم";
       renderAll();
-      toast("تم حفظ القسم في Supabase.");
     } catch (error) {
       console.error("GDC save category failed:", error);
       toast(`تعذر حفظ القسم: ${error.message || "خطأ غير معروف"}`, true);
     } finally { setBusy(false); }
   }
-
   // Verify the real browser session against the same RLS function used by gdc_branches.
   // This distinguishes a database policy problem from a stale/wrong browser session.
   async function verifyBranchManagerSession() {
@@ -708,7 +758,7 @@
     if ($("productForm")) $("productForm").addEventListener("submit", saveProduct);
     if ($("productSearch")) $("productSearch").addEventListener("input", renderProducts);
     if ($("categoryFilter")) $("categoryFilter").addEventListener("change", renderProducts);
-    if ($("newCategoryBtn")) $("newCategoryBtn").onclick = () => { $("categoryForm").reset(); $("categoryShade").classList.add("show"); };
+    if ($("newCategoryBtn")) $("newCategoryBtn").onclick = () => { $("categoryForm").reset(); $("categoryEditingOriginal").value = ""; $("categoryForm").querySelector("h2").textContent = "إضافة قسم"; $("categoryForm").querySelector('button[type="submit"]').textContent = "إضافة القسم"; $("categoryShade").classList.add("show"); };
     if ($("categoryClose")) $("categoryClose").onclick = () => $("categoryShade").classList.remove("show");
     if ($("cancelCategory")) $("cancelCategory").onclick = () => $("categoryShade").classList.remove("show");
     if ($("categoryShade")) $("categoryShade").addEventListener("click", event => { if (event.target === $("categoryShade")) $("categoryShade").classList.remove("show"); });

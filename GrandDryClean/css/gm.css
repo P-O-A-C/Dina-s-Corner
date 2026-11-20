@@ -111,3 +111,12 @@ body { background: linear-gradient(145deg,#f8fcff 0%,#f1f7fb 100%); color:var(--
 .quick-action:focus-visible,.text-button:focus-visible{outline:3px solid rgba(21,153,204,.35);outline-offset:3px}
 .quick-action:active{transform:translateY(1px)}
 .text-button{display:inline-flex;align-items:center;text-decoration:none;cursor:pointer}
+
+.category-card-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.category-card-actions button{border:1px solid #dce5e8;border-radius:9px;padding:8px 13px;font-size:12px;font-weight:700;cursor:pointer;transition:.18s}
+.category-card-actions .category-edit-btn{background:#eef6f2;color:#075c45;border-color:#d5e7de}
+.category-card-actions .category-delete-btn{background:#fff1f1;color:#b4232c;border-color:#f0d5d5}
+.category-card-actions button:hover{filter:brightness(.97);transform:translateY(-1px)}
+.category-card-actions button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.category-card{gap:14px}
+@media(max-width:520px){.category-card{align-items:flex-start;flex-wrap:wrap}.category-card-actions{width:100%;justify-content:flex-start}}
