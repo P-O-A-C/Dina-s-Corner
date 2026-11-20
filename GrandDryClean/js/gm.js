@@ -20,6 +20,7 @@
   let client = null;
   let products = [];
   let categories = [];
+  let ironingPriceCount = null;
   let branches = [];
   let homeSlides = [];
   let homeSlidesReady = false;
@@ -117,7 +118,27 @@
     const [categoryResult, productResult, branchResult, settingsResult] = results;
     for (const result of results) if (result.error) throw result.error;
 
-    categories = (categoryResult.data || []).filter(row => row.is_active !== false).map(row => row.name).filter(Boolean);
+    // "مكواة فقط" is stored in its own prices table, not in the standard
+    // service-category table. Load its count separately so a missing table or
+    // policy does not prevent the rest of the management dashboard from loading.
+    try {
+      const { count, error } = await client
+        .from("gdc_ironing_prices")
+        .select("id", { count: "exact", head: true })
+        .eq("is_active", true);
+      if (error) throw error;
+      ironingPriceCount = Number.isFinite(count) ? count : 0;
+    } catch (ironingError) {
+      ironingPriceCount = null;
+      console.warn("GDC ironing category count is unavailable:", ironingError);
+    }
+
+    // Keep the independent ironing category out of normal service-product
+    // selectors and avoid showing it twice if someone added a duplicate row.
+    categories = (categoryResult.data || [])
+      .filter(row => row.is_active !== false)
+      .map(row => row.name)
+      .filter(name => Boolean(name) && name.trim() !== "مكواة فقط");
     products = (productResult.data || []).map(mapProduct);
     branches = (branchResult.data || []).map(row => ({
       id: String(row.id), name: row.name || "", phone: row.phone || "", address: row.address || "", map: row.map_url || "", active: row.is_active !== false
@@ -135,7 +156,7 @@
 
   function updateMetrics() {
     if ($("metricProducts")) $("metricProducts").textContent = products.length;
-    if ($("metricCategories")) $("metricCategories").textContent = categories.length;
+    if ($("metricCategories")) $("metricCategories").textContent = categories.length + 1;
     if ($("metricPriced")) $("metricPriced").textContent = products.filter(product => product.price !== "" && Number(product.price) > 0).length;
   }
 
@@ -187,7 +208,10 @@
 
   function renderCategories() {
     if (!$("categoryCards")) return;
-    $("categoryCards").innerHTML = categories.map(category => `<article class="category-card"><div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div><button type="button" data-remove-category="${safe(category)}">حذف القسم</button></article>`).join("") || '<div class="empty-state">لا توجد أقسام مسجلة بعد.</div>';
+    const standardCards = categories.map(category => `<article class="category-card"><div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div><button type="button" data-remove-category="${safe(category)}">حذف القسم</button></article>`).join("");
+    const ironingCountLabel = ironingPriceCount === null ? "قائمة أسعار مستقلة" : `${ironingPriceCount.toLocaleString("ar-EG")} صنف`;
+    const ironingCard = `<article class="category-card category-card-ironing"><div><b>مكواة فقط</b><small>${ironingCountLabel}</small></div><span class="category-type-tag">قسم مستقل</span></article>`;
+    $("categoryCards").innerHTML = standardCards + ironingCard;
     document.querySelectorAll("[data-remove-category]").forEach(button => {
       button.onclick = async () => {
         const name = button.dataset.removeCategory;
@@ -358,7 +382,7 @@
 
   async function addHomeSlide(file) {
     if (!file || !file.type.startsWith('image/')) { toast('اختر ملف صورة صالحًا.', true); return; }
-    if (homeSlides.length >= 200) { toast('يمكن إضافة 200 صور كحد أقصى.', true); return; }
+    if (homeSlides.length >= 6) { toast('يمكن إضافة 6 صور كحد أقصى.', true); return; }
     const input = $('homeSlideUpload'); if (input) input.disabled = true;
     let uploaded = null;
     try {
@@ -587,6 +611,7 @@
     if (busy) return;
     const name = $("newCategoryName").value.trim();
     if (!name) return;
+    if (name === "مكواة فقط") { toast("قسم مكواة فقط مستقل وتتم إدارة أسعاره في قائمته الخاصة.", true); return; }
     if (categories.includes(name)) { toast("هذا القسم موجود بالفعل.", true); return; }
     setBusy(true);
     try {
