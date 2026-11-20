@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07509B">
   <title>POAC | GRAND DRY CLEAN - DryClean</title>
-  <link rel="stylesheet" href="css/gm.css?v=20261120-admin-categories-ironing-v1">
+  <link rel="stylesheet" href="css/gm.css?v=20261120-gm-category-management-v2">
 </head>
 <body class="auth-pending">
   <div id="authGate" class="auth-gate">جارٍ التحقق من صلاحيات حساب GRAND DRY CLEAN…</div>
@@ -28,10 +28,8 @@
       <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
       <div><span class="top-eyebrow">DryClean</span><b>لوحة إدارة المغسلة</b></div>
       <button class="back-button" id="backToOverview" type="button" hidden aria-label="الرجوع إلى الصفحة الرئيسية للإدارة"><span aria-hidden="true">↩</span> رجوع</button>
-      <div class="top-actions"><span class="role-name">GRAND DRY CLEAN</span></div>
     </header>
 
-    <div id="dbStatus" class="db-status" role="status" aria-live="polite">جارٍ الاتصال بقاعدة البيانات…</div>
 
     <section class="view active" id="overview">
       <div class="welcome-row"><div><span class="eyebrow">BUSINESS OVERVIEW</span><h1>أهلاً بك في GRAND DRY CLEAN</h1><p>من هنا تقدر تدير الخدمات والأقسام والأسعار.</p></div><span class="date-label" id="todayLabel"></span></div>
@@ -137,7 +135,7 @@
     <form class="edit-modal compact-modal" id="categoryForm">
       <button type="button" class="modal-close" id="categoryClose">×</button>
       <span class="eyebrow">SERVICE CATEGORY</span><h2>إضافة قسم</h2>
-      <input type="hidden" id="categoryEditingOriginal"><label>اسم القسم<input id="newCategoryName" required placeholder="مثال: غسيل وكي"></label>
+      <input type="hidden" id="categoryEditingOriginal"><input type="hidden" id="categoryEditingType"><label>اسم القسم<input id="newCategoryName" required placeholder="مثال: غسيل وكي"></label>
       <div class="modal-actions"><button type="button" class="secondary-action" id="cancelCategory">إلغاء</button><button type="submit" class="primary-action">إضافة القسم</button></div>
     </form>
   </div>
@@ -146,6 +144,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <script src="../assets/config.js"></script>
 <script src="js/session-guard.js?v=20261119-grand-brand-v1"></script>
-<script src="js/gm.js?v=20261120-admin-categories-ironing-v1"></script>
+<script src="js/gm.js?v=20261120-gm-category-management-v2"></script>
 </body>
 </html>

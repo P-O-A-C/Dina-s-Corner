@@ -7,6 +7,7 @@
     products: "gdc_service_items",
     branches: "gdc_branches",
     settings: "gdc_settings",
+    ironingCategory: "gdc_ironing_category_config",
     homeSlides: "gdc_home_slides"
   };
   const IMAGE_BUCKET = "gdc-service-images";
@@ -21,6 +22,8 @@
   let products = [];
   let categories = [];
   let ironingPriceCount = null;
+  let ironingCategoryName = "مكواة فقط";
+  let ironingCategoryActive = true;
   let branches = [];
   let homeSlides = [];
   let homeSlidesReady = false;
@@ -132,13 +135,24 @@
       ironingPriceCount = null;
       console.warn("GDC ironing category count is unavailable:", ironingError);
     }
+    try {
+      const { data, error } = await client.from(TABLES.ironingCategory)
+        .select("id,category_name,is_active").eq("id", 1).maybeSingle();
+      if (error) throw error;
+      if (data) {
+        ironingCategoryName = data.category_name || "مكواة فقط";
+        ironingCategoryActive = data.is_active !== false;
+      }
+    } catch (ironingCategoryError) {
+      console.warn("GDC ironing category settings are unavailable; using defaults:", ironingCategoryError);
+    }
 
     // Keep the independent ironing category out of normal service-product
     // selectors and avoid showing it twice if someone added a duplicate row.
     categories = (categoryResult.data || [])
       .filter(row => row.is_active !== false)
       .map(row => row.name)
-      .filter(name => Boolean(name) && name.trim() !== "مكواة فقط");
+      .filter(name => Boolean(name) && name.trim() !== ironingCategoryName);
     products = (productResult.data || []).map(mapProduct);
     branches = (branchResult.data || []).map(row => ({
       id: String(row.id), name: row.name || "", phone: row.phone || "", address: row.address || "", map: row.map_url || "", active: row.is_active !== false
@@ -156,7 +170,7 @@
 
   function updateMetrics() {
     if ($("metricProducts")) $("metricProducts").textContent = products.length;
-    if ($("metricCategories")) $("metricCategories").textContent = categories.length + 1;
+    if ($("metricCategories")) $("metricCategories").textContent = categories.length + (ironingCategoryActive ? 1 : 0);
     if ($("metricPriced")) $("metricPriced").textContent = products.filter(product => product.price !== "" && Number(product.price) > 0).length;
   }
 
@@ -206,27 +220,36 @@
     if ($("pCategory")) $("pCategory").innerHTML = categories.map(category => `<option>${safe(category)}</option>`).join("");
   }
 
+  function openCategoryEditor(type, name) {
+    const form = $("categoryForm");
+    if (!form) return;
+    form.reset();
+    $("categoryEditingOriginal").value = name || "";
+    $("categoryEditingType").value = type || "";
+    $("newCategoryName").value = name || "";
+    form.querySelector("h2").textContent = name ? "تعديل القسم" : "إضافة قسم";
+    form.querySelector('button[type="submit"]').textContent = name ? "حفظ التعديل" : "إضافة القسم";
+    $("categoryShade").classList.add("show");
+    $("newCategoryName").focus();
+  }
+
   function renderCategories() {
     if (!$("categoryCards")) return;
     const standardCards = categories.map(category => `<article class="category-card"><div><b>${safe(category)}</b><small>${products.filter(product => product.category === category).length} صنف</small></div><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-category="${safe(category)}">تعديل</button><button type="button" class="category-delete-btn" data-remove-category="${safe(category)}">حذف</button></div></article>`).join("");
     const ironingCountLabel = ironingPriceCount === null ? "قائمة أسعار مستقلة" : `${ironingPriceCount.toLocaleString("ar-EG")} صنف`;
-    const ironingCard = `<article class="category-card category-card-ironing"><div><b>مكواة فقط</b><small>${ironingCountLabel}</small></div><span class="category-type-tag">قسم مستقل</span><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-ironing-category>تعديل</button><button type="button" class="category-delete-btn" data-remove-ironing-category>حذف</button></div></article>`;
-    $("categoryCards").innerHTML = standardCards + ironingCard;
+    const ironingCard = ironingCategoryActive ? `<article class="category-card category-card-ironing"><div><b>${safe(ironingCategoryName)}</b><small>${ironingCountLabel}</small></div><span class="category-type-tag">قسم مستقل</span><div class="category-card-actions"><button type="button" class="category-edit-btn" data-edit-ironing-category>تعديل</button><button type="button" class="category-delete-btn" data-remove-ironing-category>حذف</button></div></article>` : "";
+    $("categoryCards").innerHTML = standardCards + ironingCard || '<div class="empty-state">لا توجد أقسام مسجلة بعد.</div>';
+
     document.querySelectorAll("[data-edit-category]").forEach(button => {
-      button.onclick = () => {
-        const oldName = button.dataset.editCategory;
-        $("categoryForm").reset();
-        $("categoryEditingOriginal").value = oldName;
-        $("newCategoryName").value = oldName;
-        $("categoryForm").querySelector("h2").textContent = "تعديل القسم";
-        $("categoryForm").querySelector('button[type="submit"]').textContent = "حفظ التعديل";
-        $("categoryShade").classList.add("show");
-      };
+      button.onclick = () => openCategoryEditor("service", button.dataset.editCategory);
     });
     document.querySelectorAll("[data-remove-category]").forEach(button => {
       button.onclick = async () => {
         const name = button.dataset.removeCategory;
-        if (products.some(product => product.category === name)) { toast("انقل الأصناف إلى قسم آخر قبل حذف هذا القسم.", true); return; }
+        if (products.some(product => product.category === name)) {
+          toast("انقل الأصناف إلى قسم آخر قبل حذف هذا القسم.", true);
+          return;
+        }
         if (!confirm(`حذف القسم "${name}"؟`)) return;
         button.disabled = true;
         try {
@@ -242,22 +265,32 @@
         }
       };
     });
+
     const editIroningButton = document.querySelector("[data-edit-ironing-category]");
-    if (editIroningButton) editIroningButton.onclick = () => toast("اسم قسم مكواة فقط ثابت لأنه قسم مستقل مرتبط بجدول أسعار الكي.", true);
+    if (editIroningButton) editIroningButton.onclick = () => openCategoryEditor("ironing", ironingCategoryName);
+
     const deleteIroningButton = document.querySelector("[data-remove-ironing-category]");
     if (deleteIroningButton) deleteIroningButton.onclick = async () => {
-      const count = ironingPriceCount || 0;
-      if (!confirm(`حذف قسم مكواة فقط؟ سيتم حذف ${count} سعرًا من جدول أسعار الكي نهائيًا.`)) return;
+      if (!confirm(`حذف قسم "${ironingCategoryName}"؟ سيتم إخفاء القسم وأسعار الكي من صفحة العملاء، مع الاحتفاظ بالبيانات في قاعدة البيانات.`)) return;
       deleteIroningButton.disabled = true;
       try {
-        const { error } = await client.from("gdc_ironing_prices").delete().not("id", "is", null);
-        if (error) throw error;
+        const { error: configError } = await client.from(TABLES.ironingCategory).upsert({
+          id: 1, category_name: ironingCategoryName, is_active: false, updated_at: new Date().toISOString()
+        }, { onConflict: "id" });
+        if (configError) throw configError;
+        const { error: pricesError } = await client.from("gdc_ironing_prices")
+          .update({ is_active: false, updated_at: new Date().toISOString() }).eq("is_active", true);
+        if (pricesError) {
+          await client.from(TABLES.ironingCategory).update({ is_active: true }).eq("id", 1);
+          throw pricesError;
+        }
+        ironingCategoryActive = false;
         ironingPriceCount = 0;
-        renderCategories();
-        toast("تم حذف أسعار قسم مكواة فقط.");
+        renderAll();
+        toast("تم حذف قسم الكي من العرض مع الاحتفاظ ببياناته.");
       } catch (error) {
-        console.error("GDC delete ironing prices failed:", error);
-        toast(`تعذر حذف أسعار الكي: ${error.message || "خطأ غير معروف"}`, true);
+        console.error("GDC deactivate ironing category failed:", error);
+        toast(`تعذر حذف قسم الكي: ${error.message || "تأكد من تشغيل ملف إعداد القسم المستقل."}`, true);
         deleteIroningButton.disabled = false;
       }
     };
@@ -641,26 +674,45 @@
     if (busy) return;
     const name = $("newCategoryName").value.trim();
     const originalName = $("categoryEditingOriginal")?.value || "";
+    const editingType = $("categoryEditingType")?.value || "";
     if (!name) return;
-    if (name === "مكواة فقط") { toast("قسم مكواة فقط مستقل وتتم إدارة أسعاره في قائمته الخاصة.", true); return; }
-    if (name !== originalName && categories.includes(name)) { toast("هذا القسم موجود بالفعل.", true); return; }
+
+    const isIroningEdit = editingType === "ironing";
+    if (isIroningEdit) {
+      if (name !== originalName && categories.includes(name)) {
+        toast("اسم القسم مستخدم بالفعل.", true);
+        return;
+      }
+    } else {
+      if (name === ironingCategoryName) { toast("هذا الاسم مستخدم للقسم المستقل.", true); return; }
+      if (name !== originalName && categories.includes(name)) { toast("هذا القسم موجود بالفعل.", true); return; }
+    }
+
     setBusy(true);
     try {
-      if (originalName) {
-        if (name === originalName) {
-          $("categoryShade").classList.remove("show");
-          return;
+      if (isIroningEdit) {
+        if (name !== originalName) {
+          const { error } = await client.from(TABLES.ironingCategory).upsert({
+            id: 1, category_name: name, is_active: true, updated_at: new Date().toISOString()
+          }, { onConflict: "id" });
+          if (error) throw error;
+          ironingCategoryName = name;
+          ironingCategoryActive = true;
+          toast("تم تعديل اسم قسم الكي وحفظه.");
         }
-        const { error: productError } = await client.from(TABLES.products).update({ category_name: name }).eq("category_name", originalName);
-        if (productError) throw productError;
-        const { error: categoryError } = await client.from(TABLES.categories).update({ name }).eq("name", originalName);
-        if (categoryError) {
-          await client.from(TABLES.products).update({ category_name: originalName }).eq("category_name", name);
-          throw categoryError;
+      } else if (originalName) {
+        if (name !== originalName) {
+          const { error: productError } = await client.from(TABLES.products).update({ category_name: name }).eq("category_name", originalName);
+          if (productError) throw productError;
+          const { error: categoryError } = await client.from(TABLES.categories).update({ name }).eq("name", originalName);
+          if (categoryError) {
+            await client.from(TABLES.products).update({ category_name: originalName }).eq("category_name", name);
+            throw categoryError;
+          }
+          categories = categories.map(category => category === originalName ? name : category);
+          products = products.map(product => product.category === originalName ? { ...product, category: name } : product);
+          toast("تم تعديل اسم القسم وتحديث الأصناف المرتبطة به.");
         }
-        categories = categories.map(category => category === originalName ? name : category);
-        products = products.map(product => product.category === originalName ? { ...product, category: name } : product);
-        toast("تم تعديل اسم القسم وتحديث الأصناف المرتبطة به.");
       } else {
         const { data, error } = await client.from(TABLES.categories).insert({ name, sort_order: categories.length * 10, is_active: true }).select("id,name,sort_order,is_active").single();
         if (error) throw error;
@@ -670,6 +722,7 @@
       $("categoryShade").classList.remove("show");
       $("categoryForm").reset();
       $("categoryEditingOriginal").value = "";
+      $("categoryEditingType").value = "";
       $("categoryForm").querySelector("h2").textContent = "إضافة قسم";
       $("categoryForm").querySelector('button[type="submit"]').textContent = "إضافة القسم";
       renderAll();
@@ -678,6 +731,7 @@
       toast(`تعذر حفظ القسم: ${error.message || "خطأ غير معروف"}`, true);
     } finally { setBusy(false); }
   }
+
   // Verify the real browser session against the same RLS function used by gdc_branches.
   // This distinguishes a database policy problem from a stale/wrong browser session.
   async function verifyBranchManagerSession() {
@@ -758,9 +812,9 @@
     if ($("productForm")) $("productForm").addEventListener("submit", saveProduct);
     if ($("productSearch")) $("productSearch").addEventListener("input", renderProducts);
     if ($("categoryFilter")) $("categoryFilter").addEventListener("change", renderProducts);
-    if ($("newCategoryBtn")) $("newCategoryBtn").onclick = () => { $("categoryForm").reset(); $("categoryEditingOriginal").value = ""; $("categoryForm").querySelector("h2").textContent = "إضافة قسم"; $("categoryForm").querySelector('button[type="submit"]').textContent = "إضافة القسم"; $("categoryShade").classList.add("show"); };
-    if ($("categoryClose")) $("categoryClose").onclick = () => $("categoryShade").classList.remove("show");
-    if ($("cancelCategory")) $("cancelCategory").onclick = () => $("categoryShade").classList.remove("show");
+    if ($("newCategoryBtn")) $("newCategoryBtn").onclick = () => openCategoryEditor("", "");
+    if ($("categoryClose")) $("categoryClose").onclick = () => { $("categoryShade").classList.remove("show"); $("categoryEditingType").value = ""; };
+    if ($("cancelCategory")) $("cancelCategory").onclick = () => { $("categoryShade").classList.remove("show"); $("categoryEditingType").value = ""; };
     if ($("categoryShade")) $("categoryShade").addEventListener("click", event => { if (event.target === $("categoryShade")) $("categoryShade").classList.remove("show"); });
     if ($("categoryForm")) $("categoryForm").addEventListener("submit", saveCategory);
     if ($("branchForm")) $("branchForm").addEventListener("submit", saveBranch);
