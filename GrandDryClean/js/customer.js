@@ -5,6 +5,21 @@
   let dots = Array.from(document.querySelectorAll(".slider-dot"));
   const slider = document.querySelector(".promo-slider");
 
+  // These are the two confirmed public branch locations supplied for GRAND DRY CLEAN.
+  // They are also synchronized to gdc_branches by the accompanying SQL script.
+  const REQUESTED_BRANCHES = [
+    {
+      name: "فرع كارفور – جراند سيتي",
+      address: "كارفور، زهراء المعادي، عمارة C10، جراند سيتي – معمار المرشدي، شارع السعادة، القاهرة",
+      map_url: "https://maps.app.goo.gl/o4SEa5YtgdVmok287"
+    },
+    {
+      name: "فرع أمام شبانة – شارع الخمسين",
+      address: "زهراء المعادي، عمارة 1، بلوك 42، الشطر الثامن، شارع الخمسين، أمام شبانة، القاهرة",
+      map_url: "https://maps.app.goo.gl/3rMbgmgMvmLA5yym7"
+    }
+  ];
+
   let activeSlide = 0;
   let rotationTimer = null;
   const rotationDelay = 2000;
@@ -114,6 +129,12 @@
       const name = document.createElement("strong");
       name.textContent = nameText;
       card.append(name);
+      const addressText = String(branch.address || "").trim();
+      if (addressText) {
+        const address = document.createElement("small");
+        address.textContent = addressText;
+        card.append(address);
+      }
       container.append(card);
     });
   }
@@ -130,7 +151,17 @@
         .order("sort_order", { ascending: true })
         .order("created_at", { ascending: true });
       if (error) throw error;
-      renderPublicBranches(Array.isArray(data) ? data : []);
+      const savedRows = Array.isArray(data) ? data : [];
+      // Map the first two saved branch records to the latest confirmed locations.
+      // This makes the updated locations visible immediately after GitHub deployment,
+      // while the SQL script below also saves the same details in Supabase.
+      const confirmedRows = REQUESTED_BRANCHES.map((branch, index) => ({
+        ...(savedRows[index] || {}),
+        ...branch,
+        phone: savedRows[index]?.phone || ""
+      }));
+      const extraRows = savedRows.slice(REQUESTED_BRANCHES.length);
+      renderPublicBranches([...confirmedRows, ...extraRows]);
     } catch (error) {
       console.error("GRAND DRY CLEAN public branches could not be loaded:", error);
       container.replaceChildren();

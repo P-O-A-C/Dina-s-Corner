@@ -8,6 +8,32 @@
 
   const WASH_IRON_TAB = "غسيل ومكواة";
   const WASH_IRON_CATEGORY = "غسيل وكي";
+
+  // Local image fallbacks for the furnishings products. The matching PNG files
+  // are included in this patch, so the catalogue can display photos without
+  // waiting for image_url updates to finish in Supabase.
+  const furnishingsImages = {
+    "بطانيه فرد": "assets/products/furnishings/01_blanket_single.png",
+    "بطانية فرد": "assets/products/furnishings/01_blanket_single.png",
+    "بطانية (فردين)": "assets/products/furnishings/02_blanket_double.png",
+    "لحاف فايبر (كبير)": "assets/products/furnishings/03_fiber_duvet_large.png",
+    "لحاف فايبر (صغير)": "assets/products/furnishings/04_fiber_duvet_small.png",
+    "كوفرتة": "assets/products/furnishings/05_quilt_coverlet.png",
+    "مفرش سرير": "assets/products/furnishings/06_bedspread.png",
+    "مخدة كبيرة": "assets/products/furnishings/07_pillow_large.png",
+    "خددية صغيرة": "assets/products/furnishings/08_pillow_small.png",
+    "خدادية صغيرة": "assets/products/furnishings/08_pillow_small.png",
+    "متر السجاد العادي": "assets/products/carpet.jpg",
+    "متر السجاد العادى": "assets/products/carpet.jpg",
+    "متر السجاد شاج أو فرو": "assets/products/carpet.jpg",
+    "متر السجاد شاج او فرو": "assets/products/carpet.jpg"
+  };
+
+  function localProductImage(product) {
+    if (String(product.category || "").trim() !== "مفروشات") return "";
+    const name = String(product.name || "").replace(/\s+/g, " ").trim();
+    return furnishingsImages[name] || "";
+  }
   const fallbackProducts = [
     { id: "service-wash", name: "غسيل وكي", category: WASH_IRON_CATEGORY, description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg", price: null },
     { id: "service-dry", name: "تنظيف جاف", category: "تنظيف جاف", description: "تنظيف متخصص للبدل والقطع الحساسة.", image: "assets/gdc-service-dryclean.jpg", price: null },
@@ -61,9 +87,11 @@
     }
 
     grid.innerHTML = visible.map(product => {
-      const image = String(product.image || "").trim();
+      const fallbackImage = localProductImage(product);
+      const image = String(product.image || fallbackImage || "").trim();
+      const fallbackAttribute = fallbackImage ? `data-fallback="${safe(fallbackImage)}"` : "";
       const imageMarkup = image
-        ? `<img class="service-image" src="${safe(image)}" alt="${safe(product.name)}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">`
+        ? `<img class="service-image" src="${safe(image)}" ${fallbackAttribute} alt="${safe(product.name)}" loading="lazy" onerror="if(this.dataset.fallback && !this.dataset.fallbackTried){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;}else{this.hidden=true;this.nextElementSibling.hidden=false;}">`
         : "";
       const description = String(product.description || "").trim();
       const hasPrice = product.price !== null && product.price !== undefined && product.price !== "";

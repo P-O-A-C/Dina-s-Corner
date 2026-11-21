@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v22-gdc-ironing-normal-category-v1";
+const CACHE = "poac-unified-v23-gdc-branches-flash-furnishings-v1";
 const SHELL = [
   "./index.html",
   "./login.html",
@@ -38,6 +38,14 @@ const SHELL = [
   "./GrandDryClean/dashboard.html",
   "./GrandDryClean/css/management-home.css",
   "./GrandDryClean/assets/grand-dry-clean-logo.png",
+  "./GrandDryClean/assets/products/furnishings/01_blanket_single.png",
+  "./GrandDryClean/assets/products/furnishings/02_blanket_double.png",
+  "./GrandDryClean/assets/products/furnishings/03_fiber_duvet_large.png",
+  "./GrandDryClean/assets/products/furnishings/04_fiber_duvet_small.png",
+  "./GrandDryClean/assets/products/furnishings/05_quilt_coverlet.png",
+  "./GrandDryClean/assets/products/furnishings/06_bedspread.png",
+  "./GrandDryClean/assets/products/furnishings/07_pillow_large.png",
+  "./GrandDryClean/assets/products/furnishings/08_pillow_small.png",
   "./GrandDryClean/js/session-guard.js",
   "./GrandDryClean/js/management-home.js",
   "./GrandDryClean/css/customer.css",

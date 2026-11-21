@@ -155,7 +155,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .heading-mark { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--gold); border-radius: 50%; color: #a87922; font-size: 22px; line-height: 1; }
 .public-branches { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 7px; }
 .branch-public-card {
-  width: 100%; min-width: 0; min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
+  width: 100%; min-width: 0; min-height: 48px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
   padding: 7px 10px; border: 1px solid rgba(7,84,58,.20); border-radius: 10px;
   background: linear-gradient(180deg, #fff 0%, #f7f0e3 100%); color: var(--green);
   box-shadow: 0 2px 6px rgba(39,31,20,.07); text-align: center; text-decoration: none;
@@ -164,7 +164,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .branch-public-card:hover, .branch-public-card:focus-visible {
   border-color: var(--gold); box-shadow: 0 4px 10px rgba(39,31,20,.12); transform: translateY(-1px); outline: none;
 }
-.branch-public-card strong { display: block; max-width: 100%; overflow: hidden; color: var(--green); font-size: 12px; font-weight: 900; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
+.branch-public-card strong { display: block; max-width: 100%; color: var(--green); font-size: 12px; font-weight: 900; line-height: 1.45; white-space: normal; }
+.branch-public-card small { display: block; max-width: 100%; color: var(--muted); font-size: 9px; font-weight: 700; line-height: 1.5; text-align: right; }
 .branch-public-card:disabled { opacity: .62; cursor: default; box-shadow: none; }
 .branches-loading, .branches-empty { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .payment-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
@@ -175,6 +176,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .instapay-tile .payment-symbol { background: #193c98; }
 .vodafone-tile { border-color: #f0c8c8; color: #c92532; }
 .vodafone-tile .payment-symbol { background: #c92532; }
+.flash-tile { border-color: #d8c7ed; color: #60369a; text-decoration: none; cursor: pointer; }
+.flash-tile .payment-symbol { background: linear-gradient(140deg, #8851c9, #563090); }
 .brand-slogan {
   position: relative; overflow: hidden; width: calc(100% - 40px); max-width: 1120px;
   margin: 18px auto 0; padding: 19px 20px 17px; border: 1px solid #d8b65f;
@@ -380,6 +383,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
   .public-branches { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 6px; }
   .branch-public-card { min-height: 33px; padding: 6px 8px; border-radius: 9px; }
   .branch-public-card strong { font-size: 10px; }
+  .branch-public-card small { font-size: 8px; }
   .payment-stack { grid-template-columns: 1fr; gap: 6px; }
   .payment-tile { min-height: 44px; justify-content: flex-start; padding: 6px 8px; border-radius: 10px; }
   .payment-symbol { width: 24px; height: 24px; flex-basis: 24px; font-size: 9px; }
