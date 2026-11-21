@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v27-gdc-express-menu-30";
+const CACHE = "poac-unified-v28-gdc-express-no-banner";
 const SHELL = [
   "./index.html",
   "./login.html",
