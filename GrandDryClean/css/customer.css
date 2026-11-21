@@ -155,8 +155,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .heading-mark { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--gold); border-radius: 50%; color: #a87922; font-size: 22px; line-height: 1; }
 .public-branches { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 7px; }
 .branch-public-card {
-  width: 100%; min-width: 0; min-height: 48px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
-  padding: 7px 10px; border: 1px solid rgba(7,84,58,.20); border-radius: 10px;
+  width: 100%; min-width: 0; min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  padding: 10px 10px; border: 1px solid rgba(7,84,58,.20); border-radius: 10px;
   background: linear-gradient(180deg, #fff 0%, #f7f0e3 100%); color: var(--green);
   box-shadow: 0 2px 6px rgba(39,31,20,.07); text-align: center; text-decoration: none;
   cursor: pointer; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
@@ -165,7 +165,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
   border-color: var(--gold); box-shadow: 0 4px 10px rgba(39,31,20,.12); transform: translateY(-1px); outline: none;
 }
 .branch-public-card strong { display: block; max-width: 100%; color: var(--green); font-size: 12px; font-weight: 900; line-height: 1.45; white-space: normal; }
-.branch-public-card small { display: block; max-width: 100%; color: var(--muted); font-size: 9px; font-weight: 700; line-height: 1.5; text-align: right; }
+.branch-public-card small, .branch-public-card .branch-badge, .branch-public-card .branch-label { display: none !important; }
 .branch-public-card:disabled { opacity: .62; cursor: default; box-shadow: none; }
 .branches-loading, .branches-empty { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .payment-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
@@ -174,7 +174,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .payment-symbol { width: 29px; height: 29px; flex: 0 0 29px; display: grid; place-items: center; border-radius: 9px; color: white; font-size: 11px; font-weight: 900; }
 .instapay-tile { border-color: #cbd7f2; color: #193c98; }
 .instapay-tile .payment-symbol { background: #193c98; }
-.vodafone-tile { border-color: #f0c8c8; color: #c92532; cursor: pointer; font: inherit; }
+.vodafone-tile { border-color: #f0c8c8; color: #c92532; cursor: pointer; font: inherit; text-decoration: none; }
 .vodafone-tile .payment-symbol { background: #c92532; }
 .payment-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
 .payment-copy small { color: #6f5960; font-size: 11px; font-weight: 800; letter-spacing: .3px; direction: ltr; }

@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v30-gdc-contact-number";
+const CACHE = "poac-unified-v31-branch-name-vodafone-page";
 const SHELL = [
   "./index.html",
   "./login.html",
@@ -32,6 +32,7 @@ const SHELL = [
   "./Dina'sCorner/locations.html",
   "./Dina'sCorner/menu.html",
   "./GrandDryClean/index.html",
+  "./GrandDryClean/vodafone-cash.html",
   "./GrandDryClean/order.html",
   "./GrandDryClean/login.html",
   "./GrandDryClean/gm.html",

@@ -129,12 +129,8 @@
       const name = document.createElement("strong");
       name.textContent = nameText;
       card.append(name);
-      const addressText = String(branch.address || "").trim();
-      if (addressText) {
-        const address = document.createElement("small");
-        address.textContent = addressText;
-        card.append(address);
-      }
+      // Public branch cards intentionally show the branch name only.
+      // The full location remains available by opening the map link.
       container.append(card);
     });
   }
@@ -212,34 +208,5 @@
   loadManagedSlides();
   loadPublicBranches();
 
-  const walletButton = document.getElementById("vodafoneCashCopyButton");
-  if (walletButton) {
-    walletButton.addEventListener("click", async () => {
-      const number = walletButton.dataset.walletNumber || "01037626070";
-      const label = walletButton.querySelector(".payment-copy small");
-      const originalText = label?.textContent || number;
-      try {
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(number);
-        } else {
-          const helper = document.createElement("textarea");
-          helper.value = number;
-          helper.setAttribute("readonly", "");
-          helper.style.position = "fixed";
-          helper.style.opacity = "0";
-          document.body.append(helper);
-          helper.select();
-          document.execCommand("copy");
-          helper.remove();
-        }
-        if (label) {
-          label.textContent = "تم نسخ رقم المحفظة";
-          window.setTimeout(() => { label.textContent = originalText; }, 1800);
-        }
-      } catch (error) {
-        console.warn("Unable to copy Vodafone Cash wallet number:", error);
-        if (label) label.textContent = number;
-      }
-    });
-  }
+
 })();
