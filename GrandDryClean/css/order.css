@@ -79,3 +79,14 @@ a{color:inherit;text-decoration:none}
 .order-flash-card .order-branch-tag{background:#eef3fb;border-color:#d9e3f1;color:#174f86}
 @media(max-width:800px){.order-branch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.order-branches-section{margin-bottom:28px;padding:16px 12px;border-radius:13px}.order-branch-grid{grid-template-columns:1fr;gap:9px}.order-branch-card{padding:13px}.order-branch-card strong{font-size:12px}.order-branch-card small{font-size:9px}}
+
+/* Product menu cards: each active category shows real items with photo and price. */
+.products-grid{align-items:stretch}
+.product-card .service-image-wrap{height:245px;background:#fff}
+.product-card .service-image{width:100%;height:100%;object-fit:contain;object-position:center;padding:12px}
+.product-card .service-info{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 12px;padding:14px 16px}
+.product-card .service-info h2{min-width:0}
+.product-card .service-info p{grid-column:1/-1;min-height:0}
+.product-card .service-price{justify-self:end;max-width:100%;font-size:12px}
+@media(max-width:800px){.product-card .service-image-wrap{height:195px}}
+@media(max-width:560px){.product-card .service-image-wrap{height:150px}.product-card .service-image{padding:6px}.product-card .service-info{grid-template-columns:1fr;align-items:start;padding:9px}.product-card .service-info h2{font-size:12px}.product-card .service-price{justify-self:start;font-size:10px;padding:5px 7px}.product-card .service-info p{font-size:9px}}
