@@ -87,7 +87,7 @@
 
   let products = FALLBACK_PRODUCTS;
   let managedCategories = [];
-  let activeCategory = "الكل";
+  let activeCategory = "غسيل ومكواة";
 
   const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -131,7 +131,7 @@
     available.forEach(name => {
       if (!ordered.some(existing => categoryKey(existing) === categoryKey(name))) ordered.push(name);
     });
-    return ["الكل", ...ordered];
+    return ordered;
   }
 
   function formatAmount(value) {
@@ -208,9 +208,7 @@
 
   function renderProducts() {
     const menuProducts = products.filter(item => categoryKey(item.category) !== "express-service");
-    const visible = activeCategory === "الكل"
-      ? menuProducts
-      : menuProducts.filter(item => categoryKey(item.category) === categoryKey(activeCategory));
+    const visible = menuProducts.filter(item => categoryKey(item.category) === categoryKey(activeCategory));
 
     if (!visible.length) {
       grid.innerHTML = '<div class="catalog-empty">لا توجد أصناف متاحة في هذا القسم حاليًا.</div>';
@@ -304,7 +302,10 @@
         products = managedProducts;
       }
 
-      if (!categoryList().includes(activeCategory)) activeCategory = "الكل";
+      const availableCategories = categoryList();
+      if (!availableCategories.some(name => categoryKey(name) === categoryKey(activeCategory))) {
+        activeCategory = availableCategories[0] || "";
+      }
       render();
       status.textContent = managedProducts.length
         ? ""
