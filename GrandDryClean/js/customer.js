@@ -163,12 +163,10 @@
       const extraRows = savedRows.slice(REQUESTED_BRANCHES.length);
       renderPublicBranches([...confirmedRows, ...extraRows]);
     } catch (error) {
-      console.error("GRAND DRY CLEAN public branches could not be loaded:", error);
-      container.replaceChildren();
-      const message = document.createElement("p");
-      message.className = "branches-empty";
-      message.textContent = "تعذر تحميل الفروع حاليًا. يرجى المحاولة لاحقًا.";
-      container.append(message);
+      console.warn("GRAND DRY CLEAN public branches query failed; showing confirmed map links:", error);
+      // Keep the two user-confirmed branch cards visible even if the database
+      // migration has not been run or the public branch query is temporarily unavailable.
+      renderPublicBranches(REQUESTED_BRANCHES);
     }
   }
 

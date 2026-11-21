@@ -6,56 +6,73 @@
   const status = document.getElementById("catalogStatus");
   if (!grid || !tabs) return;
 
-  const WASH_IRON_TAB = "غسيل ومكواة";
-  const WASH_IRON_CATEGORY = "غسيل وكي";
+  const normalize = value => String(value ?? "")
+    .normalize("NFKC")
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/[()\[\]{}]/g, " ")
+    .replace(/[ـ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
-  // Local image fallbacks for the furnishings products. The matching PNG files
-  // are included in this patch, so the catalogue can display photos without
-  // waiting for image_url updates to finish in Supabase.
-  const furnishingsImages = {
-    "بطانيه فرد": "assets/products/furnishings/01_blanket_single.png",
-    "بطانية فرد": "assets/products/furnishings/01_blanket_single.png",
-    "بطانية (فردين)": "assets/products/furnishings/02_blanket_double.png",
-    "لحاف فايبر (كبير)": "assets/products/furnishings/03_fiber_duvet_large.png",
-    "لحاف فايبر (صغير)": "assets/products/furnishings/04_fiber_duvet_small.png",
-    "كوفرتة": "assets/products/furnishings/05_quilt_coverlet.png",
-    "مفرش سرير": "assets/products/furnishings/06_bedspread.png",
-    "مخدة كبيرة": "assets/products/furnishings/07_pillow_large.png",
-    "خددية صغيرة": "assets/products/furnishings/08_pillow_small.png",
-    "خدادية صغيرة": "assets/products/furnishings/08_pillow_small.png",
-    "متر السجاد العادي": "assets/products/carpet.jpg",
-    "متر السجاد العادى": "assets/products/carpet.jpg",
-    "متر السجاد شاج أو فرو": "assets/products/carpet.jpg",
-    "متر السجاد شاج او فرو": "assets/products/carpet.jpg"
-  };
-
-  function localProductImage(product) {
-    if (String(product.category || "").trim() !== "مفروشات") return "";
-    const name = String(product.name || "").replace(/\s+/g, " ").trim();
-    return furnishingsImages[name] || "";
+  // The admin has one Wash & Iron category. Normalize spelling aliases to it
+  // so the customer page does not create a duplicate, artificial tab.
+  function categoryLabel(value) {
+    const raw = String(value || "").trim();
+    const key = normalize(raw).replace(/\s/g, "");
+    if (["غسيلوكي", "غسيلوكوي", "غسيلومكواة", "غسيلومكوه"].includes(key)) return "غسيل وكوي";
+    return raw;
   }
+
+  const imageFiles = {
+    "قميص": "shirt.jpg",
+    "تيشيرت": "tshirt.jpg", "تي شيرت": "tshirt.jpg", "تيشرت": "tshirt.jpg",
+    "بلوزة": "blouse.jpg", "بلوفر": "pullover.jpg",
+    "بنطلون جينز": "trousers-jeans.jpg", "بنطلون جبردين": "trousers-gabardine.jpg", "بنطلون عادي": "trousers-gabardine.jpg", "بنطلون": "trousers-gabardine.jpg",
+    "فستان كاجوال": "casual-dress.jpg", "جيبة": "skirt.jpg", "عباية حريمي": "womens-abaya.jpg", "جلابية": "galabeya.jpg",
+    "سويت شيرت": "hoodie.jpg", "هودي": "hoodie.jpg", "بيجامة قطعتين": "pajama-2-piece.jpg", "بيجامة 2 قطعة": "pajama-2-piece.jpg",
+    "ترينج رياضي قطعتين": "tracksuit-2-piece.jpg", "ترينج رياضي 2 قطعة": "tracksuit-2-piece.jpg",
+    "بدلة 2 قطعة": "suit-2-piece.jpg", "بدلة قطعتين": "suit-2-piece.jpg", "بدلة 3 قطع": "suit-3-piece.jpg",
+    "جاكيت بدلة": "suit-jacket.jpg", "جاكيت جلد": "leather-jacket.jpg", "جاكيت": "jacket.jpg",
+    "كرافتة": "tie.jpg", "شال": "shawl.jpg", "طرحة": "shawl.jpg", "بالطو جوخ": "coat-wool.jpg", "جاكيت جوخ": "coat-wool.jpg", "بالطو طويل": "coat-long.jpg",
+    "فستان سواريه": "evening-dress.jpg", "فستان زفاف": "wedding-dress.jpg", "جوارب": "socks.jpg", "شورت جبردين": "shorts-gabardine.jpg",
+    "مريلة": "apron.jpg", "تونيك": "tunic.jpg", "تي بولو": "polo-shirt.jpg", "سجاد": "carpet.jpg", "فوطة": "towel.jpg",
+    "بطانيه فرد": "furnishings/01_blanket_single.png", "بطانية فرد": "furnishings/01_blanket_single.png",
+    "بطانية فردين": "furnishings/02_blanket_double.png", "بطانية (فردين)": "furnishings/02_blanket_double.png",
+    "لحاف فايبر كبير": "furnishings/03_fiber_duvet_large.png", "لحاف فايبر (كبير)": "furnishings/03_fiber_duvet_large.png",
+    "لحاف فايبر صغير": "furnishings/04_fiber_duvet_small.png", "لحاف فايبر (صغير)": "furnishings/04_fiber_duvet_small.png",
+    "كوفرتة": "furnishings/05_quilt_coverlet.png", "مفرش سرير": "furnishings/06_bedspread.png",
+    "مخدة كبيرة": "furnishings/07_pillow_large.png", "خددية صغيرة": "furnishings/08_pillow_small.png", "خدادية صغيرة": "furnishings/08_pillow_small.png",
+    "متر السجاد العادي": "carpet.jpg", "متر السجاد العادى": "carpet.jpg", "متر السجاد شاج او فرو": "carpet.jpg", "متر السجاد شاج أو فرو": "carpet.jpg"
+  };
+  const normalizedImages = new Map(Object.entries(imageFiles).map(([name, file]) => [normalize(name), file]));
+  function localProductImage(product) {
+    const file = normalizedImages.get(normalize(product.name));
+    return file ? `assets/products/${file}` : "";
+  }
+
   const fallbackProducts = [
-    { id: "service-wash", name: "غسيل وكي", category: WASH_IRON_CATEGORY, description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg", price: null },
-    { id: "service-dry", name: "تنظيف جاف", category: "تنظيف جاف", description: "تنظيف متخصص للبدل والقطع الحساسة.", image: "assets/gdc-service-dryclean.jpg", price: null },
-    { id: "service-home", name: "مفروشات", category: "مفروشات", description: "تنظيف المفروشات والبطاطين والستائر.", image: "assets/gdc-service-furnishings.jpg", price: null }
+    { id: "service-wash", name: "غسيل وكوي", category: "غسيل وكوي", description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg" },
+    { id: "service-dry", name: "تنظيف جاف", category: "تنظيف جاف", description: "تنظيف متخصص للبدل والقطع الحساسة.", image: "assets/gdc-service-dryclean.jpg" },
+    { id: "service-home", name: "مفروشات", category: "مفروشات", description: "تنظيف المفروشات والبطاطين والستائر.", image: "assets/gdc-service-furnishings.jpg" }
   ];
 
   let products = fallbackProducts;
-  let serviceCategories = [WASH_IRON_CATEGORY, "تنظيف جاف", "مفروشات"];
+  let serviceCategories = fallbackProducts.map(item => item.category);
   let activeCategory = "الكل";
 
   const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[char]));
 
-  function formatEGP(value) {
-    return `${new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 2 }).format(Number(value))} ج.م`;
+  function getCategories() {
+    const unique = [...new Set(serviceCategories.map(categoryLabel).filter(Boolean))];
+    return ["الكل", ...unique];
   }
 
-  function getCategories() {
-    const available = serviceCategories.filter(Boolean);
-    const remaining = available.filter(category => category !== WASH_IRON_CATEGORY && category !== WASH_IRON_TAB);
-    return ["الكل", WASH_IRON_TAB, ...remaining];
+  function formatEGP(value) {
+    return `${new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 2 }).format(Number(value))} ج.م`;
   }
 
   function renderCategories() {
@@ -77,9 +94,7 @@
   function renderProducts() {
     const visible = activeCategory === "الكل"
       ? products
-      : products.filter(product => activeCategory === WASH_IRON_TAB
-        ? (product.category === WASH_IRON_CATEGORY || product.category === WASH_IRON_TAB)
-        : product.category === activeCategory);
+      : products.filter(product => categoryLabel(product.category) === activeCategory);
 
     if (!visible.length) {
       grid.innerHTML = '<div class="catalog-empty">لا توجد أصناف متاحة في هذا القسم حاليًا.</div>';
@@ -87,17 +102,20 @@
     }
 
     grid.innerHTML = visible.map(product => {
-      const fallbackImage = localProductImage(product);
-      const image = String(product.image || fallbackImage || "").trim();
-      const fallbackAttribute = fallbackImage ? `data-fallback="${safe(fallbackImage)}"` : "";
+      const localImage = localProductImage(product);
+      const storedImage = String(product.image || "").trim();
+      // Prefer the versioned local file for known products. If it fails,
+      // fall back to the stored Supabase URL when one exists.
+      const image = localImage || storedImage;
+      const backup = localImage && storedImage && localImage !== storedImage ? storedImage : "";
       const imageMarkup = image
-        ? `<img class="service-image" src="${safe(image)}" ${fallbackAttribute} alt="${safe(product.name)}" loading="lazy" onerror="if(this.dataset.fallback && !this.dataset.fallbackTried){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;}else{this.hidden=true;this.nextElementSibling.hidden=false;}">`
+        ? `<img class="service-image" src="${safe(image)}" ${backup ? `data-fallback="${safe(backup)}"` : ""} alt="${safe(product.name)}" loading="lazy" onerror="if(this.dataset.fallback && !this.dataset.fallbackTried){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;}else{this.hidden=true;this.nextElementSibling.hidden=false;}">`
         : "";
-      const description = String(product.description || "").trim();
-      const hasPrice = product.price !== null && product.price !== undefined && product.price !== "";
+      const priceValue = product.price;
+      const hasPrice = priceValue !== null && priceValue !== undefined && priceValue !== "";
       const detailsMarkup = hasPrice
-        ? `<strong class="service-price">${formatEGP(product.price)}</strong>`
-        : (description ? `<p>${safe(description)}</p>` : "");
+        ? `<strong class="service-price">${formatEGP(priceValue)}</strong>`
+        : (product.description ? `<p>${safe(product.description)}</p>` : "");
       return `
         <article class="service-card">
           <div class="service-image-wrap">
@@ -151,14 +169,14 @@
       if (categoryResult.error) throw categoryResult.error;
       if (itemResult.error) throw itemResult.error;
 
-      serviceCategories = (categoryResult.data || []).map(row => row.name).filter(Boolean);
+      serviceCategories = (categoryResult.data || []).map(row => categoryLabel(row.name)).filter(Boolean);
       const allowedCategories = new Set(serviceCategories);
       products = (itemResult.data || [])
-        .filter(row => allowedCategories.has(row.category_name))
+        .filter(row => allowedCategories.has(categoryLabel(row.category_name)))
         .map(row => ({
           id: String(row.id),
           name: row.name || "",
-          category: row.category_name || "",
+          category: categoryLabel(row.category_name || ""),
           description: row.description || "",
           price: row.price,
           image: row.image_url || ""
