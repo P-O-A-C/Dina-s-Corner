@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v25-gdc-order-repair-v1";
+const CACHE = "poac-unified-v26-gdc-wash-iron-category-v1";
 const SHELL = [
   "./index.html",
   "./login.html",

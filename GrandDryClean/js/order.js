@@ -82,6 +82,7 @@
   ]);
 
   let products = FALLBACK_PRODUCTS;
+  let managedCategories = [];
   let activeCategory = "الكل";
 
   const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -92,18 +93,38 @@
     return String(value || "").trim().replace(/\s+/g, " ").replace(/[ـ]/g, "");
   }
 
-  function canonicalCategory(value) {
-    const name = cleanName(value);
-    if (/غسيل/.test(name) && /(كي|كوي)/.test(name)) return "غسيل وكوي";
-    if (/مكواة|كي فقط/.test(name)) return "مكواة فقط";
+  function categoryKey(value) {
+    const name = cleanName(value).replace(/\s+/g, "");
+    // The administration may store the same wash-and-iron group as
+    // "غسيل وكوي", "غسيل وكي" or "غسيل و مكواة". Treat them as one group.
+    if (/غسيل/.test(name) && /(كي|كوي|مكواة|مكوه)/.test(name)) return "wash-and-iron";
+    if (/مكواة|كي فقط/.test(name)) return "ironing-only";
     return name;
   }
 
+  function canonicalCategory(value) {
+    const key = categoryKey(value);
+    if (key === "wash-and-iron") return "غسيل ومكواة";
+    if (key === "ironing-only") return "مكواة فقط";
+    return cleanName(value);
+  }
+
   function categoryList() {
-    const preferredOrder = ["غسيل وكوي", "تنظيف جاف", "مفروشات", "مكواة فقط", "خدمة سريعة"];
-    const available = [...new Set(products.map(item => canonicalCategory(item.category)).filter(Boolean))];
-    const ordered = preferredOrder.filter(name => available.includes(name));
-    available.forEach(name => { if (!ordered.includes(name)) ordered.push(name); });
+    const preferredOrder = ["غسيل ومكواة", "تنظيف جاف", "مفروشات", "مكواة فقط", "خدمة سريعة"];
+    // Start with active categories from the same table used by management,
+    // then include any category represented by an available product.
+    const source = [...managedCategories, ...products.map(item => item.category)];
+    const byKey = new Map();
+    source.forEach(value => {
+      const display = canonicalCategory(value);
+      const key = categoryKey(value);
+      if (key && !byKey.has(key)) byKey.set(key, display);
+    });
+    const available = [...byKey.values()];
+    const ordered = preferredOrder.filter(name => byKey.has(categoryKey(name)));
+    available.forEach(name => {
+      if (!ordered.some(existing => categoryKey(existing) === categoryKey(name))) ordered.push(name);
+    });
     return ["الكل", ...ordered];
   }
 
@@ -176,7 +197,7 @@
   function renderProducts() {
     const visible = activeCategory === "الكل"
       ? products
-      : products.filter(item => canonicalCategory(item.category) === activeCategory);
+      : products.filter(item => categoryKey(item.category) === categoryKey(activeCategory));
 
     if (!visible.length) {
       grid.innerHTML = '<div class="catalog-empty">لا توجد أصناف متاحة في هذا القسم حاليًا.</div>';
@@ -204,11 +225,11 @@
     renderProducts();
   }
 
-  function normalizeProduct(row) {
+  function normalizeProduct(row, displayCategory) {
     return {
       id: String(row.id || `${row.category_name || ""}-${row.name || ""}`),
       name: cleanName(row.name),
-      category: canonicalCategory(row.category_name),
+      category: displayCategory || canonicalCategory(row.category_name),
       description: String(row.description || ""),
       price: row.price === undefined ? null : row.price,
       image: String(row.image_url || "").trim()
@@ -247,10 +268,23 @@
       if (categoryResult.error) throw categoryResult.error;
       if (itemResult.error) throw itemResult.error;
 
-      const allowed = new Set((categoryResult.data || []).map(row => canonicalCategory(row.name)));
+      managedCategories = (categoryResult.data || [])
+        .filter(row => row.is_active !== false)
+        .map(row => canonicalCategory(row.name))
+        .filter(Boolean);
+
+      const displayByKey = new Map();
+      managedCategories.forEach(name => {
+        const key = categoryKey(name);
+        if (key && !displayByKey.has(key)) displayByKey.set(key, name);
+      });
+      const allowed = new Set(displayByKey.keys());
       const managedProducts = (itemResult.data || [])
-        .filter(row => allowed.has(canonicalCategory(row.category_name)))
-        .map(normalizeProduct);
+        .filter(row => allowed.has(categoryKey(row.category_name)))
+        .map(row => normalizeProduct(
+          row,
+          displayByKey.get(categoryKey(row.category_name)) || canonicalCategory(row.category_name)
+        ));
 
       // If database rows are temporarily empty, retain the approved local menu instead of empty category cards.
       if (managedProducts.length) {
