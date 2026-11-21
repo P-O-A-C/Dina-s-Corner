@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v31-branch-name-vodafone-page";
+const CACHE = "poac-unified-v32-vodafone-copy-open-transfer";
 const SHELL = [
   "./index.html",
   "./login.html",

@@ -209,4 +209,48 @@
   loadPublicBranches();
 
 
+  // Same interaction pattern as Dina's Corner: copy the wallet number and
+  // open Vodafone's official money-transfer page using the anchor destination.
+  const vodafoneCashLink = document.querySelector(".vodafone-tile[data-wallet-number]");
+  if (vodafoneCashLink && !vodafoneCashLink.dataset.copyOpenBound) {
+    vodafoneCashLink.dataset.copyOpenBound = "true";
+    vodafoneCashLink.addEventListener("click", () => {
+      const walletNumber = vodafoneCashLink.dataset.walletNumber || "01037626070";
+      const numberLabel = vodafoneCashLink.querySelector(".payment-copy small");
+      const originalLabel = numberLabel?.textContent || walletNumber;
+
+      const legacyCopy = () => {
+        const helper = document.createElement("textarea");
+        helper.value = walletNumber;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "fixed";
+        helper.style.left = "-9999px";
+        helper.style.top = "0";
+        document.body.append(helper);
+        helper.select();
+        let copied = false;
+        try { copied = document.execCommand("copy"); } catch (_) { copied = false; }
+        helper.remove();
+        return copied;
+      };
+
+      const showCopyStatus = (copied) => {
+        if (!numberLabel) return;
+        numberLabel.textContent = copied ? "تم نسخ الرقم" : "انسخ الرقم: 01037626070";
+        window.setTimeout(() => { numberLabel.textContent = originalLabel; }, 2400);
+      };
+
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(walletNumber)
+          .then(() => showCopyStatus(true))
+          .catch(() => showCopyStatus(legacyCopy()));
+      } else {
+        showCopyStatus(legacyCopy());
+      }
+      // Do not preventDefault: the anchor opens Vodafone's official transfer page in a new tab.
+      // If the page requests the recipient number, the user can paste the copied number.
+    });
+  }
+
+
 })();
