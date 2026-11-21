@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v33-vodafone-sendmoney-copy-paste";
+const CACHE = "poac-unified-v34-dina-whatsapp-order";
 const SHELL = [
   "./index.html",
   "./login.html",
@@ -21,6 +21,8 @@ const SHELL = [
   "./assets/menu-display.css",
   "./assets/public-menu-client.js",
   "./assets/public-menu-premium.css",
+  "./assets/dc-whatsapp-order.css",
+  "./assets/dc-whatsapp-order.js",
   "./assets/dina-best-sellers.js",
   "./assets/public-menu-review-link.js",
   "./Dina'sCorner/index.html",

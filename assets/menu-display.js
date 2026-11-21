@@ -210,7 +210,8 @@
     itemsView.innerHTML='<div class="public-detail-top"><button class="public-menu-back" type="button" data-detail-back aria-label="Back to '+esc(categoryName)+'">‹</button><div><span class="public-menu-kicker">DINA\'S CORNER</span><h2>'+esc(categoryName)+'</h2></div></div>'+
       '<article class="public-item-detail">'+image+'<div class="public-item-detail-copy"><p class="public-detail-eyebrow">MENU ITEM</p><h1>'+esc(item.name||'Menu item')+'</h1>'+(price!==null?'<div class="public-detail-price">'+esc(money(price))+'</div>':'')+
       (item.description?'<p class="public-detail-description">'+esc(item.description).replace(/\r?\n/g,'<br>')+'</p>':'')+
-      '<div class="public-detail-sections">'+detailBlock('Ingredients',item.ingredients)+detailBlock('Available sizes',item.sizes)+detailBlock('Extras & additions',item.extras)+detailBlock('Allergen information',item.allergen_notes)+'</div></div></article>';
+      '<div class="public-detail-sections">'+detailBlock('Ingredients',item.ingredients)+detailBlock('Available sizes',item.sizes)+detailBlock('Extras & additions',item.extras)+detailBlock('Allergen information',item.allergen_notes)+'</div>'+
+      '<button type="button" class="dc-wa-add-button dc-wa-add-button--detail" data-dc-add-to-cart="'+esc(item.id)+'">＋ أضف للسلة</button></div></article>';
     itemsView.querySelector('[data-detail-back]')?.addEventListener('click',()=>{
       if(history.state&&history.state.poacMenuItem)history.back();
       else {history.replaceState({},'',menuStateUrl({category:categoryName}));renderItems(categoryName);}
@@ -236,7 +237,7 @@
       const rawPrice=normalizePrice(item.price);
       const price=rawPrice!==null?money(rawPrice):'';
       if(isStandaloneMenu){
-        return '<button type="button" class="public-menu-item-card" data-open-menu-item="'+esc(item.id)+'">'+image+'<span class="public-menu-item-copy"><strong class="menu-item-name">'+esc(item.name||'Menu item')+'</strong>'+desc+(price?'<span class="menu-item-price">'+esc(price)+'</span>':'')+'</span><span class="public-menu-item-arrow" aria-hidden="true">›</span></button>';
+        return '<article class="dc-public-menu-order-item"><button type="button" class="public-menu-item-card" data-open-menu-item="'+esc(item.id)+'">'+image+'<span class="public-menu-item-copy"><strong class="menu-item-name">'+esc(item.name||'Menu item')+'</strong>'+desc+(price?'<span class="menu-item-price">'+esc(price)+'</span>':'')+'</span><span class="public-menu-item-arrow" aria-hidden="true">›</span></button><button type="button" class="dc-wa-add-button" data-dc-add-to-cart="'+esc(item.id)+'">＋ أضف للسلة</button></article>';
       }
       const qty=itemQuantity(item.id);
       const pickupAction=qty>0
