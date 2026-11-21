@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v34-dina-whatsapp-order";
+const CACHE = "poac-unified-v35-dina-compact-add-button";
 const SHELL = [
   "./index.html",
   "./login.html",
