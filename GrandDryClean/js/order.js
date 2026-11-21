@@ -4,75 +4,130 @@
   const grid = document.getElementById("productsGrid");
   const tabs = document.getElementById("categoryTabs");
   const status = document.getElementById("catalogStatus");
+  const ironingSection = document.getElementById("ironingPricesSection");
+  const ironingGrid = document.getElementById("ironingPricesGrid");
   if (!grid || !tabs) return;
 
-  const normalize = value => String(value ?? "")
-    .normalize("NFKC")
-    .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
-    .replace(/[أإآ]/g, "ا")
-    .replace(/ى/g, "ي")
-    .replace(/[()\[\]{}]/g, " ")
-    .replace(/[ـ]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  // The admin has one Wash & Iron category. Normalize spelling aliases to it
-  // so the customer page does not create a duplicate, artificial tab.
-  function categoryLabel(value) {
-    const raw = String(value || "").trim();
-    const key = normalize(raw).replace(/\s/g, "");
-    if (["غسيلوكي", "غسيلوكوي", "غسيلومكواة", "غسيلومكوه"].includes(key)) return "غسيل وكوي";
-    return raw;
-  }
-
-  const imageFiles = {
-    "قميص": "shirt.jpg",
-    "تيشيرت": "tshirt.jpg", "تي شيرت": "tshirt.jpg", "تيشرت": "tshirt.jpg",
-    "بلوزة": "blouse.jpg", "بلوفر": "pullover.jpg",
-    "بنطلون جينز": "trousers-jeans.jpg", "بنطلون جبردين": "trousers-gabardine.jpg", "بنطلون عادي": "trousers-gabardine.jpg", "بنطلون": "trousers-gabardine.jpg",
-    "فستان كاجوال": "casual-dress.jpg", "جيبة": "skirt.jpg", "عباية حريمي": "womens-abaya.jpg", "جلابية": "galabeya.jpg",
-    "سويت شيرت": "hoodie.jpg", "هودي": "hoodie.jpg", "بيجامة قطعتين": "pajama-2-piece.jpg", "بيجامة 2 قطعة": "pajama-2-piece.jpg",
-    "ترينج رياضي قطعتين": "tracksuit-2-piece.jpg", "ترينج رياضي 2 قطعة": "tracksuit-2-piece.jpg",
-    "بدلة 2 قطعة": "suit-2-piece.jpg", "بدلة قطعتين": "suit-2-piece.jpg", "بدلة 3 قطع": "suit-3-piece.jpg",
-    "جاكيت بدلة": "suit-jacket.jpg", "جاكيت جلد": "leather-jacket.jpg", "جاكيت": "jacket.jpg",
-    "كرافتة": "tie.jpg", "شال": "shawl.jpg", "طرحة": "shawl.jpg", "بالطو جوخ": "coat-wool.jpg", "جاكيت جوخ": "coat-wool.jpg", "بالطو طويل": "coat-long.jpg",
-    "فستان سواريه": "evening-dress.jpg", "فستان زفاف": "wedding-dress.jpg", "جوارب": "socks.jpg", "شورت جبردين": "shorts-gabardine.jpg",
-    "مريلة": "apron.jpg", "تونيك": "tunic.jpg", "تي بولو": "polo-shirt.jpg", "سجاد": "carpet.jpg", "فوطة": "towel.jpg",
-    "بطانيه فرد": "furnishings/01_blanket_single.png", "بطانية فرد": "furnishings/01_blanket_single.png",
-    "بطانية فردين": "furnishings/02_blanket_double.png", "بطانية (فردين)": "furnishings/02_blanket_double.png",
-    "لحاف فايبر كبير": "furnishings/03_fiber_duvet_large.png", "لحاف فايبر (كبير)": "furnishings/03_fiber_duvet_large.png",
-    "لحاف فايبر صغير": "furnishings/04_fiber_duvet_small.png", "لحاف فايبر (صغير)": "furnishings/04_fiber_duvet_small.png",
-    "كوفرتة": "furnishings/05_quilt_coverlet.png", "مفرش سرير": "furnishings/06_bedspread.png",
-    "مخدة كبيرة": "furnishings/07_pillow_large.png", "خددية صغيرة": "furnishings/08_pillow_small.png", "خدادية صغيرة": "furnishings/08_pillow_small.png",
-    "متر السجاد العادي": "carpet.jpg", "متر السجاد العادى": "carpet.jpg", "متر السجاد شاج او فرو": "carpet.jpg", "متر السجاد شاج أو فرو": "carpet.jpg"
-  };
-  const normalizedImages = new Map(Object.entries(imageFiles).map(([name, file]) => [normalize(name), file]));
-  function localProductImage(product) {
-    const file = normalizedImages.get(normalize(product.name));
-    return file ? `assets/products/${file}` : "";
-  }
+  const IRONING_CATEGORY = "مكواة فقط";
 
   const fallbackProducts = [
-    { id: "service-wash", name: "غسيل وكوي", category: "غسيل وكوي", description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg" },
+    { id: "service-wash", name: "غسيل وكي", category: "غسيل وكي", description: "عناية يومية بالملابس مع الغسيل والكي.", image: "assets/gdc-service-washing.jpg" },
     { id: "service-dry", name: "تنظيف جاف", category: "تنظيف جاف", description: "تنظيف متخصص للبدل والقطع الحساسة.", image: "assets/gdc-service-dryclean.jpg" },
     { id: "service-home", name: "مفروشات", category: "مفروشات", description: "تنظيف المفروشات والبطاطين والستائر.", image: "assets/gdc-service-furnishings.jpg" }
   ];
 
+  // Reuse the garment photographs already included in this project.
+  const ironingImages = {
+    "قميص": "shirt.jpg",
+    "تيشيرت": "tshirt.jpg",
+    "بلوزة": "blouse.jpg",
+    "بنطلون جينز": "trousers-jeans.jpg",
+    "بنطلون جبردين": "trousers-gabardine.jpg",
+    "فستان كاجوال": "casual-dress.jpg",
+    "جيبة": "skirt.jpg",
+    "عباية حريمي": "womens-abaya.jpg",
+    "جلابية": "galabeya.jpg",
+    "سويت شيرت": "hoodie.jpg",
+    "بلوفر": "pullover.jpg",
+    "هودي": "hoodie.jpg",
+    "بيجامة (قطعتين)": "pajama-2-piece.jpg",
+    "ترينج رياضي (قطعتين)": "tracksuit-2-piece.jpg",
+    "بدلة (قطعتين)": "suit-2-piece.jpg",
+    "بدلة (3 قطع)": "suit-3-piece.jpg",
+    "جاكيت بدلة": "suit-jacket.jpg",
+    "جاكيت بامب": "jacket.jpg",
+    "جاكيت جوخ": "coat-wool.jpg",
+    "بالطو طويل": "coat-long.jpg",
+    "فستان سواريه": "evening-dress.jpg",
+    "فستان زفاف": "wedding-dress.jpg",
+    "كرافتة": "tie.jpg",
+    "شال": "shawl.jpg"
+  };
+
   let products = fallbackProducts;
-  let serviceCategories = fallbackProducts.map(item => item.category);
+  let ironingPrices = [];
+  let ironingPricesLoading = true;
+  let ironingPricesError = false;
   let activeCategory = "الكل";
 
-  const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+  const safe = (value) => String(value ?? "").replace(/[&<>"']/g, char => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[char]));
 
   function getCategories() {
-    const unique = [...new Set(serviceCategories.map(categoryLabel).filter(Boolean))];
-    return ["الكل", ...unique];
+    return ["الكل", ...new Set(products.map(product => product.category).filter(Boolean)), IRONING_CATEGORY];
   }
 
   function formatEGP(value) {
     return `${new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 2 }).format(Number(value))} ج.م`;
+  }
+
+  function renderIroningPrices() {
+    if (!ironingSection || !ironingGrid) return;
+
+    const showIroning = activeCategory === IRONING_CATEGORY;
+    ironingSection.hidden = !showIroning;
+    if (!showIroning) return;
+
+    if (ironingPricesLoading) {
+      ironingGrid.innerHTML = '<div class="catalog-empty">جارٍ تحميل أصناف الكي…</div>';
+      return;
+    }
+
+    if (ironingPricesError) {
+      ironingGrid.innerHTML = '<div class="catalog-empty">تعذر تحميل أصناف الكي حاليًا. تأكد من إعداد جدول أسعار الكي في قاعدة البيانات.</div>';
+      return;
+    }
+
+    if (!ironingPrices.length) {
+      ironingGrid.innerHTML = '<div class="catalog-empty">لا توجد أصناف كي متاحة حاليًا.</div>';
+      return;
+    }
+
+    ironingGrid.innerHTML = ironingPrices.map(row => {
+      const itemName = String(row.item_name || "");
+      const imageFile = ironingImages[itemName];
+      const imageMarkup = imageFile
+        ? `<img class="ironing-product-image" src="assets/products/${safe(imageFile)}" alt="${safe(itemName)}" loading="lazy">`
+        : '<div class="ironing-product-image-empty" aria-hidden="true"></div>';
+      const priceLabel = row.price === null || row.price === undefined
+        ? safe(row.note || "السعر عند المعاينة")
+        : formatEGP(row.price);
+
+      return `
+        <article class="ironing-product-card">
+          <div class="ironing-product-image-wrap">${imageMarkup}</div>
+          <div class="ironing-product-info">
+            <h3>${safe(itemName)}</h3>
+            <strong class="ironing-product-price">${priceLabel}</strong>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  async function loadIroningPrices(client) {
+    ironingPricesLoading = true;
+    ironingPricesError = false;
+    renderIroningPrices();
+
+    try {
+      const { data, error } = await client.from("gdc_ironing_prices")
+        .select("id,item_name,price,note,sort_order")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      ironingPrices = Array.isArray(data) ? data : [];
+      ironingPricesLoading = false;
+      ironingPricesError = false;
+    } catch (error) {
+      console.warn("GRAND DRY CLEAN ironing prices could not be loaded:", error);
+      ironingPrices = [];
+      ironingPricesLoading = false;
+      ironingPricesError = true;
+    }
+
+    renderIroningPrices();
   }
 
   function renderCategories() {
@@ -92,30 +147,25 @@
   }
 
   function renderProducts() {
+    const showIroning = activeCategory === IRONING_CATEGORY;
+    grid.hidden = showIroning;
+    renderIroningPrices();
+    if (showIroning) return;
+
     const visible = activeCategory === "الكل"
       ? products
-      : products.filter(product => categoryLabel(product.category) === activeCategory);
+      : products.filter(product => product.category === activeCategory);
 
     if (!visible.length) {
-      grid.innerHTML = '<div class="catalog-empty">لا توجد أصناف متاحة في هذا القسم حاليًا.</div>';
+      grid.innerHTML = '<div class="catalog-empty">لا توجد خدمات متاحة في هذا القسم حاليًا.</div>';
       return;
     }
 
     grid.innerHTML = visible.map(product => {
-      const localImage = localProductImage(product);
-      const storedImage = String(product.image || "").trim();
-      // Prefer the versioned local file for known products. If it fails,
-      // fall back to the stored Supabase URL when one exists.
-      const image = localImage || storedImage;
-      const backup = localImage && storedImage && localImage !== storedImage ? storedImage : "";
+      const image = String(product.image || "").trim();
       const imageMarkup = image
-        ? `<img class="service-image" src="${safe(image)}" ${backup ? `data-fallback="${safe(backup)}"` : ""} alt="${safe(product.name)}" loading="lazy" onerror="if(this.dataset.fallback && !this.dataset.fallbackTried){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;}else{this.hidden=true;this.nextElementSibling.hidden=false;}">`
+        ? `<img class="service-image" src="${safe(image)}" alt="${safe(product.name)}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">`
         : "";
-      const priceValue = product.price;
-      const hasPrice = priceValue !== null && priceValue !== undefined && priceValue !== "";
-      const detailsMarkup = hasPrice
-        ? `<strong class="service-price">${formatEGP(priceValue)}</strong>`
-        : (product.description ? `<p>${safe(product.description)}</p>` : "");
       return `
         <article class="service-card">
           <div class="service-image-wrap">
@@ -124,7 +174,7 @@
           </div>
           <div class="service-info">
             <h2>${safe(product.name)}</h2>
-            ${detailsMarkup}
+            <p>${safe(product.description || "")}</p>
           </div>
         </article>
       `;
@@ -137,12 +187,15 @@
   }
 
   render();
-  if (status) status.textContent = "";
+  status.textContent = "";
 
   async function loadManagedCatalog() {
     const config = window.POA_CONFIG || {};
     if (!window.supabase?.createClient || !config.SUPABASE_URL || !config.SUPABASE_PUBLISHABLE_KEY) {
-      if (status) status.textContent = "تعذر الاتصال بالخدمات المحدثة؛ يتم عرض الخدمات المتاحة محليًا.";
+      status.textContent = "تعذر الاتصال بالخدمات المحدثة؛ يتم عرض الخدمات المتاحة محليًا.";
+      ironingPricesLoading = false;
+      ironingPricesError = true;
+      renderIroningPrices();
       return;
     }
 
@@ -153,6 +206,7 @@
         { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
       );
       window.__GDC_PUBLIC_CATALOG_CLIENT__ = client;
+      loadIroningPrices(client);
 
       const [categoryResult, itemResult] = await Promise.all([
         client.from("gdc_service_categories")
@@ -160,7 +214,7 @@
           .eq("is_active", true)
           .order("sort_order", { ascending: true }),
         client.from("gdc_service_items")
-          .select("id,name,category_name,description,price,image_url,is_active,sort_order")
+          .select("id,name,category_name,description,image_url,is_active,sort_order")
           .eq("is_active", true)
           .order("sort_order", { ascending: true })
           .order("created_at", { ascending: true })
@@ -169,25 +223,26 @@
       if (categoryResult.error) throw categoryResult.error;
       if (itemResult.error) throw itemResult.error;
 
-      serviceCategories = (categoryResult.data || []).map(row => categoryLabel(row.name)).filter(Boolean);
-      const allowedCategories = new Set(serviceCategories);
-      products = (itemResult.data || [])
-        .filter(row => allowedCategories.has(categoryLabel(row.category_name)))
+      const allowedCategories = new Set((categoryResult.data || []).map(row => row.name));
+      const managedProducts = (itemResult.data || [])
+        .filter(row => allowedCategories.has(row.category_name))
         .map(row => ({
           id: String(row.id),
           name: row.name || "",
-          category: categoryLabel(row.category_name || ""),
+          category: row.category_name || "",
           description: row.description || "",
-          price: row.price,
           image: row.image_url || ""
         }));
 
-      if (!getCategories().includes(activeCategory)) activeCategory = "الكل";
+      products = managedProducts;
+      if (activeCategory !== IRONING_CATEGORY && !getCategories().includes(activeCategory)) {
+        activeCategory = "الكل";
+      }
       render();
-      if (status) status.textContent = products.length ? "" : "لا توجد خدمات منشورة حاليًا.";
+      status.textContent = products.length ? "" : "لا توجد خدمات منشورة حاليًا.";
     } catch (error) {
       console.error("GRAND DRY CLEAN services could not be loaded:", error);
-      if (status) status.textContent = "تعذر تحميل الخدمات المحدثة حاليًا؛ يتم عرض الخدمات المتاحة محليًا.";
+      status.textContent = "تعذر تحميل الخدمات المحدثة حاليًا؛ يتم عرض الخدمات المتاحة محليًا.";
     }
   }
 
