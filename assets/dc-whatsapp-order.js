@@ -41,7 +41,7 @@
   launch.type = 'button';
   launch.className = 'dc-wa-cart-launch';
   launch.id = 'dcWaCartLaunch';
-  launch.innerHTML = '<span class="dc-wa-cart-launch-icon" aria-hidden="true">🛒</span><span>السلة</span><b id="dcWaCartCount" hidden>0</b>';
+  launch.innerHTML = '<span class="dc-wa-cart-launch-icon" aria-hidden="true">🛒</span><span></span><b id="dcWaCartCount" hidden>0</b>';
   launch.setAttribute('aria-label', 'افتح سلة المشتريات');
   document.body.appendChild(launch);
 
@@ -54,7 +54,7 @@
     <section class="dc-wa-cart-panel" role="dialog" aria-modal="true" aria-labelledby="dcWaCartTitle" tabindex="-1">
       <header class="dc-wa-cart-header">
         <div><span class="dc-wa-cart-kicker">DINA'S CORNER</span><h2 id="dcWaCartTitle">سلة المشتريات</h2></div>
-        <button class="dc-wa-cart-close" type="button" data-dc-wa-close aria-label="إغلاق السلة">×</button>
+        <button class="dc-wa-cart-close" type="button" data-dc-wa-close aria-label="إغلاق ">×</button>
       </header>
       <div id="dcWaCartContent"></div>
     </section>`;
@@ -141,7 +141,7 @@
     if (!content) return;
     const info = subtotalInfo(rows);
     if (!rows.length) {
-      content.innerHTML = '<div class="dc-wa-cart-empty"><span aria-hidden="true">🛍️</span><h3>السلة فارغة</h3><p>اختار الأصناف اللي تحبها من المنيو واضغط «أضف للسلة».</p><button type="button" class="dc-wa-secondary" data-dc-wa-close>العودة للمنيو</button></div>';
+      content.innerHTML = '<div class="dc-wa-cart-empty"><span aria-hidden="true">🛍️</span><h3>السلة فارغة</h3><p>اختار الأصناف اللي تحبها من المنيو واضغط «Add ».</p><button type="button" class="dc-wa-secondary" data-dc-wa-close>العودة للمنيو</button></div>';
       updateLaunch();
       return;
     }
