@@ -1,4 +1,4 @@
-const CACHE = "poac-unified-v32-vodafone-copy-open-transfer";
+const CACHE = "poac-unified-v33-vodafone-sendmoney-copy-paste";
 const SHELL = [
   "./index.html",
   "./login.html",
