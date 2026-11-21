@@ -410,3 +410,12 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 
 /* Display-only services catalogue CTA */
 .main-order-button .services-arrow{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(140deg,#ffe59b,#dca632);color:var(--green);font-size:24px;font-weight:900;line-height:1}
+
+/* Two clear menu paths: regular prices and express service (+30%). */
+.home-menu-actions{width:min(92%,780px);display:flex;align-items:stretch;justify-content:center;gap:12px;margin:22px auto 28px}
+.home-menu-actions .main-order-button{width:auto;min-width:0;flex:1;margin:0}
+.express-order-button{flex:1;min-width:0;min-height:75px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 16px;border:2px solid var(--green);border-radius:50px;background:linear-gradient(135deg,#fffdf7,#f3ead8);color:var(--green);box-shadow:0 6px 15px rgba(54,33,15,.12);text-align:center}
+.express-order-button strong{font-size:clamp(16px,3.8vw,22px);font-weight:900;white-space:nowrap}
+.express-order-button small{flex-basis:100%;margin-top:-7px;color:#80652e;font-size:10px;font-weight:800}
+.express-order-tag{display:inline-grid;place-items:center;min-width:43px;height:32px;padding:0 8px;border-radius:18px;background:var(--gold);color:#fff;font-weight:900;font-size:14px}
+@media(max-width:560px){.home-menu-actions{width:calc(100% - 28px);flex-direction:column;gap:9px;margin:18px auto 22px}.home-menu-actions .main-order-button,.express-order-button{width:100%;min-height:62px;flex:none}.home-menu-actions .main-order-button strong{font-size:17px}.express-order-button strong{font-size:17px}.express-order-button small{font-size:9px;margin-top:-5px}}

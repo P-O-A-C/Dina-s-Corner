@@ -4,7 +4,11 @@
   const grid = document.getElementById("productsGrid");
   const tabs = document.getElementById("categoryTabs");
   const status = document.getElementById("catalogStatus");
+  const expressBanner = document.getElementById("expressModeBanner");
+  const EXPRESS_MODE = new URLSearchParams(window.location.search).get("express") === "1";
   if (!grid || !tabs) return;
+  if (expressBanner) expressBanner.hidden = !EXPRESS_MODE;
+  if (EXPRESS_MODE) document.body.classList.add("is-express-menu");
 
   const FALLBACK_PRODUCTS = [
     // Approved wash & iron prices.
@@ -99,6 +103,7 @@
     // "غسيل وكوي", "غسيل وكي" or "غسيل و مكواة". Treat them as one group.
     if (/غسيل/.test(name) && /(كي|كوي|مكواة|مكوه)/.test(name)) return "wash-and-iron";
     if (/مكواة|كي فقط/.test(name)) return "ironing-only";
+    if (/خدمةسريعة|خدمةسريع/.test(name)) return "express-service";
     return name;
   }
 
@@ -113,7 +118,8 @@
     const preferredOrder = ["غسيل ومكواة", "تنظيف جاف", "مفروشات", "مكواة فقط", "خدمة سريعة"];
     // Start with active categories from the same table used by management,
     // then include any category represented by an available product.
-    const source = [...managedCategories, ...products.map(item => item.category)];
+    const source = [...managedCategories, ...products.map(item => item.category)]
+      .filter(value => categoryKey(value) !== "express-service");
     const byKey = new Map();
     source.forEach(value => {
       const display = canonicalCategory(value);
@@ -128,16 +134,22 @@
     return ["الكل", ...ordered];
   }
 
-  function formatPrice(item) {
-    if (canonicalCategory(item.category) === "خدمة سريعة" || /خدمة سريعة|خدمة سريع/.test(cleanName(item.name))) {
-      return "+30% على سعر الخدمة";
+  function formatAmount(value) {
+    return `${new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 2 }).format(value)} ج.م`;
+  }
+
+  function priceMarkup(item) {
+    if (item.price === null || item.price === undefined || item.price === "" || !Number.isFinite(Number(item.price))) {
+      return '<strong class="service-price">السعر عند المعاينة</strong>';
     }
-    if (item.price === null || item.price === undefined || item.price === "") {
-      return "السعر عند المعاينة";
-    }
-    const amount = new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 2 }).format(Number(item.price));
+    const regular = Number(item.price);
+    const amount = EXPRESS_MODE ? regular * 1.30 : regular;
     const perMeter = /متر السجاد/.test(cleanName(item.name)) || /للمتر|لكل متر/.test(String(item.description || ""));
-    return perMeter ? `${amount} ج.م / متر` : `${amount} ج.م`;
+    const suffix = perMeter ? " / متر" : "";
+    if (EXPRESS_MODE) {
+      return `<div class="service-price-block"><del>العادي: ${formatAmount(regular)}${suffix}</del><strong class="service-price service-price-express">السريع: ${formatAmount(amount)}${suffix}</strong></div>`;
+    }
+    return `<strong class="service-price">${formatAmount(regular)}${suffix}</strong>`;
   }
 
   function localImageFor(item) {
@@ -195,9 +207,10 @@
   }
 
   function renderProducts() {
+    const menuProducts = products.filter(item => categoryKey(item.category) !== "express-service");
     const visible = activeCategory === "الكل"
-      ? products
-      : products.filter(item => categoryKey(item.category) === categoryKey(activeCategory));
+      ? menuProducts
+      : menuProducts.filter(item => categoryKey(item.category) === categoryKey(activeCategory));
 
     if (!visible.length) {
       grid.innerHTML = '<div class="catalog-empty">لا توجد أصناف متاحة في هذا القسم حاليًا.</div>';
@@ -212,7 +225,7 @@
         </div>
         <div class="service-info">
           <h2>${safe(item.name)}</h2>
-          <strong class="service-price">${safe(formatPrice(item))}</strong>
+          ${priceMarkup(item)}
           ${item.description ? `<p>${safe(item.description)}</p>` : ""}
         </div>
       </article>
@@ -280,7 +293,7 @@
       });
       const allowed = new Set(displayByKey.keys());
       const managedProducts = (itemResult.data || [])
-        .filter(row => allowed.has(categoryKey(row.category_name)))
+        .filter(row => allowed.has(categoryKey(row.category_name)) && categoryKey(row.category_name) !== "express-service")
         .map(row => normalizeProduct(
           row,
           displayByKey.get(categoryKey(row.category_name)) || canonicalCategory(row.category_name)
