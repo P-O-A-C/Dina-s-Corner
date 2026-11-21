@@ -174,8 +174,11 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); ou
 .payment-symbol { width: 29px; height: 29px; flex: 0 0 29px; display: grid; place-items: center; border-radius: 9px; color: white; font-size: 11px; font-weight: 900; }
 .instapay-tile { border-color: #cbd7f2; color: #193c98; }
 .instapay-tile .payment-symbol { background: #193c98; }
-.vodafone-tile { border-color: #f0c8c8; color: #c92532; }
+.vodafone-tile { border-color: #f0c8c8; color: #c92532; cursor: pointer; font: inherit; }
 .vodafone-tile .payment-symbol { background: #c92532; }
+.payment-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
+.payment-copy small { color: #6f5960; font-size: 11px; font-weight: 800; letter-spacing: .3px; direction: ltr; }
+.vodafone-tile:focus-visible { outline: 3px solid rgba(201,37,50,.24); outline-offset: 2px; }
 .flash-tile { border-color: #d8c7ed; color: #60369a; text-decoration: none; cursor: pointer; }
 .flash-tile .payment-symbol { background: linear-gradient(140deg, #8851c9, #563090); }
 .brand-slogan {

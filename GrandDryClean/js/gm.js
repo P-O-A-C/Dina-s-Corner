@@ -130,7 +130,11 @@
 
     const settings = settingsResult.data;
     if ($("businessName")) $("businessName").value = settings?.business_name || "GRAND DRY CLEAN";
-    if ($("businessPhone")) $("businessPhone").value = settings?.phone || "01005854115";
+    if ($("businessPhone")) {
+      const storedPhone = String(settings?.phone || "").trim();
+      // Replace the previous default contact number with the newly approved WhatsApp number.
+      $("businessPhone").value = !storedPhone || storedPhone === "01005854115" ? "01037626070" : storedPhone;
+    }
     if ($("businessCurrency")) $("businessCurrency").value = settings?.currency || "EGP";
     if ($("businessLocation")) $("businessLocation").value = settings?.location_url || "";
 
